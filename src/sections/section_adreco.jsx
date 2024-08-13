@@ -10,7 +10,7 @@ const AdRecommand = () => {
 
     useEffect(() => {
         if (wrapRef.current) { 
-            renderDataList(sample, wrapRef.current, 10, true); 
+            renderDataList(sample, wrapRef.current, 10, true, true); 
         }
 
         if (scrollRef.current) {

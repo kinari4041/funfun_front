@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import sample from "../data/sample.json";
-import { renderDataList } from "../utils/getDataList";
+import { renderRecentDataList } from "../utils/getDataList";
 
 const NewProject = () => {
 
@@ -8,7 +8,7 @@ const NewProject = () => {
 
     useEffect(() => {
         if (wrapRef.current) {
-            renderDataList(sample, wrapRef.current, 10, true);
+            renderRecentDataList(sample, wrapRef.current, 0, 10);
         }
     }, []) // 빈 배열을 의존성으로 설정함으로서 처음 렌더링 시에만 실행
 

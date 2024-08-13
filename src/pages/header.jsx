@@ -10,6 +10,7 @@ const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const isRegister = location.pathname === '/register';
+    const isPage = (page) => location.pathname === page;
 
     useEffect(() => {
         addStickyNavListener();
@@ -39,13 +40,13 @@ const Header = () => {
         const searchInput = document.querySelector('.search-field');
         const query = searchInput.value.trim();
 
-        if (searchInput.value.length > 1) {
+        if (searchInput.value.length > 0) {
             let queryUri = `/search/${encodeURIComponent(query)}`
             navigate(queryUri);
             const searchEl = document.querySelector('.top-nav-menu-search .search-form-wrap');
             searchEl.classList.remove('search-activate');
         } else {
-            alert("입력한 단어가 너무 짧거나 없습니다.");
+            alert("검색할 단어를 입력해주세요.");
             searchInput.focus();
             return false;
         }
@@ -61,11 +62,11 @@ const Header = () => {
                     </Link>
                     <div className="top-nav-site-menu">
                         <ul>
-                            <Link to="/"><li>메인</li></Link>
-                            <Link to="#"><li>인기</li></Link>
-                            <Link to="#"><li>최신</li></Link>
-                            <Link to="#"><li>오픈예정</li></Link>
-                            <Link to="#"><li>스토어</li></Link>
+                            <Link to="/"><li className={isPage("/") ? 'active' : ''}>메인</li></Link>
+                            <Link to="/popular"><li className={isPage("/popular") ? 'active' : ''}>인기</li></Link>
+                            <Link to="/recent"><li className={isPage("/recent") ? 'active' : ''}>최신</li></Link>
+                            <Link to="#"><li className={isPage("/open") ? 'active' : ''}>오픈예정</li></Link>
+                            <Link to="#"><li className={isPage("/store") ? 'active' : ''}>스토어</li></Link>
                         </ul>
                     </div> 
                 </div> 

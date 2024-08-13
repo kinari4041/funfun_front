@@ -4,9 +4,9 @@
 ────────────────────────────────────────────────────────── */
 
 header {
-    background-color: #fff;
+    background-color: var(--color-white);
     margin: 0 auto;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--color-lgray);
 }
 
 .hide .top-nav-btn-wrap,
@@ -83,13 +83,18 @@ header {
     position: absolute;
     left: 0;
     bottom: 0;
+    margin-bottom: -5px;
     width: 0%;
     height: 3px;
-    background-color: #000;
+    background-color: var(--color-black);
     transition: all .5s cubic-bezier(0, 0, 0.15, 1.01);
 }
 
-.top-nav-site-menu li:hover:after {
+.top-nav-site-menu li:hover::after {
+    width: 100%;
+}
+
+.top-nav-site-menu li.active::after {
     width: 100%;
 }
 
@@ -119,8 +124,8 @@ header {
     gap: 10px;
     justify-content: center;
     align-items: center;
-    background-color: white;
-    border: 1px solid #888;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-dgray);
     border-radius: 10px;
     font-family: "Noto Sans KR", sans-serif;
     font-size: 16px;
@@ -129,7 +134,7 @@ header {
 }
 
 .login-button:hover {
-    background-color: var(--color-light);
+    background-color: var(--color-palegreen);
 }
 
 .top-nav-menu-login .login-form-wrap {
@@ -187,7 +192,7 @@ header {
 ────────────────────────────────────────────────────────── */
 
 .login-form .login-form-title {
-    background-color: white;
+    background-color: var(--color-white);
     height: 60px;
     width: 100%;
     font-size: 20px;
@@ -199,7 +204,7 @@ header {
 
 .login-form-close {
     position: absolute;
-    color:black;
+    color: var(--color-black);
     right: 20px;
     top: 13px;
     font-size: 35px;
@@ -208,7 +213,7 @@ header {
 }
 
 .login-form input {
-    background-color: white;
+    background-color: var(--color-white);
     height: 60px;
     width: 80%;
     border-radius: 50px;
@@ -320,7 +325,7 @@ header {
     display: block;
     padding: 18px 45px;
     color: #fff;
-    background-color: rgb(84, 149, 247);
+    background-color: var(--color-sky);
     box-shadow: var(--shadow-medium);
     border: 0;
     border-radius: 30px;
@@ -330,7 +335,7 @@ header {
 }
 
 .login-form button.login:hover {
-    background-color: rgb(71, 131, 223);
+    background-color: var(--color-darkteal);
 }
 
 .login-form .login-form-bottom {
@@ -350,7 +355,7 @@ header {
 .login-form-bottom a {
     display: block;
     padding: 15px 45px;
-    background-color: rgb(84, 149, 247);
+    background-color: var(--color-sky);
     border: 0;
     border-radius: 15px;
     font-weight: bold;
@@ -360,7 +365,7 @@ header {
 }
 
 .register:hover {
-    background-color: rgb(71, 131, 223);
+    background-color: var(--color-darkteal);
     cursor: pointer;
 }
 
@@ -376,7 +381,7 @@ header {
     padding: 10px 15px 10px 15px;
     width: fit-content;
     height: fit-content;
-    background-color: white;
+    background-color: var(--color-white);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -392,7 +397,7 @@ header {
     display: flex;
     margin: 0 auto;
     height: 60px;
-    background: #fff;
+    background: var(--color-white);
     align-items: center;
     justify-content: left;
     font-weight: bold;
@@ -998,8 +1003,8 @@ aside li:hover .rank-items {
 }
 
 .ad-icon {
-    color: #ccc;
-    border: 1px solid #ddd;
+    color: var(--color-mgray);
+    border: 1px solid var(--color-mgray);
     border-radius: 10px;
     padding: 3px 7px 3px 7px;
     font-size: 12px;
@@ -1060,6 +1065,17 @@ aside li:hover .rank-items {
 .trend-project-title {
     font-size: 20px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+}
+
+.trend-project-title .hashtag {
+    margin: 6px;
+}
+
+.trend-project-title .ad-icon {
+    margin-left: 20px;
 }
 
 .trend-project-title:first-child {
@@ -1234,7 +1250,7 @@ aside li:hover .rank-items {
 }
 
 .project-subject-more:hover {
-    color: #ec80d8
+    color: var(--color-pink)
 }
 
 

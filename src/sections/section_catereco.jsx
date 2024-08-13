@@ -1,55 +1,34 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { getPopularProjects } from "../utils/getPopularProjects";
+import React, { useRef, useEffect, useCallback, useMemo } from "react";
+import Aside from "./aside_projectrank";
 import sample from "../data/sample"
 
-class CateRecommand extends Component {
+const CateRecommand = () => {
+    const wrapRef = useRef(null);
 
-    appendRank = (tempData) => {
-        const maxCount = 10;
-        let count = 0;
-        // 차후 데이터는 쿼리문을 통해 랭킹순으로 불러와서 출력
-        tempData.forEach((data) => {
-            const template = document.createElement("li");
-            template.innerHTML = `
-                    <a href="">
-                        <div class="rank-items">
-                            <div class="rank-items__front">
-                                <p class="rank-number">${data.rank}</p>
-                                <p class="rank-title">${data.title}</p>
-                            </div>
-                            <div class="rank-items__back">
-                                <p class="rank-like">
-                                    <i class="fa-solid fa-heart"></i>
-                                    ${data.like}
-                                </p>
-                                <p class="rank-title">${data.author}</p>
-                            </div>
-                        </div>
-                    </a>
-                `;
-            if (count < maxCount) {
-                document.querySelector(".rank-wrap").append(template);
-                count++;
-            } 
-        });
-    }
+    const mainList = useMemo(() => [
+        "식품", "커피", "향초", "반려 동물", "헬스케어", "디지털 미디어"
+    ], []);
 
-    appendEl = (tempData, index) => {
-        const cateWraps = document.querySelector('.main-cate-project');
-        const template = document.createElement("div");
-        template.classList.add('project-cate-wrap');
-        template.innerHTML = `
+    // 모든 리스트들을 무작위로 가져오는 메서드
+    const getRandomSubjectList = (data, subject) => {
+        const item = [...data].filter(item => item.category === subject).sort(() => 0.5 - Math.random()).slice(0, 1);
+        return item[0];
+    };
+
+    const renderList = useCallback((data, subject) => {
+        const itemDiv = document.createElement("div")
+        const item = getRandomSubjectList(data, subject)
+        itemDiv.innerHTML = `
             <div class="project-subject">
-                <p class="project-subject-title"><i class="${tempData[index].icon}"></i>${tempData[index].category}</p>
-                <Link to="#" class="project-subject-more">더 보기</Link>
+                <p class="project-subject-title"><i class="${item.icon}"></i>${item.category}</p>
+                <p class="project-subject-more" onClick={window.location.replace("#")}>더 보기</p>
             </div>
             <div class="project-cate-thumb-wrap" onclick={window.location.replace("#")}>
                 <div class="project-cate-thumb"> <!-- 이미지 썸네일 영역 -->
-                    <img src="https://picsum.photos/400/400?random=${tempData[index].id}">
+                    <img src="https://picsum.photos/400/400?random=${item.id}">
                 </div>
                 <p class="project-cate title"> <!-- 프로젝트 제목 영역 -->
-                    ${tempData[index].title}
+                    ${item.title}
                 </p>
                 <div class="project-cate rate">
                     <p class="project-cate-rate percent font14"> <!-- 달성 % 표시 영역 -->
@@ -60,57 +39,34 @@ class CateRecommand extends Component {
                     </p>
                 </div>
                 <p class="project-cate name font14"> <!-- 창작자/단체명 영역 -->
-                    ${tempData[index].author}
+                    ${item.author}
                 </p>
             </div>
         `;
-        cateWraps.append(template);
-    }
+        itemDiv.classList.add('project-cate-wrap');
+        wrapRef.current.appendChild(itemDiv);
+    }, [wrapRef]);
 
-    componentDidMount() {
-        let count = 0; const maxCount = 6;
-        const mainList = ["식품", "커피", "향초", "반려 동물", "헬스케어", "디지털 미디어"]
+    useEffect(() => {
+        if (wrapRef.current) { 
+            mainList.forEach((subject) => {
+                renderList(sample, subject); 
+            }); 
+        }
+    }, [mainList, renderList]);
 
-        sample.forEach((data) => {
-            if (count < maxCount) {
-                let dataset = mainList[count];
-
-                if (dataset === `${data.category}`) {
-                    const tempData = sample.filter(
-                        data => data.category === mainList[count]);
-                    const index = (Math.floor(Math.random()*tempData.length));
-                    this.appendEl(tempData, index);
-                    count++;
-                }
-            } 
-        });
-        this.appendRank(getPopularProjects(sample, 10));
-    }
-
-    render() {
-        return (
-            <section id="section1" className="section-area">
-                <div className="section-wrap">
-                    <div className="section-title">
-                        <p>주제별 추천 프로젝트!</p>
-                        <span>FunFun에서 선정한 주제별 추천 프로젝트</span>
-                    </div>
-                    <div className="main-cate-project">
-                    </div>
+    return (
+        <section id="section1" className="section-area">
+            <div className="section-wrap">
+                <div className="section-title">
+                    <p>주제별 추천 프로젝트!</p>
+                    <span>FunFun에서 선정한 주제별 추천 프로젝트</span>
                 </div>
-
-                <aside>
-                    <p className="aside-title"><i className="fa-solid fa-ranking-star"></i>실시간 프로젝트 랭킹</p>
-                    <ul className="rank-wrap">
-                    </ul>
-                    <Link to="#">
-                        <div className="aside-ad">
-                            <p>AD AREA</p>
-                        </div>
-                    </Link>
-                </aside>
-            </section>
-        )
-    }
+                <div className="main-cate-project" ref={wrapRef}>
+                </div>
+            </div>
+            <Aside />
+        </section>
+    )
 }
 export default CateRecommand;

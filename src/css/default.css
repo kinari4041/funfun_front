@@ -55,7 +55,7 @@ img {
 }
 
 body {
-    background: #fff;
+    background: var(--color-white);
     height: max-content;
     margin: 0 auto;
     font-size: 15px;
@@ -91,7 +91,7 @@ strong {
 }
 
 .hashtag {
-    color: rgb(83, 83, 255);
+    color: var(--color-sky);
     font-weight: bold;
 }
 
@@ -103,13 +103,24 @@ strong {
 :root {
     --color-white: #ffffff;
     --color-light: #f1f5f9;
+    --color-lgray: #eee;
+    --color-grayish: #dadce0;
+    --color-mgray: #afb6bd;
+    --color-dgray: #888;
     --color-black: #121212;
     --color-night: #001632;
 
     --color-red: #f44336;
     --color-blue: #1a73e8;
-    --color-gray: #80868b;
-    --color-grayish: #dadce0;
+    
+    --color-pink: #FF9EAA;
+    --color-lightpink: #FFD0D0;
+    --color-sky: #3AA6B9;
+
+    --color-palegreen: #DEF9C4;
+    --color-emerald: #9CDBA6;
+    --color-teal: #50B498;
+    --color-darkteal: #468585;
 
     --shadow-normal: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
       0 1px 2px 0 rgba(0, 0, 0, 0.06);

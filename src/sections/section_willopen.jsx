@@ -7,7 +7,7 @@ const WillOpen = () => {
 
     useEffect(() => {
         if (wrapRef.current) {
-            renderDataList(sample, wrapRef.current, 10, true);
+            renderDataList(sample, wrapRef.current, 10, false);
         }
     });
 

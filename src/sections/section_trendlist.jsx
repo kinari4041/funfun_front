@@ -16,7 +16,7 @@ const TrendList = (props) => {
         // 컴포넌트가 렌더링되고 renderRandomDataList 메서드를 사용하여
         // trend-project-list에 프로젝트 데이터 목록을 렌더링함
         if (wrapRef.current) { 
-            renderDataList(sample, wrapRef.current, 10, true); 
+            renderDataList(sample, wrapRef.current, 10, false); 
         }
         // renderRandomDataList를 통해 목록이 렌더링된 이후
         // 스크롤 및 버튼 이벤트 리스너를 설정함
