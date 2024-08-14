@@ -1,5 +1,6 @@
-import { Header, Footer, Main } from '.';
 import { Helmet } from 'react-helmet-async';
+
+import Header from '../core/header'
 
 const Home = () => {
   return (

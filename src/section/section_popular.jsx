@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class Popular extends Component {
+class Slide extends Component {
 
     componentDidMount() {
         // queryselect로 슬라이드를 구현할 요소 선택하여 크기 구하기
@@ -188,4 +188,4 @@ class Popular extends Component {
     }
 }
 
-export default Popular;
+export default Slide;

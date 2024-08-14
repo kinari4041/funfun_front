@@ -1,5 +1,6 @@
 import React from "react";
-import TrendList from "./section_trendlist";
+
+import TrendList from "section/section_trendlist";
 
 const Trend = () => {
 

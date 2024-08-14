@@ -2,7 +2,7 @@
  * @param {HTMLElement} con 
  */
 
-export const addHorizontalScrollListener = (con) => {
+export function horizontalScroll (con) {
 
     let block; let lBt; let rBt;
 

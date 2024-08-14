@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import sample from "../data/sample.json";
-import { renderDataList } from "../utils/getDataList";
-import { addHorizontalScrollListener } from "../utils/horizontalScroll";
+
+import { renderPremiumList } from "util/getDataList";
+import { horizontalScroll } from "util/horizontalScroll";
+import sample from "data/sample.json";
 
 const AdRecommand = () => {
     const wrapRef = useRef(null);
@@ -10,11 +11,11 @@ const AdRecommand = () => {
 
     useEffect(() => {
         if (wrapRef.current) { 
-            renderDataList(sample, wrapRef.current, 10, true, true); 
+            renderPremiumList(sample, wrapRef.current, 10); 
         }
 
         if (scrollRef.current) {
-            const cleanup = addHorizontalScrollListener(scrollRef.current);
+            const cleanup = horizontalScroll(scrollRef.current);
             return cleanup;
         }
     }, [])

@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate } from 'react-router-dom';
-import { renderSubCateEl } from "../utils/renderSubCateEl";
-import { addStickyNavListener } from "../utils/stickyNavListener";
-import { addLoginSearchListener } from "../utils/headerLoginSearch";
-import { useLocation } from "react-router-dom";
-import cateData from "../data/catedata.json"
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+
+import subCategory from "../util/subCategory";
+import stickyNav from "../util/stickyNav";
+import headerPopups from "../util/headerPopups";
+import cateData from "data/catedata.json"
 
 const Header = () => {
     const location = useLocation();
@@ -13,9 +13,9 @@ const Header = () => {
     const isPage = (page) => location.pathname === page;
 
     useEffect(() => {
-        addStickyNavListener();
-        addLoginSearchListener();
-        renderSubCateEl(cateData);
+        stickyNav();
+        headerPopups();
+        subCategory(cateData);
     }, [])
 
     const doLogin = () => {

@@ -1,13 +1,14 @@
 import React, { useRef, useEffect } from "react";
-import sample from "../data/sample.json";
-import { renderDataList } from "../utils/getDataList";
+
+import { renderDataList } from "util/getDataList";
+import sample from "data/sample.json";
 
 const WillOpen = () => {
     const wrapRef = useRef(null);
 
     useEffect(() => {
         if (wrapRef.current) {
-            renderDataList(sample, wrapRef.current, 10, false);
+            renderDataList(sample, wrapRef.current, 10);
         }
     });
 

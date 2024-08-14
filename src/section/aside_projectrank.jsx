@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import sample from "../data/sample.json";
-import { getPopularProjects } from "../utils/getPopularProjects";
+
+import  { getProjectRankList } from "util/getDataList";
+import sample from "data/sample";
 
 const Aside = () => {
     const wrapRef = useRef(null);
@@ -12,7 +13,7 @@ const Aside = () => {
 
     const renderList = () => {
         // 차후 데이터는 쿼리문을 통해 랭킹순으로 불러와서 출력
-        getPopularProjects(sample, 10).forEach((data) => {
+        getProjectRankList(sample, 10).forEach((data) => {
             const liList = document.createElement("li")
             liList.innerHTML = `
                 <Link to="/">

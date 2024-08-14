@@ -1,8 +1,14 @@
-import './style.css';
-import './css/default.css';
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { Home, Search, Register, Popular, Recent } from './pages'
+import "./style.css";
+import "./css/default.css";
+
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+
+import Home from "./core/home";
+import Search from "./page/search";
+import Register from "./page/register";
+import Popular from "./page/popular";
+import Recent from "./page/recent";
 
 const App = () => {
     return (

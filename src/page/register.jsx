@@ -1,5 +1,7 @@
-import { Header, Footer } from '.';
 import { Helmet } from 'react-helmet-async';
+
+import Header from '../core/header';
+import Footer from '../core/footer';
 
 const Register = () => {
   return (

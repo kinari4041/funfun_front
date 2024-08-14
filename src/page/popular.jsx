@@ -1,9 +1,11 @@
-import { Header, Footer } from '.';
 import { Helmet } from 'react-helmet-async';
-import { renderPopularDataList } from '../utils/getDataList';
 import React, { useRef, useEffect } from 'react'
+
+import Header from '../core/header';
+import Footer from '../core/footer';
+import TrendList from 'section/section_trendlist';
+import { renderPopularList, renderRateList } from '../util/getDataList.js';
 import sample from '../data/sample.json'
-import TrendList from '../sections/section_trendlist';
 
 const Popular = () => {
 
@@ -13,10 +15,10 @@ const Popular = () => {
   const rateRef2 = useRef(null);
 
   useEffect(() => {
-      if (likeRef1.current) { renderPopularDataList(sample, likeRef1.current, 0, 10, "like"); }
-      if (likeRef2.current) { renderPopularDataList(sample, likeRef2.current, 11, 21, "like"); }
-      if (rateRef1.current) { renderPopularDataList(sample, rateRef1.current, 0, 10, "rate"); }
-      if (rateRef2.current) { renderPopularDataList(sample, rateRef2.current, 11, 21, "rate"); }
+      if (likeRef1.current) { renderPopularList(sample, likeRef1.current, 0, 10); }
+      if (likeRef2.current) { renderPopularList(sample, likeRef2.current, 11, 21); }
+      if (rateRef1.current) { renderRateList(sample, rateRef1.current, 0, 10); }
+      if (rateRef2.current) { renderRateList(sample, rateRef2.current, 11, 21); }
   }, []) // 빈 배열을 의존성으로 설정함으로서 처음 렌더링 시에만 실행
 
   return (

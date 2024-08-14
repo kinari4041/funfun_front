@@ -1,5 +1,5 @@
 
-export const addStickyNavListener = () => {
+export function stickyNav() {
     window.addEventListener('scroll', () => {
         const topNav = document.querySelector('#cate-nav');
         const scrollY = window.pageYOffset;

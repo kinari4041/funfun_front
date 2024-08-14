@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useCallback, useMemo } from "react";
-import Aside from "./aside_projectrank";
-import sample from "../data/sample"
+
+import Aside from "section/aside_projectrank";
+import sample from "data/sample"
 
 const CateRecommand = () => {
     const wrapRef = useRef(null);

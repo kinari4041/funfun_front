@@ -2,7 +2,7 @@
  * @param {Array} cateData 
  */
 
-export const renderSubCateEl = (cateData) => {
+export function subCategory (cateData) {
     // 대분류 카테고리 엘리먼트들을 저장한 변수 생성
     const cateEl = document.querySelectorAll('.cate-title-el');
     // 카테고리 네비게이션 앨리먼트를 저장한 변수 생성

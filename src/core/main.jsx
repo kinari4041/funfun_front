@@ -1,5 +1,11 @@
 import React from "react";
-import { Ad, Subject, Popular, Trend, Ready, New } from "../sections";
+
+import New from "../section/section_newproject"
+import Ready from "../section/section_willopen"
+import Popular from "../page/popular";
+import Ads from "../section/section_adreco"
+import Trend from "../section/section_trend"
+import Subject from "../section/section_catereco"
 
 const Main = () => {
     return (
@@ -9,7 +15,7 @@ const Main = () => {
                     <Popular />
                     <Subject />
                     <hr />
-                    <Ad />
+                    <Ads />
                     <hr />
                     <Trend />
                     <hr />

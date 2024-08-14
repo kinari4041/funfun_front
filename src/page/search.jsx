@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { renderDataList } from "../utils/getDataList";
-import sample from "../data/sample.json";
-import Header from "./header";
-import TrendList from "../sections/section_trendlist";
+
+import { renderDataList } from "../util/getDataList";
+import Header from "../core/header";
+import TrendList from "../section/section_trendlist";
+import sample from "../data/sample";
 
 const Search = () => {
     const {query} = useParams();

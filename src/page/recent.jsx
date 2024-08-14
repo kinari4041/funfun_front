@@ -1,8 +1,10 @@
-import { Header, Footer } from '.';
 import { Helmet } from 'react-helmet-async';
 import React, { useRef, useEffect } from 'react';
-import { renderRecentDataList } from '../utils/getDataList';
-import TrendList from '../sections/section_trendlist';
+
+import Header from '../core/header';
+import Footer from '../core/footer';
+import { renderRecentList } from '../util/getDataList';
+import TrendList from '../section/section_trendlist';
 import sample from '../data/sample.json'
 
 const Recent = () => {
@@ -11,8 +13,8 @@ const Recent = () => {
   const wrapRef2 = useRef(null);
 
   useEffect(() => {
-      if (wrapRef.current) { renderRecentDataList(sample, wrapRef.current, 0, 15); }
-      if (wrapRef2.current) { renderRecentDataList(sample, wrapRef2.current, 16, 31); }
+      if (wrapRef.current) { renderRecentList(sample, wrapRef.current, 0, 15); }
+      if (wrapRef2.current) { renderRecentList(sample, wrapRef2.current, 16, 31); }
   }, []) // 빈 배열을 의존성으로 설정함으로서 처음 렌더링 시에만 실행
 
   return (
