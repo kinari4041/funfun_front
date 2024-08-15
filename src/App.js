@@ -2,7 +2,7 @@ import "css/style.css";
 import "css/default.css";
 
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 
 import Header from "core/header";
 import Footer from "core/footer";
@@ -14,9 +14,13 @@ import Recent from "page/recent";
 import Search from "page/search";
 
 const App = () => {
+  const location = useLocation();
+  const isHideHeader = location.pathname === '/register';
+  const isHideFooter = location.pathname === '/register';
+
   return (
     <>
-      <Header />
+      {!isHideHeader && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
@@ -24,7 +28,7 @@ const App = () => {
         <Route path="/recent" element={<Recent />} />
         <Route path="/search" element={<Search />} />
       </Routes>
-      <Footer />
+      {!isHideFooter && <Footer />}
     </>
   );
 }

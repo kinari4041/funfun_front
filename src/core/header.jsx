@@ -10,8 +10,6 @@ import cateData from "data/catedata.json"
 
 const Header = () => {
     const location = useLocation();
-
-    const isRegister = location.pathname === '/register';
     const isPage = (page) => location.pathname === page;
 
     useEffect(() => {
@@ -21,7 +19,7 @@ const Header = () => {
     }, [])
 
     return (
-        <header className={isRegister ? 'hide' : ''}>
+        <header>
             <div id="top-nav">
                 <div className="top-nav-site-wrap">
                     <Link to="/" className="top-nav-title">

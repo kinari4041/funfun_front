@@ -1,89 +1,182 @@
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import './register.css';
 
 const Register = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    name: '',
+    nickname: '',
+    birthdate: '',
+    phone: '',
+    termsAccepted: false,
+    privacyAccepted: false
+  });
+  const [fadeIn, setFadeIn] = useState(false);
+
+  useEffect(() => {
+    setFadeIn(true);
+  }, []);
+
+  const handleNextPage = () => {
+    if (currentPage === 1) {
+      if (!formData.email || !formData.password || formData.password !== formData.confirmPassword) {
+        return;
+      }
+    } else if (currentPage === 2) {
+      if (!formData.name || !formData.nickname || !formData.birthdate || !formData.phone) {
+        return;
+      }
+    } else if (currentPage === 3) {
+      if (!formData.termsAccepted || !formData.privacyAccepted) {
+        return;
+      }
+      window.location.href = '/home'
+      return;
+    }
+
+    setCurrentPage(prevPage => prevPage + 1);
+  };
+
+  const handleBackPage = () => {
+    setCurrentPage(prevPage => prevPage - 1);
+  };
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
   return (
-    <>
-      <Helmet>
-        <title>FUNFUN - 회원가입</title>
-      </Helmet>
-      <div className="container">
-          <form name="frmJoin" className="registration-form">
-              <h2>회원가입</h2>
-              <label htmlFor="email">*Email</label>
-              <input type="email" id="email" name="email" required />
-              
-              <label htmlFor="name">*이름</label>
-              <input type="text" id="name" name="name" required />
-              
-              <label htmlFor="pw">*비밀번호</label>
-              <input type="password" id="pw" name="pw" required />
-              
-              <label htmlFor="confirm-password">*비밀번호확인</label>
-              <input type="password" id="confirm-password" name="confirm-password" required />
-              
-              <label htmlFor="birthdate">*생년월일</label>
-              <div className="birthdate">
-                  <input type="text" id="year" name="year" placeholder="YYYY" required />
-                  <select id="month" name="month" required>
-                      <option value="MM">MM</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                  </select>
-                  <select id="day" name="day" required>
-                      <option value="DD">DD</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                      <option value="13">13</option>
-                      <option value="14">14</option>
-                      <option value="15">15</option>
-                      <option value="16">16</option>
-                      <option value="17">17</option>
-                      <option value="18">18</option>
-                      <option value="19">19</option>
-                      <option value="20">20</option>
-                      <option value="21">21</option>
-                      <option value="22">22</option>
-                      <option value="23">23</option>
-                      <option value="24">24</option>
-                      <option value="25">25</option>
-                      <option value="26">26</option>
-                      <option value="27">27</option>
-                      <option value="28">28</option>
-                      <option value="29">29</option>
-                      <option value="30">30</option>
-                      <option value="31">31</option>
-                  </select>
-              </div>
-              
-              <label htmlFor="phone">*휴대전화</label>
-              <input type="tel" id="phone" name="phone" required />
-              
-              
-              <button type="submit">가입하기</button>
-          </form>
+    <div className={`register-container ${fadeIn ? 'fade-in' : ''}`}>
+      <div className="register-form" style={{ transform: `translateX(-${(currentPage - 1) * 100}%)` }}>
+        {/* Page 1 */}
+        {currentPage === 1 && (
+          <div className="page">
+          <Helmet>
+            <title>FUNFUN - 회원가입1</title>
+          </Helmet>
+            <div className="logo">펀딩을 재밌게! FUNFUN</div>
+            <h1>가입을 환영합니다</h1>
+            <div className="divider" />
+            <div className="sns-signup">
+              <button className="sns-button"><i className="fab fa-google"></i></button>
+              <button className="sns-button"><i className="fab fa-facebook-f"></i></button>
+              <button className="sns-button"><i className="fab fa-instagram"></i></button>
+            </div>
+            <div className="divider" />
+            <input
+              type="email"
+              name="email"
+              placeholder="이메일"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="비밀번호"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="비밀번호 확인"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+            <button onClick={handleNextPage}>다음</button>
+          </div>
+        )}
+
+        {/* Page 2 */}
+        {currentPage === 2 && (
+          <div className="page">
+          <Helmet>
+            <title>FUNFUN - 회원가입2</title>
+          </Helmet>
+            <h1>회원정보 입력</h1>
+            <input
+              type="text"
+              name="name"
+              placeholder="이름"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="nickname"
+              placeholder="닉네임"
+              value={formData.nickname}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="date"
+              name="birthdate"
+              placeholder="생년월일"
+              value={formData.birthdate}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="tel"
+              name="phone"
+              placeholder="휴대전화"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+            />
+            <button onClick={handleBackPage}>이전</button>
+            <button onClick={handleNextPage}>다음</button>
+          </div>
+        )}
+
+        {/* Page 3 */}
+        {currentPage === 3 && (
+          <div className="page">
+          <Helmet>
+            <title>FUNFUN - 회원가입(동의)</title>
+          </Helmet>
+            <h1>{formData.name}님 가입을 환영합니다!</h1>
+            <label>
+              <input
+                type="checkbox"
+                name="termsAccepted"
+                checked={formData.termsAccepted}
+                onChange={handleChange}
+                required
+              />
+              서비스 이용 약관 동의
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="privacyAccepted"
+                checked={formData.privacyAccepted}
+                onChange={handleChange}
+                required
+              />
+              개인정보 처리방침 동의
+            </label>
+            <button onClick={handleBackPage}>이전</button>
+            <button onClick={handleNextPage}>가입하기</button>
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
-}
+};
 
 export default Register;
