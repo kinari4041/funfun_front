@@ -1,11 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import React, { useRef, useEffect } from 'react'
 
-import Header from '../core/header';
-import Footer from '../core/footer';
 import TrendList from 'section/section_trendlist';
-import { renderPopularList, renderRateList } from '../util/getDataList.js';
-import sample from '../data/sample.json'
+import { renderPopularList, renderRateList } from 'util/getDataList';
+import sample from 'data/sample.json'
 
 const Popular = () => {
 
@@ -26,7 +24,6 @@ const Popular = () => {
       <Helmet>
         <title>FunFun - 인기 프로젝트</title>
       </Helmet>
-      <Header />
         <section id="like" className="section-area">
             <div className="section-title">
                 <p>인기 프로젝트 목록 - 좋아요 순</p>
@@ -43,7 +40,6 @@ const Popular = () => {
             <TrendList item={`<span className="hashtag">이런건</span> 어떠세요?<Link to="#"><div className="ad-icon">AD</div></Link>`} />
             <div className="list-page" data-section="rate" ref={rateRef2}></div>
         </section>
-      <Footer />
     </>
   );
 }

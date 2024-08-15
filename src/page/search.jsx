@@ -1,16 +1,17 @@
 import React, { useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useLocation } from "react-router-dom";
 
-import { renderDataList } from "../util/getDataList";
-import Header from "../core/header";
-import TrendList from "../section/section_trendlist";
-import sample from "../data/sample";
+import { renderRecentList } from "util/getDataList";
+import TrendList from "section/section_trendlist";
+import sample from "data/sample.json";
 
 const Search = () => {
-    const {query} = useParams();
-    // const [results, setResults] = useState([]);
+    const location = useLocation();
     const wrapRef = useRef(null);
+
+    const queryParams = new URLSearchParams(location.search);
+    const query = queryParams.get('q') || '';
 
     useEffect(() => {
         const readyToSearch = decodeURIComponent(query.toLowerCase().trim());
@@ -19,14 +20,9 @@ const Search = () => {
             item.title.toLowerCase().includes(readyToSearch) ||
             item.name.toLowerCase().includes(readyToSearch)
         );
-        // setResults(filteredData);
-        addSearchItem(filteredData);
-    }, [query])
-
-    const addSearchItem = (data) => {
-        if (data.length > 0) {
+        if (filteredData.length > 0) {
             wrapRef.current.style.setProperty('display','grid')
-            renderDataList(data, wrapRef.current, 10, false)
+            renderRecentList(filteredData, wrapRef.current, 0, 99)
         } else {
             wrapRef.current.style.setProperty('display','block')
             wrapRef.current.innerHTML = `
@@ -35,14 +31,14 @@ const Search = () => {
                 </div>
             `;
         }
-    }
+
+    }, [query])
 
     return (
         <>
             <Helmet>
               <title>FUNFUN - {query} 검색 결과</title>
             </Helmet>
-            <Header />
             <section id="search" className="section-area">
                 <div className="section-title">
                     <p>"{query}" 검색 결과</p>

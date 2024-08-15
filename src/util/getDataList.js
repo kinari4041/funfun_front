@@ -1,6 +1,5 @@
 /** 
  * 데이터를 무작위로 렌더링하는 메서드
- * @param {Array} data
  * @param {HTMLElement} wrap
  * @param {number} count
 */
@@ -15,7 +14,6 @@ export function renderDataList(data, wrap, count) {
 
 /** 
  * 광고등록을 한 프로젝트들을 무작위로 렌더링하는 메서드
- * @param {Array} data
  * @param {HTMLElement} wrap
  * @param {number} count
 */
@@ -30,7 +28,6 @@ export function renderPremiumList(data, wrap, count) {
 
 /**
  * 최신 날짜순으로 정렬하여 렌더링하는 메서드
- * @param {Array} data
  * @param {HTMLElement} wrap
  * @param {number} start
  * @param {number} end
@@ -47,7 +44,6 @@ export function renderRecentList(data, wrap, start ,end) {
 
 /**
  * 좋아요가 높은 순서대로 정렬하여 렌더링하는 메서드
- * @param {Array} data
  * @param {HTMLElement} wrap
  * @param {number} start
  * @param {number} end
@@ -63,18 +59,18 @@ export function renderPopularList(wrap, data, start, end) {
 
 /**
  * 평점이 높은 순서대로 정렬하여 렌더링하는 메서드
- * @param {Array} data
  * @param {HTMLElement} wrap
  * @param {number} start
  * @param {number} end
 */
-export function renderRateList(wrap, data, start, end) {
+export function renderRateList(data, wrap, start, end) {
     const getRateList = (data, start, end) => {
         const PopularList = [...data].sort((a, b) => b.rate - a.rate)
         return PopularList.slice(start, end);
     };
     render(wrap, getRateList(data, start, end))
 }
+
 
 /**
  * 데이터를 좋아요가 높은 순서대로 정렬하여 매개변수로 받은 count의 수만큼 자른 후

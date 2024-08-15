@@ -1,5 +1,5 @@
 
-export function headerPopups () {
+export default function headerPopups() {
     
     const searchEl = document.querySelector('.top-nav-menu-search .search-form-wrap');
     const loginEl = document.querySelector('.top-nav-menu-login .login-form-wrap');

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import { renderPremiumList } from "util/getDataList";
-import { horizontalScroll } from "util/horizontalScroll";
+import horizontalScroll from "util/horizontalScroll";
 import sample from "data/sample.json";
 
 const AdRecommand = () => {

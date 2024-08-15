@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import  { getProjectRankList } from "util/getDataList";
-import sample from "data/sample";
+import sample from "data/sample.json";
 
 const Aside = () => {
     const wrapRef = useRef(null);
@@ -31,7 +31,7 @@ const Aside = () => {
                         </div>
                     </div>
                 </Link>
-                `;
+            `
             wrapRef.current.appendChild(liList);
         });
     }

@@ -1,15 +1,11 @@
 import { Helmet } from 'react-helmet-async';
 
-import Header from '../core/header';
-import Footer from '../core/footer';
-
 const Register = () => {
   return (
     <>
       <Helmet>
         <title>FUNFUN - 회원가입</title>
       </Helmet>
-      <Header />
       <div className="container">
           <form name="frmJoin" className="registration-form">
               <h2>회원가입</h2>
@@ -86,7 +82,6 @@ const Register = () => {
               <button type="submit">가입하기</button>
           </form>
       </div>
-      <Footer />
     </>
   );
 }

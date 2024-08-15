@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import parse from 'html-react-parser';
 
 import { renderDataList } from "util/getDataList";
-import { horizontalScroll } from "util/horizontalScroll";
+import horizontalScroll from "util/horizontalScroll";
 import sample from "data/sample.json";
 
 const TrendList = (props) => {

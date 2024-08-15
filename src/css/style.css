@@ -135,6 +135,7 @@ header {
 
 .login-button:hover {
     background-color: var(--color-palegreen);
+    cursor: pointer;
 }
 
 .top-nav-menu-login .login-form-wrap {
@@ -241,12 +242,17 @@ header {
 }
 
 .login-form fieldset {
-    padding-top: 30px;
+    padding-top: 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
+}
+
+.login-message {
+    margin-bottom: 15px;
+    height: 20px;
 }
 
 .fa-google {

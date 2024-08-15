@@ -1,18 +1,16 @@
-import { Helmet } from 'react-helmet-async';
-
-import Header from '../core/header'
+import Main from "page/main";
+import React from "react";
+import { Helmet } from "react-helmet-async";
 
 const Home = () => {
-  return (
-    <>
-      <Helmet>
-        <title>펀딩을 재밌게, FUNFUN!</title>
-      </Helmet>
-      <Header />
-      <Main />
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <Helmet>
+              <title>펀딩을 재밌게, FUNFUN!</title>
+            </Helmet>
+            <Main />
+        </>
+    );
 }
 
 export default Home;

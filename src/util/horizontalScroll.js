@@ -2,7 +2,7 @@
  * @param {HTMLElement} con 
  */
 
-export function horizontalScroll (con) {
+export default function horizontalScroll(con) {
 
     let block; let lBt; let rBt;
 

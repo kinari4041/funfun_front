@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-import subCategory from "../util/subCategory";
-import stickyNav from "../util/stickyNav";
-import headerPopups from "../util/headerPopups";
+import subCategory from "util/subCategory";
+import stickyNav from "util/stickyNav";
+import headerPopups from "util/headerPopups";
+import SearchForm from "./searchform";
+import LoginForm from "./loginform"
 import cateData from "data/catedata.json"
 
 const Header = () => {
     const location = useLocation();
-    const navigate = useNavigate();
+
     const isRegister = location.pathname === '/register';
     const isPage = (page) => location.pathname === page;
 
@@ -18,40 +20,6 @@ const Header = () => {
         subCategory(cateData);
     }, [])
 
-    const doLogin = () => {
-        const loginId = document.getElementById('loginId');
-        const loginPw = document.getElementById('loginPw');
-
-        if(loginId.value.length === 0) {
-            alert("아이디를 입력해주세요.");
-            loginId.focus();
-            return false;
-        } else if (loginPw.value.length === 0) {
-            alert("비밀번호를 입력해주세요.");
-            loginPw.focus();
-            return false;
-        }  else {
-            alert("로그인 테스트");
-        }
-    }
-
-    const doSearch = (e) => {
-        e.preventDefault();
-        const searchInput = document.querySelector('.search-field');
-        const query = searchInput.value.trim();
-
-        if (searchInput.value.length > 0) {
-            let queryUri = `/search/${encodeURIComponent(query)}`
-            navigate(queryUri);
-            const searchEl = document.querySelector('.top-nav-menu-search .search-form-wrap');
-            searchEl.classList.remove('search-activate');
-        } else {
-            alert("검색할 단어를 입력해주세요.");
-            searchInput.focus();
-            return false;
-        }
-    }
-    
     return (
         <header className={isRegister ? 'hide' : ''}>
             <div id="top-nav">
@@ -72,52 +40,8 @@ const Header = () => {
                 </div> 
                 <div className="top-nav-btn-wrap">
                      <div className="top-nav-menu-login">
-                        <div className="login-button">
-                            <Link to="#">로그인 / 회원가입</Link>
-                        </div>
-                        <div className="login-form-wrap">
-                            <form action="#" name="loginField" className="login-form">
-                                <div className="login-form-title">
-                                    <p>로그인 / 회원가입</p>
-                                    <div className="login-form-close" data-focus="top-login-icon">
-                                        <i className="fa-solid fa-xmark" />
-                                    </div>
-                                </div>
-                                <fieldset>
-                                    <div className="login-message">
-                                    </div>
-                                    <input type="text" name="id" id="loginId" placeholder="Username" />
-                                    <input type="password" name="pw" id="loginPw" placeholder="Password" />
-                                    <div className="login-btn-area">
-                                        <p className="forgot">아이디 / 비밀번호 찾기</p>
-                                        <button type="button" className="login" onClick={doLogin}> 로그인 </button>
-                                    </div>
-                                    <div className="login-stripe">
-                                      <span className="stripe-line"></span>
-                                      <span className="stripe-text">또는</span>
-                                      <span className="stripe-line"></span>
-                                    </div>
-                                    <div className="login-method">
-                                        <div className="login-method-control">
-                                          <Link to="#" className="login-method-action">
-                                            <i className="fa-brands fa-google" />
-                                            <span>구글 계정으로 로그인</span>
-                                          </Link>
-                                        </div>
-                                        <div className="login-method-control">
-                                          <Link to="#" className="login-method-action">
-                                            <i className="fa-brands fa-facebook-f" />
-                                            <span>페이스북 계정으로 로그인</span>
-                                          </Link>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                                <div className="login-form-bottom">
-                                    <p className="not-member">아직 회원이 아니신가요?</p>
-                                    <Link to="./register" className="register"> 회원가입 </Link>
-                                </div>
-                            </form>
-                        </div> 
+                        <div className="login-button"> 로그인 / 회원가입</div>
+                        <LoginForm />
                     </div>
                 <Link to="#" className="top-nav-btn-project">프로젝트 만들기</Link>
                 </div> 
@@ -139,21 +63,10 @@ const Header = () => {
                     </div>
                      <div className="top-nav-menu-search">
                         <div className="search-icon">
-                           <Link to="#"><i className="fa-solid fa-magnifying-glass" /><span></span>프로젝트 검색</Link>
+                           <i className="fa-solid fa-magnifying-glass" />
+                           <span></span>프로젝트 검색
                         </div>
-                        <div className="search-form-wrap">
-                            <form className="search-form">
-                                <label>
-                                    <input type="search" className="search-field" placeholder="프로젝트 검색…" />
-                                </label>
-                                <button type="submit" className="search-submit" onClick={doSearch}>검색</button>
-                            </form>
-                            <div className="search-form-close" data-focus="top-search-icon">
-                                <Link to="#">
-                                    <i className="fa-solid fa-xmark" />
-                                </Link>
-                            </div>
-                        </div>
+                        <SearchForm />
                     </div>
                 </div>
             </div> 

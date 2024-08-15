@@ -1,7 +1,12 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 const Footer = () => {
+    const location = useLocation();
+
+    if (location.pathname === '/search/*') return null;
+
     return(
         <footer>
             <div className="footer-menu-wrap">  
@@ -42,7 +47,7 @@ const Footer = () => {
                 </div>
                 <div className="sns-stripe">
                     <span className="stripe-line"></span>
-                                    <div className="social-icons ">
+                    <div className="social-icons ">
                         <ul className="social-icon-list">
                             <li><Link to="#"><i className="fa-brands fa-square-facebook"></i></Link></li>
                             <li><Link to="#"><i className="fa-brands fa-instagram"></i></Link></li>

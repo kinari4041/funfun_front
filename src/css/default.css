@@ -64,6 +64,10 @@ body {
     font-family: "Nanum Gothic", sans-serif;
 }
 
+label {
+    display: none;
+}
+
 
 /* ─────────────────────────────────────────────────────────
                         공용 소스

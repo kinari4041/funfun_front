@@ -1,11 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import React, { useRef, useEffect } from 'react';
 
-import Header from '../core/header';
-import Footer from '../core/footer';
-import { renderRecentList } from '../util/getDataList';
-import TrendList from '../section/section_trendlist';
-import sample from '../data/sample.json'
+import { renderRecentList } from 'util/getDataList';
+import TrendList from 'section/section_trendlist';
+import sample from 'data/sample.json'
 
 const Recent = () => {
 
@@ -22,7 +20,6 @@ const Recent = () => {
       <Helmet>
         <title>FunFun - 최신 프로젝트</title>
       </Helmet>
-      <Header />
         <section id="search" className="section-area">
             <div className="section-title">
                 <p>최근 프로젝트</p>
@@ -31,7 +28,6 @@ const Recent = () => {
             <TrendList item={`<span className="hashtag">이런건</span> 어떠세요?`} />
             <div className="list-page" data-section="recent" ref={wrapRef2}></div>
         </section>
-      <Footer />
     </>
   );
 }
