@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import React, { useRef, useEffect } from 'react'
 
-import TrendList from 'section/section_trendlist';
+import TrendList from 'section/trendlist';
 import { renderPopularList, renderRateList } from 'util/getDataList';
 import sample from 'data/sample.json'
 

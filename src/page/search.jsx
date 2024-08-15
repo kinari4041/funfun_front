@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
 
 import { renderRecentList } from "util/getDataList";
-import TrendList from "section/section_trendlist";
+import TrendList from "section/trendlist";
 import sample from "data/sample.json";
 
 const Search = () => {

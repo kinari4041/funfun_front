@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback, useMemo } from "react";
 
-import Aside from "section/aside_projectrank";
+import Aside from "section/rank";
 import sample from "data/sample"
 
 const CateRecommand = () => {

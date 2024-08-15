@@ -14,19 +14,19 @@ import Recent from "page/recent";
 import Search from "page/search";
 
 const App = () => {
-    return (
-        <>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/popular" element={<Popular />} />
-            <Route path="/recent" element={<Recent />} />
-            <Route path="/search" element={<Search />} />
-          </Routes>
-          <Footer />
-      </>
-    );
-  }
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/popular" element={<Popular />} />
+        <Route path="/recent" element={<Recent />} />
+        <Route path="/search" element={<Search />} />
+      </Routes>
+      <Footer />
+    </>
+  );
+}
 
 export default App;

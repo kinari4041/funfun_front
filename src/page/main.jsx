@@ -1,11 +1,11 @@
 import React from "react";
 
-import NewProject from "section/section_newproject"
-import WillOpen from "section/section_willopen"
-import Slide from "section/section_popular";
-import AdRecommand from "section/section_adreco"
-import Trend from "section/section_trend"
-import CateRecommand from "section/section_catereco"
+import NewProject from "section/recent"
+import WillOpen from "section/willopen"
+import Slide from "section/slide";
+import AdRecommand from "section/adreco"
+import Trend from "section/trend"
+import CateRecommand from "section/catereco"
 
 const Main = () => {
     return (
