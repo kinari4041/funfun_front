@@ -64,8 +64,16 @@ body {
     font-family: "Nanum Gothic", sans-serif;
 }
 
-label {
-    display: none;
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    clip-path: polygon(0 0, 0 0, 0 0);
+    border: 0;
 }
 
 
@@ -128,9 +136,19 @@ strong {
 
     --color-dark: #333333;
     --color-gray-light: #dcdcdc;
-    --color-primary: #007bff;
+    --color-primary: #376fc2;
     --color-primary-dark: #0056b3;
     --color-error: #d9534f;
+
+    --color-oceandark: #4D869C;
+    --color-oceanblue: #7AB2B2;
+    --color-oceanlight: #CDE8E5;
+    --color-oceanpale: #EEF7FF;
+
+    --color-instagram: linear-gradient(
+        to right,
+        #833ab4,#fd1d1d,#fcb045
+      );
 
     --shadow-normal: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
       0 1px 2px 0 rgba(0, 0, 0, 0.06);

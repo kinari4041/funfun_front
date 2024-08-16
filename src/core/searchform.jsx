@@ -28,7 +28,7 @@ const SearchForm = () => {
     return (
         <div className="search-form-wrap">
             <form className="search-form" onSubmit={doSearch} /*ref={searchFormRef}*/>
-                <label htmlFor="searchItem">프로젝트 검색</label>                    
+                <label htmlFor="searchItem" className="sr-only">프로젝트 검색</label>                    
                 <input 
                         type="text" 
                         id="searchItem"
@@ -36,7 +36,6 @@ const SearchForm = () => {
                         onChange={(e) => setQuery(e.target.value)}
                         placeholder="프로젝트 검색…" 
                         className="search-field" 
-                        // ref={searchRef}
                     />
                 <button type="submit" className="search-submit">검색</button>
             </form>

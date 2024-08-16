@@ -109,9 +109,9 @@ class Popular extends Component {
             prevSlide();
         });
     
-        window.addEventListener("resize", () => {
-            slideWidth = slide.clientWidth;
-        });
+        // window.addEventListener("resize", () => {
+        //     slideWidth = slide.clientWidth;
+        // });
     
         // 드래그 이벤트를 위한 변수
         let pointStart = 0;
@@ -136,7 +136,7 @@ class Popular extends Component {
         // 모바일 터치
         slide.addEventListener("touchstart", (e) => {
             pointStart = e.touches[0].pageX;
-        });
+        }, {passive: true});
     
         slide.addEventListener("touchend", (e) => {
             pointEnd = e.changedTouches[0].pageX;

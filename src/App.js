@@ -14,23 +14,24 @@ import Recent from "page/recent";
 import Search from "page/search";
 
 const App = () => {
-  const location = useLocation();
-  const isHideHeader = location.pathname === '/register';
-  const isHideFooter = location.pathname === '/register';
-
-  return (
-    <>
-      {!isHideHeader && <Header />}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/popular" element={<Popular />} />
-        <Route path="/recent" element={<Recent />} />
-        <Route path="/search" element={<Search />} />
-      </Routes>
-      {!isHideFooter && <Footer />}
-    </>
-  );
+    // 특정 경로에서는 헤더랑 푸터 숨기기
+    const location = useLocation();
+    const isHideHeader = location.pathname === '/register';
+    const isHideFooter = location.pathname === '/register';
+    
+    return (
+      <>
+          {!isHideHeader && <Header />}
+          <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/popular" element={<Popular />} />
+              <Route path="/recent" element={<Recent />} />
+              <Route path="/search" element={<Search />} />
+          </Routes>
+          {!isHideFooter && <Footer />}
+      </>
+    );
 }
 
 export default App;

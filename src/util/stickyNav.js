@@ -1,9 +1,13 @@
 
 export default function stickyNav() {
+    const cateNav = document.getElementById('cate-nav');
     window.addEventListener('scroll', () => {
-        const topNav = document.querySelector('#cate-nav');
-        const scrollY = window.pageYOffset;
-        (scrollY > 155) ? topNav.classList.add('active') : topNav.classList.remove('active')
-    })
+        const scrollY = window.scrollY;
+        if (scrollY > 140) {
+            cateNav.classList.add('active');
+        } else {
+            cateNav.classList.remove('active');
+        }
+    });
 }
 
