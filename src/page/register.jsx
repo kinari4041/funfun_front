@@ -26,11 +26,17 @@ const Register = () => {
 
   const pageHandler = (e) => {
     e.preventDefault();
-    setRegisterForm.error = '';
+    setRegisterForm(prevState => ({ ...prevState, error: ''}));
     if (nowPage === 1) {
-        if (!registerForm.email || !registerForm.password || registerForm.password !== registerForm.confirmPassword) {
-            setRegisterForm.error = 'test';
-            return;
+      if (!registerForm.email) {
+        setRegisterForm(prevState => ({ ...prevState, error: '아이디가 입력되지 않았습니다.'}));
+        return;
+      } else if (!registerForm.password) {
+        setRegisterForm(prevState => ({ ...prevState, error: '비밀번호가 입력되지 않았습니다.'}));
+        return;
+      } else if (registerForm.password !== registerForm.confirmPassword) {
+        setRegisterForm(prevState => ({ ...prevState, error: '비밀번호가 일치하지 않습니다.'}));
+        return;
       }
     } else if (nowPage === 2) {
       if (!registerForm.name || !registerForm.nickname || !registerForm.birthdate || !registerForm.phone) {

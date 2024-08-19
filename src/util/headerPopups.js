@@ -2,7 +2,7 @@
 export default function headerPopups() {
     
     const searchEl = document.querySelector('.top-nav-menu-search .search-form-wrap');
-    const loginEl = document.querySelector('.top-nav-menu-login .login-form-wrap');
+    const loginEl = document.querySelector('.top-nav-menu-login .login-background');
     
     // PC의 경우 로그인,검색 팝업을 ESC키로 닫을 수 있게 하기
     document.addEventListener('keydown', (e) => {

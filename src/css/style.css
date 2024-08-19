@@ -114,6 +114,15 @@ header {
                 최상단 메뉴바: 로그인/가입
 ────────────────────────────────────────────────────────── */
 
+.flip-area {
+    background: white;
+    width: 450px;
+    height: 200px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
 .login-button {
     margin-right: 10px;
     padding: 8px 10px 8px 10px;
@@ -138,40 +147,35 @@ header {
     cursor: pointer;
 }
 
-.top-nav-menu-login .login-form-wrap {
+/* 로그인 팝업 기본영역, 투명한 검정 배경 */
+.login-background {
     opacity: 0;
-    position: relative;
     visibility: hidden;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 9999;
-    -webkit-transition: opacity 0.5s ease;
-    -o-transition: opacity 0.5s ease;
-    transition: opacity 0.5s ease;
-}
-
-.top-nav-menu-login .login-form-wrap.login-activate {
-    opacity: 1;
-    visibility: visible;
-}
-
-.top-nav-menu-login .login-form-wrap {
     position: fixed;
     top: 50%;
     left: 50%;
     width: 100%;
+    height: 100%;
     margin-left: -50%;
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     -o-transform: translateY(-50%);
     transform: translateY(-50%);
+    -webkit-transition: opacity 0.5s ease;
+    -o-transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.4);
     text-align: center;
 }
 
-.top-nav-menu-login .login-form-wrap .login-form {
+/* 활성화시 표시 */
+.login-background.login-activate {
+    opacity: 1;
+    visibility: visible;
+}
+
+.login-form {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -180,16 +184,52 @@ header {
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     width: 450px;
+    height: 800px;
     border: none;
     display: block;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    perspective: 800px;
+}
+
+.login-form-wrapper {
     border-radius: 20px;
-    overflow: hidden;
+    width: 100%;
+    height: 550px;
+    position: absolute;
+    top: 100px;
+    left: 0;
     background: #fff;
     box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    transition: transform 600ms ease-out;
+}
+
+.front-login, .back-register {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.back-register {
+    transform: rotateY(180deg);
+}
+
+input[type="checkbox"]:checked + .login-form .login-form-wrapper {
+    transform: rotateY(180deg);
 }
 
 /* ─────────────────────────────────────────────────────────
-                        로그인 화면
+                    로그인 / 회원가입
 ────────────────────────────────────────────────────────── */
 
 .login-form .login-form-title {
@@ -419,14 +459,17 @@ header {
 }
 
 .register-form-wrapper {
-    width: 100%;
+    width: 80%;
+    max-width: 540px;
     height: 100vh;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     opacity: 0;
     transition: opacity 1s ease-in-out;
+    margin: 0 auto;
   }
   
   .register-form-wrapper.fade-in {
@@ -438,10 +481,11 @@ header {
     transition: transform 0.5s ease-in-out;
     justify-content: center;
     align-items: center;
+    width: 300%;
   }
   
   .register-page {
-    width: 450px;
+    width: 100%;
     padding: 20px;
     box-sizing: border-box;
     background-color: #fff;
