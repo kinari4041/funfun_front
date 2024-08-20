@@ -32,13 +32,12 @@ const Header = () => {
                             <Link to="/popular"><li className={isPage("/popular") ? 'active' : ''}>인기</li></Link>
                             <Link to="/recent"><li className={isPage("/recent") ? 'active' : ''}>최신</li></Link>
                             <Link to="#"><li className={isPage("/open") ? 'active' : ''}>오픈예정</li></Link>
-                            <Link to="#"><li className={isPage("/store") ? 'active' : ''}>스토어</li></Link>
+                            <Link to="#"><li className={isPage("/story") ? 'active' : ''}>스토리</li></Link>
                         </ul>
                     </div> 
                 </div> 
                 <div className="top-nav-btn-wrap">
                      <div className="top-nav-menu-login">
-                        <div className="login-button"> 로그인 / 회원가입</div>
                         <LoginForm />
                     </div>
                 <Link to="#" className="top-nav-btn-project">프로젝트 만들기</Link>

@@ -111,475 +111,6 @@ header {
 
 
 /* ─────────────────────────────────────────────────────────
-                최상단 메뉴바: 로그인/가입
-────────────────────────────────────────────────────────── */
-
-.flip-area {
-    background: white;
-    width: 450px;
-    height: 200px;
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-.login-button {
-    margin-right: 10px;
-    padding: 8px 10px 8px 10px;
-    width: fit-content;
-    height: fit-content;
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-    color: var(--color-white);
-    background-color: var(--color-primary);
-    /* border: 1px solid var(--color-dgray); */
-    border-radius: 10px;
-    font-family: "Noto Sans KR", sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    transition: background-color .3s ease-in;
-}
-
-.login-button:hover {
-    background-color: var(--color-primary-dark);
-    cursor: pointer;
-}
-
-/* 로그인 팝업 기본영역, 투명한 검정 배경 */
-.login-background {
-    opacity: 0;
-    visibility: hidden;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    margin-left: -50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%);
-    -webkit-transition: opacity 0.5s ease;
-    -o-transition: opacity 0.5s ease;
-    transition: opacity 0.5s ease;
-    z-index: 9999;
-    background: rgba(0, 0, 0, 0.4);
-    text-align: center;
-}
-
-/* 활성화시 표시 */
-.login-background.login-activate {
-    opacity: 1;
-    visibility: visible;
-}
-
-.login-form {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    width: 450px;
-    height: 800px;
-    border: none;
-    display: block;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    perspective: 800px;
-}
-
-.login-form-wrapper {
-    border-radius: 20px;
-    width: 100%;
-    height: 550px;
-    position: absolute;
-    top: 100px;
-    left: 0;
-    background: #fff;
-    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    transition: transform 600ms ease-out;
-}
-
-.front-login, .back-register {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -o-backface-visibility: hidden;
-    backface-visibility: hidden;
-}
-
-.back-register {
-    transform: rotateY(180deg);
-}
-
-input[type="checkbox"]:checked + .login-form .login-form-wrapper {
-    transform: rotateY(180deg);
-}
-
-/* ─────────────────────────────────────────────────────────
-                    로그인 / 회원가입
-────────────────────────────────────────────────────────── */
-
-.login-form .login-form-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 70px;
-    width: 100%;
-    font-family: "Noto Sans Kr", sans-serif;
-    font-size: 25px;
-    font-weight: bold;
-    color: var(--color-black);
-    border-bottom: 1px solid var(--color-grayish);
-}
-
-.login-form-close {
-    position: absolute;
-    color: var(--color-black);
-    right: 20px;
-    top: 17px;
-    font-size: 35px;
-    line-height: 0;
-    cursor: pointer;
-}
-
-.login-form input,
-.register-form input {
-    border: 2px solid var(--color-primary);
-    height: 60px;
-    width: 80%;
-    border-radius: 50px;
-    padding-left: 30px;
-    font-size: 18px;
-    transition: border 0.2s ease;
-}
-
-.login-form input:focus,
-.register-form input:focus {
-    border: 2px solid var(--color-primary-dark);
-}
-
-.login-form input.no-error,
-.register-form input.no-error {
-    margin-bottom: 20px;
-}
-
-.login-btn-area {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 80%;
-}
-
-.login-form .forgot {
-    text-decoration: underline;
-    font-weight: bold;
-    font-size: 16px;
-    transition: color 0.2s ease;
-    color: var(--color-black)
-}
-
-.login-form .forgot:hover {
-    cursor: pointer;
-    color: var(--color-primary-dark)
-}
-
-.login-form fieldset {
-    padding-top: 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    height: 100%;
-}
-
-.login-message {
-    color: var(--color-red);
-    /* margin-bottom: 10px; */
-}
-
-.fa-google-plus {
-    font-size: 30px;
-    color: var(--color-red);
-}
-
-.fa-facebook {
-    margin-left: 1px;
-    font-size: 30px;
-    color: var(--color-blue);
-}
-
-.fa-instagram {
-    width: 30px;
-    height: 30px;
-    border-radius: 30px;
-    margin-top: 3px;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 22px;
-    color: white;
-    background: linear-gradient(to right,#833ab4,#fd1d1d,#fcb045);
-}
-
-.fa-naver {
-    width: 30px;
-    font-size: 30px;
-    color: green;
-    font-family: Arial; /* your font family here! */
-    font-weight: bold;
-    content: 'N';
-}
-
-.login-stripe {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin: 10px 0;
-    width: 100%;
-    padding: 0 30px;
-}
-
-.stripe-line {
-    flex: auto;
-    flex-basis: auto;
-    border: none;
-    outline: none;
-    height: 1px;
-    background: var(--color-grayish);
-}
-
-.stripe-text {
-    font-weight: bold;
-    line-height: inherit;
-    font-size: 18px;
-    color: var(--color-black);
-    margin: 0 15px;
-}
-
-.login-method {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* flex-direction: column; */
-    gap: 20px;
-}
-
-/* .login-method-control {
-    width: 80%;
-} */
-
-.login-method-action {
-    font-size: 18px;
-    font-weight: bold;
-    line-height: inherit;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-    padding: 12px;
-    border-radius: 50px;
-    background: var(--color-white);
-    border: 2px solid var(--color-primary);
-    transition: box-shadow 0.2s ease;
-}
-
-.login-method-action:hover {
-    box-shadow: var(--shadow-medium);
-}
-
-.login-form button.login {
-    display: block;
-    padding: 18px 45px;
-    color: #fff;
-    background-color: var(--color-primary);
-    box-shadow: var(--shadow-medium);
-    border: 0;
-    border-radius: 30px;
-    font-weight: bold;
-    font-size: 18px;
-    transition: background-color 0.2s ease;
-}
-
-.login-form button.login:hover {
-    background-color: var(--color-primary-dark);
-}
-
-.login-form .login-form-bottom {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    padding: 20px 0;
-    height: max-content;
-    width: 100%;
-    font-size: 20px;
-    font-weight: bold;
-    border-top: 1px solid var(--color-grayish);
-}
-
-
-/* ─────────────────────────────────────────────────────────
-                        회원가입 페이지
-────────────────────────────────────────────────────────── */
-
-.not-member {
-    font-size: 16px;
-}
-
-.register {
-    display: block;
-    padding: 10px 40px;
-    background-color: var(--color-primary);
-    border: 0;
-    border-radius: 30px;
-    font-weight: bold;
-    font-size: 18px;
-    color: white !important;
-    transition: background-color 0.2s ease;
-}
-
-.register:hover {
-    background-color: var(--color-primary-dark);
-    cursor: pointer;
-}
-
-.register-form-wrapper {
-    width: 80%;
-    max-width: 540px;
-    height: 100vh;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-    margin: 0 auto;
-  }
-  
-  .register-form-wrapper.fade-in {
-    opacity: 1;
-  }
-  
-  .register-form {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    justify-content: center;
-    align-items: center;
-    width: 300%;
-  }
-  
-  .register-page {
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .register-wrap {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    margin: 20px 0;
-  }
-  
-  .logo {
-    font-size: 28px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  h1 {
-    font-size: 22px;
-    color: #444;
-  }
-  
-  .register-form hr {
-    margin: 20px 0;
-    border-top: 1px solid #e0e0e0;
-  }
-  
-  .sns-signup {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-  }
-  
-  .sns-button {
-    border: none;
-    background: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: background 0.3s;
-    font-size: 24px;
-  }
-  
-  .sns-button:hover {
-    background: #d0d0d0;
-  }
-
-  .next-page,
-  .prev-page {
-    padding: 20px 20px;
-    font-size: 16px;
-    border: none;
-    background: none;
-    background: #007bff;
-    color: #ffffff;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background 0.3s;
-    width: 100%;
-  }
-
-  .register-button-wrap {
-    width: 80%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 50px;
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 15px;
-    text-align: left;
-    color: #333;
-  }
-  
-  input[type="checkbox"] {
-    margin-right: 8px;
-  }
-  
-
-/* ─────────────────────────────────────────────────────────
                 최상단 메뉴바: 새 프로젝트 버튼
 ────────────────────────────────────────────────────────── */
 
@@ -858,6 +389,419 @@ input[type="checkbox"]:checked + .login-form .login-form-wrapper {
   cursor: pointer;
 }
 
+/* ─────────────────────────────────────────────────────────
+                    로그인 / 회원가입
+────────────────────────────────────────────────────────── */
+
+/* 헤더 로그인 버튼 */
+.login-button {
+    margin-right: 10px;
+    padding: 8px 10px 8px 10px;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-white);
+    background-color: var(--color-primary);
+    /* border: 1px solid var(--color-dgray); */
+    border-radius: 10px;
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    transition: background-color .3s ease-in;
+}
+
+.login-button:hover {
+    background-color: var(--color-primary-dark);
+    cursor: pointer;
+}
+
+/* 로그인 팝업 기본영역, 투명한 검정 배경 */
+.login-background {
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    margin-left: -50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+    -webkit-transition: opacity 0.5s ease;
+    -o-transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.4);
+    text-align: center;
+}
+
+/* 활성화시 표시 */
+.login-background.login-activate {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 로그인 폼 */
+.login-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    
+    width: 450px;
+    height: 65%;
+    border: none;
+    display: block;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+/* 실질적으로 회전하는 div */
+.login-form-wrapper {
+    border-radius: 20px;
+    width: 100%;
+    height: 600px;
+    position: absolute;
+    left: 0;
+    background: #fff;
+    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    transition: all 0.6s ease-out;
+}
+
+.login-form-wrapper.flip {
+    transform: rotateY(180deg);
+    height: 650px;
+}
+
+/* 앞쪽은 로그인 폼, 뒤쪽은 가입 폼 */
+.front-login, .back-register {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    left: 0;
+    top: 0;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* 뒤집어지기 때문에 회원가입 폼은 다시 뒤집어서
+원래대로 보이게 만들기 */
+.back-register {
+    transform: rotateY(180deg);
+}
+
+/* 로그인 폼 상단부분 */
+.login-form-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    width: 100%;
+    font-family: "Noto Sans Kr", sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--color-black);
+    border-bottom: 1px solid var(--color-grayish);
+}
+
+/* 로그인 폼 내용부분 */
+.login-form-middle {
+    display:flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+/* 로그인 폼 하단부분 */
+.login-form-bottom {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    border-top: 1px solid var(--color-grayish);
+}
+
+.login-form-close {
+    position: absolute;
+    color: var(--color-black);
+    right: 20px;
+    top: 14px;
+    font-size: 35px;
+    line-height: 0;
+    cursor: pointer;
+}
+
+.login-form fieldset {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--color-primary);
+    padding: 15px 10px;
+    width: 80%;
+    border-radius: 10px;
+    transition: border 0.2s ease;
+    margin-top: 10px;
+}
+
+.login-form fieldset:first-child {
+    margin: 0;
+}
+
+.login-input {
+    width: 100%;
+    font-size: 18px;
+}
+
+.login-error-message {
+    color: var(--color-red);
+    text-align: left;
+    width: 80%;
+    margin-top: 2px;
+    padding: 0;
+}
+
+.login-form button.login {
+    display: block;
+    padding: 15px 40px;
+    color: #fff;
+    background-color: var(--color-primary);
+    box-shadow: var(--shadow-medium);
+    border: 0;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    transition: background-color 0.2s ease;
+}
+
+.login-form button.login:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.login-form-middle .login-btn-area {
+    margin-top: 20px;
+}
+
+.login-btn-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+}
+
+.login-form .forgot {
+    text-decoration: underline;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.2s ease;
+    color: var(--color-black)
+}
+
+.login-form .forgot:hover {
+    cursor: pointer;
+    color: var(--color-primary-dark)
+}
+
+.login-form form {
+    padding-top: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.fa-google-plus {
+    font-size: 30px;
+    color: var(--color-red);
+}
+
+.fa-facebook {
+    margin-left: 1px;
+    font-size: 30px;
+    color: var(--color-blue);
+}
+
+.fa-instagram {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    margin-top: 3px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    color: white;
+    background: linear-gradient(to right,#833ab4,#fd1d1d,#fcb045);
+}
+
+.fa-naver {
+    width: 30px;
+    font-size: 30px;
+    color: green;
+    font-family: Arial; /* your font family here! */
+    font-weight: bold;
+    content: 'N';
+}
+
+.login-stripe {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    width: 100%;
+    padding: 0 30px;
+}
+
+.stripe-line {
+    flex: auto;
+    flex-basis: auto;
+    border: none;
+    outline: none;
+    height: 1px;
+    background: var(--color-grayish);
+}
+
+.stripe-text {
+    font-weight: bold;
+    line-height: inherit;
+    font-size: 18px;
+    color: var(--color-black);
+    margin: 0 15px;
+}
+
+.login-method-wrap {
+    width: 100%;
+}
+
+.login-method {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: column; */
+    gap: 20px;
+}
+
+/* .login-method-control {
+    width: 80%;
+} */
+
+.login-method-action {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    padding: 12px;
+    border-radius: 50px;
+    background: var(--color-white);
+    border: 2px solid var(--color-primary);
+    transition: box-shadow 0.2s ease;
+}
+
+.login-method-action:hover {
+    box-shadow: var(--shadow-medium);
+}
+
+/* 회원가입 부분 */
+
+.register-form-wrap {
+    max-width: 540px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.register-form-wrapper {
+    width: 100%;
+    max-width: 550px;
+    position: relative;
+} 
+
+.register-form {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    will-change: transform;
+    width: 300%;
+}
+
+.register-page {
+    width: 33.33%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.next-page,
+.prev-page {
+    width: 100%;
+}
+
+.register-button-wrap {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    margin: 15px 0;
+}
+
+.register-button-wrap.final-step {
+    gap: 20px;
+}
+
+.register-button-wrap.final-step button.prev-page {
+    width: 50%;
+}
+
+.accept-box {
+    border: none !important;
+    border-bottom: 2px solid var(--color-primary) !important;
+    border-radius: 0 !important;
+}
+
+.accept-box label {
+    display: flex;
+    align-items: left;
+    width: 100%;
+    height: 100%;
+    gap: 15px;
+}
+
+.accept-box input {
+    width: 20px;
+    color: var(--color-primary)
+}
+  
 
 /* ─────────────────────────────────────────────────────────
                     메인 영역 스타일 설정
