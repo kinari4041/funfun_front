@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Naver from "img/ico_naver.png";
 import { call } from "util/apiService";
-import { useLogin } from "../util/LoginProvider";
+import { useLogin } from "util/LoginProvider";
+import { useNavigate } from "react-router-dom";
 
 // 비밀번호: 8글자 이상, 영문, 숫자 사용
 function strongPassword(pw) {return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(pw);}
@@ -13,12 +14,15 @@ function isRightBirth(birth) { return /^\d{8}$/.test(birth); }
 
 const Login = () => {
 
-    const {setIsLoggedIn, setUserId} = useLogin();
-    const {isLoggedin} = useLogin();
+    const navigate = useNavigate();
+
+    const { setIsLoggedIn, setUsrEmail, 
+            setUsrNickName, isLoggedIn, 
+            usrNickName } = useLogin();
 
     // form 부분 초기 여백 설정을 위한 dom 접근객체 생성
     const formRef = useRef();
-    const domainRef = useRef();
+    // const domainRef = useRef();
 
     // 로그인폼 <-> 회원가입 화면전환 useState
     const [isLogin, setIsLogin] = useState(true);
@@ -49,10 +53,7 @@ const Login = () => {
     });
 
     // 로그인, 회원가입의 에러메시지 출력하는 useState
-    const [loginErrors, setLoginErrors] = useState({
-        email: '',
-        password: ''
-    })
+    const [loginErrors, setLoginErrors] = useState({ account: '' })
 
     const [registerErrors, setRegisterErrors] = useState({
         email: '',
@@ -80,14 +81,13 @@ const Login = () => {
         let errors = {};
         if (field === 'email' || !field) {
             if(!loginForm.email) {
-                errors.email = '아이디를 입력해주세요.';
+                errors.account = '아이디를 입력해주세요.';
             } else if (!isEmail(loginForm.email)) {
-                errors.email = '이메일 형식이 올바르지 않습니다.';
+                errors.account = '이메일 형식이 올바르지 않습니다.';
             }
-        }
-        if (field === 'password' || !field) {
+        } else if (field === 'password' || !field) {
             if(!loginForm.password) {
-                errors.password = '비밀번호를 입력하세요.';
+                errors.account = '비밀번호를 입력하세요.';
             }
         }
         return errors;
@@ -131,14 +131,9 @@ const Login = () => {
                 errors.phone = '전화번호를 입력하세요';
             }
         }
-        if (field === 'termsAccepted' || !field) {
-            if (!registerForm.termsAccepted) {
-                errors.termsAccepted = '약관에 동의해주세요';
-            }
-        }
-        if (field === 'privacyAccepted' || !field) {
-            if (!registerForm.privacyAccepted) {
-                errors.privacyAccepted = '약관에 동의해주세요';
+        if (field === 'termsAccepted' || field === 'privacyAccepted' || !field) {
+            if (!registerForm.termsAccepted || !registerForm.privacyAccepted) {
+                errors.termsAccepted = '약관에 모두 동의해주세요';
             }
         }
         return errors;
@@ -166,27 +161,27 @@ const Login = () => {
                 const data = new FormData(e.target);
                 const usrEmail = data.get("email");
                 const usrPassword = data.get("password");
-            
                 let userDTO = { usrEmail: usrEmail, usrPassword: usrPassword };
                 return call("/user/login", "POST", userDTO).then((response) => {
                     if (response.result === "OK") {
+                        
                       //로그인 성공시
                       //로그인 관련 변수인 isLoggedIn 변수 값을 true로 변경해줌
                       setIsLoggedIn(true);
                       //로그인 후 응답내용 중에 uIdx, userId를 사용할 수 있도록
                       //컨텍스트 객체에 값을 할당함 -- 기존 서버의 로그인 처리 메소드에서
                       //uIdx, userId를 응답내용에 포함시키도록 변경해줌
-                      setUserId(response.userId);
+                      setUsrEmail(response.usrEmail);
+                      setUsrNickName(response.usrNickName);
                 
                       //컨텍스트 객체는 사용자의 요청과 함께 지속되므로 
                       //새로고침이 이루어지면 삭제되고 새로운 컨텍스트 객체가 생성됨
                       //새로고침 없이 원하는 페이지로 이동함: useNavigate()훅
-                      // navigate("/");
-                      alert("로그인 성공");
+                      
                       close();
+                      navigate("/");
                     } else {
-                      setLoginErrors({password: "아이디 혹은 비밀번호가 틀립니다."})
-                      // window.location.href = "/";
+                      setLoginErrors({password: "아이디 혹은 비밀번호가 틀립니다."});
                     }
                   });
             } else {
@@ -295,6 +290,7 @@ const Login = () => {
 
     // PC의 경우 로그인,검색 팝업을 ESC키로 닫을 수 있게 하기
     useEffect(() => {
+        // checkLogin();
         const escHandler = (e) => {
             if (e.code === 'Escape') {
                 e.preventDefault();            
@@ -305,7 +301,6 @@ const Login = () => {
         return () => {
             document.removeEventListener('keydown', escHandler)
         };
-
     }, [close]);
 
     useEffect(() => {
@@ -329,10 +324,15 @@ const Login = () => {
         ));
     };
 
+    const logOut = () => {
+        sessionStorage.clear();
+        window.location.href = '/';
+    }
+
     // HTML
     return (
         <>  
-            {(!isLoggedin) ? <div className="login-button" onClick={toggleActive}> 로그인 / 회원가입</div> : ""}
+            {(!isLoggedIn) ? <div className="login-button" onClick={toggleActive}> 로그인 / 회원가입</div> : <div className="logged-in"><span>{usrNickName} 님</span><div className="login-button" onClick={logOut}> 로그아웃</div></div>}
             <div className={`login-background ${isActivate ? 'login-activate' : ''}`}>
                 <div className="login-form">
                     <div className={`login-form-wrapper ${!isLogin ? 'flip' : ''}`}>
@@ -359,7 +359,6 @@ const Login = () => {
                                                 ref={formRef}
                                             />
                                         </fieldset>
-                                        {loginErrors.email && <div className="login-error-message">{loginErrors.email}</div>}
                                         <label htmlFor="loginPW" className="sr-only">비밀번호</label>
                                         <fieldset>
                                             <input 
@@ -375,7 +374,7 @@ const Login = () => {
                                                 ref={formRef}
                                             />
                                         </fieldset>
-                                        {loginErrors.password && <div className="login-error-message">{loginErrors.password}</div>}
+                                        {loginErrors.account && <div className="login-error-message">{loginErrors.account}</div>}
                                         <div className="login-btn-area">
                                             <p className="forgot">아이디 / 비밀번호 찾기</p>
                                             <button type="submit" className="login"> 로그인 </button>
@@ -472,7 +471,6 @@ const Login = () => {
                                                         </select>
                                                     </fieldset>
                                                     </div>
-                                                    {registerErrors.email && <div className="login-error-message">{registerErrors.email}</div>}
                                                     <fieldset>
                                                         <input
                                                             className="login-input"
@@ -487,7 +485,6 @@ const Login = () => {
                                                             ref={formRef}
                                                         />
                                                     </fieldset>
-                                                    {registerErrors.password && <div className="login-error-message">{registerErrors.password}</div>}
                                                     <fieldset>
                                                         <input
                                                             className="login-input"
@@ -502,6 +499,8 @@ const Login = () => {
                                                             ref={formRef}
                                                         />
                                                     </fieldset>
+                                                    {registerErrors.email && <div className="login-error-message">{registerErrors.email}</div>}
+                                                    {registerErrors.password && <div className="login-error-message">{registerErrors.password}</div>}
                                                     {registerErrors.confirmPassword && <div className="login-error-message">{registerErrors.confirmPassword}</div>}
                                                 </form>
                                                 <div className="register-button-wrap">
@@ -523,7 +522,6 @@ const Login = () => {
                                                         ref={formRef}
                                                     />
                                                 </fieldset>
-                                                {registerErrors.name && <div className="login-error-message">{registerErrors.name}</div>}
                                                 <fieldset>
                                                     <input
                                                         className="login-input"
@@ -538,7 +536,6 @@ const Login = () => {
                                                         ref={formRef}
                                                     />
                                                 </fieldset>
-                                                {registerErrors.birthdate && <div className="login-error-message">{registerErrors.birthdate}</div>}
                                                 <fieldset>
                                                     <input
                                                         className="login-input"
@@ -552,6 +549,8 @@ const Login = () => {
                                                         ref={formRef}
                                                     />
                                                 </fieldset>
+                                                {registerErrors.name && <div className="login-error-message">{registerErrors.name}</div>}
+                                                {registerErrors.birthdate && <div className="login-error-message">{registerErrors.birthdate}</div>}
                                                 {registerErrors.phone && <div className="login-error-message">{registerErrors.phone}</div>}
                                                 <div className="register-button-wrap">
                                                     <button onClick={handleBackStep} className="login prev-page">이전</button>
@@ -573,7 +572,6 @@ const Login = () => {
                                                         서비스 이용 약관 동의
                                                     </label>
                                                 </fieldset>
-                                                {registerErrors.termsAccepted && <div className="login-error-message">{registerErrors.termsAccepted}</div>}
                                                 <fieldset className="accept-box">
                                                     <label>
                                                         <input
@@ -586,7 +584,7 @@ const Login = () => {
                                                         개인정보 처리방침 동의
                                                     </label>
                                                 </fieldset>
-                                                {registerErrors.privacyAccepted && <div className="login-error-message">{registerErrors.privacyAccepted}</div>}
+                                                {registerErrors.termsAccepted && <div className="login-error-message">{registerErrors.termsAccepted}</div>}
                                                 <div className="register-button-wrap final-step">
                                                     <button onClick={handleBackStep} className="login prev-page">이전</button>
                                                     <button onClick={handleNextStep} className="login next-page">가입하기</button>

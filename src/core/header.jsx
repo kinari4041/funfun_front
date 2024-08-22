@@ -3,18 +3,19 @@ import { Link, useLocation } from 'react-router-dom';
 
 import subCategory from "util/subCategory";
 import stickyNav from "util/stickyNav";
-import headerPopups from "util/headerPopups";
 import Search from "./Search";
 import Login from "./Login";
+import { useLogin } from "util/LoginProvider";
 import cateData from "data/catedata.json"
 
 const Header = () => {
     const location = useLocation();
     const isPage = (page) => location.pathname === page;
 
+    const { isLoggedIn } = useLogin();
+
     useEffect(() => {
         stickyNav();
-        headerPopups();
         subCategory(cateData);
     }, [])
 
@@ -39,8 +40,7 @@ const Header = () => {
                 <div className="top-nav-btn-wrap">
                      <div className="top-nav-menu-login">
                         <Login />
-                    </div>
-                <Link to="/pjtregist" className="top-nav-btn-project">프로젝트 만들기</Link>
+                    </div>{(isLoggedIn) ? <Link to="/pjtregist" className="top-nav-btn-project">프로젝트 만들기</Link> : ''}
                 </div> 
             </div>
             <div id="cate-nav">
@@ -59,10 +59,6 @@ const Header = () => {
                         </div>
                     </div>
                      <div className="top-nav-menu-search">
-                        <div className="search-icon">
-                           <i className="fa-solid fa-magnifying-glass" />
-                           <span></span>프로젝트 검색
-                        </div>
                         <Search />
                     </div>
                 </div>

@@ -32,7 +32,7 @@ const TrendList = (props) => {
 
     return (
         <div className="trend-project-wrap" ref={scrollRef}>
-            <p className="trend-project-title">{parse(item)}</p>
+            <div className="trend-project-title">{parse(item)}</div>
             <span className="trend-project-btn right"><i className="fa-solid fa-angle-right"></i></span>
             <span className="trend-project-btn left"><i className="fa-solid fa-angle-left"></i></span>
             <div className="trend-project-block" data-section="trend-like">

@@ -37,7 +37,7 @@ const Popular = () => {
                 <p>인기 프로젝트 목록 - 평점 순</p>
             </div>
             <div className="list-page" data-section="rate" ref={rateRef1}></div>
-            <TrendList item={`<span className="hashtag">이런건</span> 어떠세요?<Link to="#"><div className="ad-icon">AD</div></Link>`} />
+            <TrendList item={`<><span className="hashtag">이런건</span> 어떠세요?<Link to="#"><div className="ad-icon">AD</div></Link></>`} />
             <div className="list-page" data-section="rate" ref={rateRef2}></div>
         </section>
     </>

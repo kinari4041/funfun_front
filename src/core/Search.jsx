@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 
 const Search = () => {
@@ -6,6 +6,7 @@ const Search = () => {
     const navigate = useNavigate()
     // const searchRef = useRef(null);
     // const searchFormRef = useRef(null);
+    const [isActivate, setIsActivate] = useState(false);
 
     const doSearch = (e) => {
         e.preventDefault();
@@ -25,24 +26,54 @@ const Search = () => {
         }
     };
 
+    // 검색 화면을 띄우고 없애는 메서드 정의
+    const toggleActive = () => {
+        setIsActivate(!isActivate);
+    };
+
+    // 창 닫을시 기존의 요소들 초기화하는 메서드
+    const close = useCallback(() => {
+        setIsActivate(false);
+    }, []);
+
+    // PC의 경우 로그인,검색 팝업을 ESC키로 닫을 수 있게 하기
+    useEffect(() => {
+        const escHandler = (e) => {
+            if (e.code === 'Escape') {
+                e.preventDefault();            
+                close();
+            }
+        };
+        document.addEventListener('keydown', escHandler)
+        return () => {
+            document.removeEventListener('keydown', escHandler)
+        };
+    }, [close]);
+
     return (
-        <div className="search-form-wrap">
-            <form className="search-form" onSubmit={doSearch} /*ref={searchFormRef}*/>
-                <label htmlFor="searchItem" className="sr-only">프로젝트 검색</label>                    
-                <input 
-                        type="text" 
-                        id="searchItem"
-                        value={query} 
-                        onChange={(e) => setQuery(e.target.value)}
-                        placeholder="프로젝트 검색…" 
-                        className="search-field" 
-                    />
-                <button type="submit" className="search-submit">검색</button>
-            </form>
-            <div className="search-form-close" data-focus="top-search-icon">
-                <i className="fa-solid fa-xmark" />
+        <>
+            <div className="search-icon" onClick={toggleActive}>
+                <i className="fa-solid fa-magnifying-glass" />
+                <span></span>프로젝트 검색
             </div>
-        </div>
+            <div className={`search-form-wrap ${isActivate ? 'search-activate' : ''}`}>
+                <form className="search-form" onSubmit={doSearch} /*ref={searchFormRef}*/>
+                    <label htmlFor="searchItem" className="sr-only">프로젝트 검색</label>                    
+                    <input 
+                            type="text" 
+                            id="searchItem"
+                            value={query} 
+                            onChange={(e) => setQuery(e.target.value)}
+                            placeholder="프로젝트 검색…" 
+                            className="search-field" 
+                        />
+                    <button type="submit" className="search-submit">검색</button>
+                </form>
+                <div className="search-form-close" onClick={toggleActive}>
+                    <i className="fa-solid fa-xmark" />
+                </div>
+            </div>
+        </>
     );
 };
 

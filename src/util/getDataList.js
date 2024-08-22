@@ -48,12 +48,12 @@ export function renderRecentList(data, wrap, start ,end) {
  * @param {number} start
  * @param {number} end
 */
-export function renderPopularList(wrap, data, start, end) {
+export function renderPopularList(data, wrap, start, end) {
     const getPopularList = (data, start, end) => {
         const PopularList = [...data].sort((a, b) => b.like - a.like)
         return PopularList.slice(start, end);
     };
-    render(wrap, getPopularList(wrap, data, start, end))
+    render(wrap, getPopularList(data, start, end))
 }
 
 

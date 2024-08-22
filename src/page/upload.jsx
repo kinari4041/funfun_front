@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
 
-const PjtRegist = () => {
+const Upload = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -265,4 +265,4 @@ const categoryOptions = {
   );
 };
 
-export default PjtRegist;
+export default Upload;
