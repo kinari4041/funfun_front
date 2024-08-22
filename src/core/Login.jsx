@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Naver from "img/ico_naver.png";
+import { call } from "util/apiService";
+import { useLogin } from "../util/LoginProvider";
 
 // 비밀번호: 8글자 이상, 영문, 숫자 사용
 function strongPassword(pw) {return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(pw);}
@@ -9,14 +11,21 @@ function isEmail(id) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(id); }
 // 생년월일 입력값 유효성 검사
 function isRightBirth(birth) { return /^\d{8}$/.test(birth); }
 
-const LoginForm = () => {
+const Login = () => {
+
+    const {setIsLoggedIn, setUserId} = useLogin();
+    const {isLoggedin} = useLogin();
 
     // form 부분 초기 여백 설정을 위한 dom 접근객체 생성
     const formRef = useRef();
+    const domainRef = useRef();
 
     // 로그인폼 <-> 회원가입 화면전환 useState
     const [isLogin, setIsLogin] = useState(true);
     const [isActivate, setIsActivate] = useState(false);
+
+    // 이메일 도메인 입력란 활성화/비활성화
+    const [domainDisabled, setDomainDisabled] = useState(false);
 
     // 로그인폼의 아이디, 비밀번호 값을 저장하는 useState
     const [loginForm, setLoginForm] = useState({
@@ -66,12 +75,6 @@ const LoginForm = () => {
         setIsActivate(!isActivate);
     };
     
-    const domainChange = (e) => {
-        if(e.target.value !== "type") {
-            registerForm.domain = e.target.value;
-        }
-    };
-
     // 로그인 유효성 검사 메소드
     const loginFormChecker = (field) => {
         let errors = {};
@@ -91,11 +94,11 @@ const LoginForm = () => {
     }
 
     // 회원가입 유효성 검사 메소드
-    const reigsterFormChecker = (field) => {
+    const registerFormChecker = (field) => {
         let errors = {};
         
-        if (field === 'email' || !field) {
-            if (!registerForm.email | !registerForm.domain) {
+        if (field === 'email' || field === 'domain' || !field) {
+            if (!registerForm.email || !registerForm.domain) {
                 errors.email = '이메일을 입력하세요';
             }
         }
@@ -148,7 +151,7 @@ const LoginForm = () => {
             const errors = loginFormChecker(name);
             setLoginErrors(errors);
         } else {
-            const errors = reigsterFormChecker(name);
+            const errors = registerFormChecker(name);
             setRegisterErrors(errors);
         }
     }
@@ -159,12 +162,38 @@ const LoginForm = () => {
         if(isLogin) {
             const errors = loginFormChecker();
             if (Object.keys(errors).length === 0) {
-                alert("로그인 테스트");
+                e.preventDefault();
+                const data = new FormData(e.target);
+                const usrEmail = data.get("email");
+                const usrPassword = data.get("password");
+            
+                let userDTO = { usrEmail: usrEmail, usrPassword: usrPassword };
+                return call("/user/login", "POST", userDTO).then((response) => {
+                    if (response.result === "OK") {
+                      //로그인 성공시
+                      //로그인 관련 변수인 isLoggedIn 변수 값을 true로 변경해줌
+                      setIsLoggedIn(true);
+                      //로그인 후 응답내용 중에 uIdx, userId를 사용할 수 있도록
+                      //컨텍스트 객체에 값을 할당함 -- 기존 서버의 로그인 처리 메소드에서
+                      //uIdx, userId를 응답내용에 포함시키도록 변경해줌
+                      setUserId(response.userId);
+                
+                      //컨텍스트 객체는 사용자의 요청과 함께 지속되므로 
+                      //새로고침이 이루어지면 삭제되고 새로운 컨텍스트 객체가 생성됨
+                      //새로고침 없이 원하는 페이지로 이동함: useNavigate()훅
+                      // navigate("/");
+                      alert("로그인 성공");
+                      close();
+                    } else {
+                      setLoginErrors({password: "아이디 혹은 비밀번호가 틀립니다."})
+                      // window.location.href = "/";
+                    }
+                  });
             } else {
                 setLoginErrors(errors)
             }
         } else {
-            const errors = reigsterFormChecker();
+            const errors = registerFormChecker();
             console.log(Object.keys(errors).length);
             if (Object.keys(errors).length <= 6 && step === 1) {
                 setStep(prevStep => prevStep + 1);
@@ -193,7 +222,7 @@ const LoginForm = () => {
             const errors = loginFormChecker(name);
             setLoginErrors(errors);
         } else {
-            const errors = reigsterFormChecker(name);
+            const errors = registerFormChecker(name);
             setRegisterErrors(errors);
         }
     }
@@ -213,15 +242,36 @@ const LoginForm = () => {
             setRegisterForm(prevData => {
                 const newForm = {
                     ...prevData,
-                    [name]: type === 'checkbox' ? checked : value
+                    [name]: type === 'checkbox' ? checked : value,
                 };
-                const errors = reigsterFormChecker(name);
+                const errors = registerFormChecker(name);
                 setRegisterErrors(errors);
                 return newForm;
             });
         }
     };
   
+    // 이메일 도메인 내용 변경 감지 핸들러
+    const handleDomainChange = (e) => {
+        const selectedValue = e.target.value;
+        console.log(selectedValue);
+        if(isLogin) {
+            if (selectedValue !== "type") {
+                setRegisterForm(prevData => ({
+                    ...prevData,
+                    domain: selectedValue
+                }));
+                setDomainDisabled(true);
+            } else {
+                setRegisterForm(prevData => ({
+                    ...prevData,
+                    domain: ''
+                }));
+                setDomainDisabled(false);
+            }
+        } 
+    };
+
     // 창 닫을시 기존의 요소들 초기화하는 메서드
     const close = useCallback(() => {
         setIsLogin(true);
@@ -255,12 +305,34 @@ const LoginForm = () => {
         return () => {
             document.removeEventListener('keydown', escHandler)
         };
+
     }, [close]);
+
+    useEffect(() => {
+        if (registerForm.email && registerForm.domain) {
+            setRegisterForm(prevData => ({
+                ...prevData,
+                email: `${registerForm.email}@${registerForm.domain}`
+            }));
+        }
+    }, [registerForm.domain])
+
+    const getDomainOptions = () => {
+        return [
+            'gmail.com',
+            'daum.net',
+            'naver.com',
+            'hanmail.net',
+            'kakao.com'
+        ].map((domain, index) => (
+            <option key={index} value={domain}>{domain}</option>
+        ));
+    };
 
     // HTML
     return (
-        <>
-            <div className="login-button" onClick={toggleActive}> 로그인 / 회원가입</div>
+        <>  
+            {(!isLoggedin) ? <div className="login-button" onClick={toggleActive}> 로그인 / 회원가입</div> : ""}
             <div className={`login-background ${isActivate ? 'login-activate' : ''}`}>
                 <div className="login-form">
                     <div className={`login-form-wrapper ${!isLogin ? 'flip' : ''}`}>
@@ -383,20 +455,20 @@ const LoginForm = () => {
                                                             type="text"
                                                             name="domain"
                                                             value={registerForm.domain}
-                                                            onChange={handleChange}
-                                                            onKeyUp={handleKeyUp}
+                                                            onChange={handleDomainChange}
                                                             onFocus={handleFocus}
-                                                            ref={formRef}
                                                         />
                                                     </fieldset>
                                                     <fieldset>
-                                                        <select className="login-input" id="domain-list" onChange={domainChange}>
+                                                        <select 
+                                                            className="login-input" 
+                                                            id="domain-list" 
+                                                            onChange={handleDomainChange}
+                                                            value={registerForm.domain}
+                                                            disabled={domainDisabled}
+                                                        >
                                                             <option value="type">직접 입력</option>
-                                                            <option value="naver.com">네이버</option>
-                                                            <option value="gmail.com">지메일(구글)</option>
-                                                            <option value="hanmail.net">한메일</option>
-                                                            <option value="nate.com">네이트</option>
-                                                            <option value="kakao.com">카카오</option>
+                                                            {getDomainOptions()}
                                                         </select>
                                                     </fieldset>
                                                     </div>
@@ -569,4 +641,4 @@ const LoginForm = () => {
      );
 };
 
-export default LoginForm;
+export default Login;

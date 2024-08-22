@@ -4,8 +4,8 @@ import { Link, useLocation } from 'react-router-dom';
 import subCategory from "util/subCategory";
 import stickyNav from "util/stickyNav";
 import headerPopups from "util/headerPopups";
-import SearchForm from "./searchform";
-import LoginForm from "./loginform"
+import Search from "./Search";
+import Login from "./Login";
 import cateData from "data/catedata.json"
 
 const Header = () => {
@@ -38,7 +38,7 @@ const Header = () => {
                 </div> 
                 <div className="top-nav-btn-wrap">
                      <div className="top-nav-menu-login">
-                        <LoginForm />
+                        <Login />
                     </div>
                 <Link to="/pjtregist" className="top-nav-btn-project">프로젝트 만들기</Link>
                 </div> 
@@ -63,7 +63,7 @@ const Header = () => {
                            <i className="fa-solid fa-magnifying-glass" />
                            <span></span>프로젝트 검색
                         </div>
-                        <SearchForm />
+                        <Search />
                     </div>
                 </div>
             </div> 
