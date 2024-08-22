@@ -11,6 +11,7 @@ import Home from "core/home";
 import Popular from "page/popular";
 import Recent from "page/recent";
 import Search from "page/search";
+import PjtRegist from "page/PjtRegist";
 
 const App = () => {
     // 특정 경로에서는 헤더랑 푸터 숨기기
@@ -25,6 +26,7 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="/popular" element={<Popular />} />
               <Route path="/recent" element={<Recent />} />
+              <Route path="/pjtregist" element={<PjtRegist />} />
               <Route path="/search" element={<Search />} />
           </Routes>
           {!isHideFooter && <Footer />}

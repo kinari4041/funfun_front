@@ -40,7 +40,7 @@ const Header = () => {
                      <div className="top-nav-menu-login">
                         <LoginForm />
                     </div>
-                <Link to="#" className="top-nav-btn-project">프로젝트 만들기</Link>
+                <Link to="/pjtregist" className="top-nav-btn-project">프로젝트 만들기</Link>
                 </div> 
             </div>
             <div id="cate-nav">

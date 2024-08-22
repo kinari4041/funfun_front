@@ -28,6 +28,7 @@ const LoginForm = () => {
     const [step, setStep] = useState(1);
     const [registerForm, setRegisterForm] = useState({
         email: '',
+        domain: '',
         password: '',
         confirmPassword: '',
         name: '',
@@ -64,6 +65,12 @@ const LoginForm = () => {
     const toggleActive = () => {
         setIsActivate(!isActivate);
     };
+    
+    const domainChange = (e) => {
+        if(e.target.value !== "type") {
+            registerForm.domain = e.target.value;
+        }
+    };
 
     // 로그인 유효성 검사 메소드
     const loginFormChecker = (field) => {
@@ -88,10 +95,8 @@ const LoginForm = () => {
         let errors = {};
         
         if (field === 'email' || !field) {
-            if (!registerForm.email) {
+            if (!registerForm.email | !registerForm.domain) {
                 errors.email = '이메일을 입력하세요';
-            } else if (!isEmail(registerForm.email)) {
-                errors.email = '이메일 형식이 올바르지 않습니다.';
             }
         }
         if (field === 'password' || !field) {
@@ -357,6 +362,7 @@ const LoginForm = () => {
                                             {/* 스텝 1 */}
                                             <div className="register-page">
                                                 <form className="register-wrap">
+                                                    <div className="email-wrap">
                                                     <fieldset>
                                                         <input
                                                             className="login-input"
@@ -370,6 +376,30 @@ const LoginForm = () => {
                                                             ref={formRef}
                                                         />
                                                     </fieldset>
+                                                    <span>@</span>
+                                                    <fieldset>
+                                                        <input
+                                                            className="login-input"
+                                                            type="text"
+                                                            name="domain"
+                                                            value={registerForm.domain}
+                                                            onChange={handleChange}
+                                                            onKeyUp={handleKeyUp}
+                                                            onFocus={handleFocus}
+                                                            ref={formRef}
+                                                        />
+                                                    </fieldset>
+                                                    <fieldset>
+                                                        <select className="login-input" id="domain-list" onChange={domainChange}>
+                                                            <option value="type">직접 입력</option>
+                                                            <option value="naver.com">네이버</option>
+                                                            <option value="gmail.com">지메일(구글)</option>
+                                                            <option value="hanmail.net">한메일</option>
+                                                            <option value="nate.com">네이트</option>
+                                                            <option value="kakao.com">카카오</option>
+                                                        </select>
+                                                    </fieldset>
+                                                    </div>
                                                     {registerErrors.email && <div className="login-error-message">{registerErrors.email}</div>}
                                                     <fieldset>
                                                         <input
