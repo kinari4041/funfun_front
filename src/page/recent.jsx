@@ -1,30 +1,20 @@
 import { Helmet } from 'react-helmet-async';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 
-import { renderRecentList } from 'util/getDataList';
-import TrendList from 'section/trendlist';
-import { getProjectList } from 'util/apiService';
+import { useData } from 'util/useData';
+import TrendList from 'util/getTrendList';
 
 const Recent = () => {
 
-  const [data, setData] = useState([]);
   const wrapRef = useRef(null);
   const wrapRef2 = useRef(null);
 
-  useEffect(() => {
-    getProjectList()
-    .then(response => {
-      setData(response);
-    })
-    .catch(error => {
-      console.error('최근 프로젝트 데이터 불러오기 실패', error);
-    })
-  }, []);
-
-  useEffect(() => {
-      if (wrapRef.current) { renderRecentList(data, wrapRef.current, 0, 15); }
-      if (wrapRef2.current) { renderRecentList(data, wrapRef2.current, 16, 31); }
-  }, [data]) // 빈 배열을 의존성으로 설정함으로서 처음 렌더링 시에만 실행
+  const [ errorRecent1 ] = useData(wrapRef.current, 15, 'recent', 0, 15);
+  const [ errorRecent2 ] = useData(wrapRef2.current, 15, 'recent', 16, 31);
+  
+  if (errorRecent1 || errorRecent2 ){
+    return <div>데이터 로딩에 문제가 발생했습니다.</div>
+  }
 
   return (
     <>

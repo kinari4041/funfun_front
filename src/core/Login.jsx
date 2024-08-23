@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Naver from "img/ico_naver.png";
 import { call } from "util/apiService";
-import { useLogin } from "util/LoginProvider";
+import { useLogin } from "util/loginProvider";
 import { useNavigate } from "react-router-dom";
 
 // 비밀번호: 8글자 이상, 영문, 숫자 사용

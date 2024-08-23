@@ -6,9 +6,8 @@ export default function horizontalScroll(con) {
 
     let block; let lBt; let rBt;
 
-    const conChild = con.childNodes;
+    const conChild = con.childNodes
     const list = con.querySelector('.trend-project-list');
-
     const itemWidth = list.querySelector('.list-project-wrap').offsetWidth;
 
     conChild.forEach((child) => {
@@ -27,20 +26,22 @@ export default function horizontalScroll(con) {
         buttonVisibility(block, lBt, rBt);
     }
 
-    const rightBtnHandler = () => {
+    const rightBtnHandler = (itemWidth) => {
         const scrollAmount = itemWidth * 2;
         const currentScroll = block.scrollLeft;
         block.scrollTo({left: currentScroll + scrollAmount, behavior: 'smooth'})
     }
 
-    const leftBtnHandler = () => {
+    const leftBtnHandler = (itemWidth) => {
         const scrollAmount = itemWidth * 2;
         const currentScroll = block.scrollLeft;
         block.scrollTo({left: currentScroll - scrollAmount, behavior: 'smooth'})
     }
 
-    rBt.addEventListener('click', rightBtnHandler);
-    lBt.addEventListener('click', leftBtnHandler);
+    // const itemWidth = '300';
+    
+    rBt.addEventListener('click', rightBtnHandler(itemWidth));
+    lBt.addEventListener('click', leftBtnHandler(itemWidth));
     block.addEventListener('scroll', scrollHandler);
 
     return () => {

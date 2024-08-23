@@ -1,16 +1,14 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 
-import { renderDataList } from "util/getDataList";
-import sample from "data/sample.json";
+import { useData } from "util/useData";
 
 const WillOpen = () => {
     const wrapRef = useRef(null);
 
-    useEffect(() => {
-        if (wrapRef.current) {
-            renderDataList(sample, wrapRef.current, 10);
-        }
-    });
+    const [ willopenError ] = useData(wrapRef.current, 10);
+    if (willopenError) {
+        return <div>데이터 로딩에 문제가 발생했습니다.</div>
+    }
 
     return (
         <section id="section4" className="section-area">

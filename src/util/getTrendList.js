@@ -1,24 +1,24 @@
 import React, { useRef, useEffect, useState } from "react";
 import parse from 'html-react-parser';
 
-import { renderDataList } from "util/getDataList";
 import horizontalScroll from "util/horizontalScroll";
-import sample from "data/sample.json";
+import { useData } from "util/useData";
 
 const TrendList = (props) => {
 
     const [item] = useState(props.item);
+    
     // userRef로 DOM 요소를 직접 참조할 수 있는 변수 생성
     const scrollRef = useRef(null);
     const wrapRef = useRef(null);
 
+    const [ trendlistError ] = useData(wrapRef.current, 10); 
+    if (trendlistError) {
+        return <div>데이터를 불러오는데 문제가 발생했습니다.</div>
+    }
+
     // 컴포넌트가 렌더링되면서 useEffect가 실행됨
     useEffect(() => {
-        // 컴포넌트가 렌더링되고 renderRandomDataList 메서드를 사용하여
-        // trend-project-list에 프로젝트 데이터 목록을 렌더링함
-        if (wrapRef.current) { 
-            renderDataList(sample, wrapRef.current, 10); 
-        }
         // renderRandomDataList를 통해 목록이 렌더링된 이후
         // 스크롤 및 버튼 이벤트 리스너를 설정함
         if (scrollRef.current) {
@@ -41,4 +41,5 @@ const TrendList = (props) => {
         </div>
     )
 }
+
 export default TrendList;

@@ -1,39 +1,36 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
-
-import { renderRecentList } from "util/getDataList";
-import TrendList from "section/trendlist";
-import { getProjectList } from "util/apiService";
+import { useData } from "util/useData";
+import TrendList from "util/getTrendList";
+import { searchProjects } from "util/apiService";
 
 const Search = () => {
     const [data, setData] = useState([]);
     const location = useLocation();
     const wrapRef = useRef(null);
+    const renderData = useData;
 
     const queryParams = new URLSearchParams(location.search);
     const query = queryParams.get('q') || '';
+    const sortBy = queryParams.get('sort') || '';
 
     useEffect(() => {
-        getProjectList()
-        .then(response => {
-          setData(response);
-        })
-        .catch(error => {
-          console.error('검색 데이터 불러오기 실패', error);
-        })
-      }, []);
+        const fetchData = async () => {
+            try {
+                const response = await searchProjects(query, sortBy);
+                setData(response);
+            } catch (error) {
+                console.error('검색 데이터 불러오기 실패', error);
+            }
+        };
+        fetchData();
+      }, [query, sortBy]);
 
-    useEffect(() => {
-        const readyToSearch = decodeURIComponent(query.toLowerCase().trim());
-
-        const filteredData = data.filter(item =>
-            item.articleTitle.toLowerCase().includes(readyToSearch) ||
-            item.projectName.toLowerCase().includes(readyToSearch)
-        );
-        if (filteredData.length > 0) {
+      useEffect(() => {
+        if (data.length > 0) {
             wrapRef.current.style.setProperty('display','grid')
-            renderRecentList(filteredData, wrapRef.current, 0, 99)
+            renderData(wrapRef.current, 99, 'normal', data)
         } else {
             wrapRef.current.style.setProperty('display','block')
             wrapRef.current.innerHTML = `
@@ -43,7 +40,7 @@ const Search = () => {
             `;
         }
 
-    }, [query, data])
+    });
 
     return (
         <>

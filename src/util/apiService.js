@@ -41,3 +41,12 @@ export function join(userDTO) {//회원가입
 export function getProjectList() {
     return call('/Project/getProjectList', 'GET');
 }
+
+export function getProjectRank() {
+    return call('/Project/getProjectRank', 'GET');
+}
+
+export function searchProjects(searchTerm, sortBy) {
+    const url = `/Project/getProjectSearch?searchTerm=${encodeURIComponent(searchTerm)}&sortBy=${encodeURIComponent(sortBy)}`;
+    return call(url, 'GET');
+}

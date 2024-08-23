@@ -5,7 +5,7 @@ import subCategory from "util/subCategory";
 import stickyNav from "util/stickyNav";
 import Search from "./Search";
 import Login from "./Login";
-import { useLogin } from "util/LoginProvider";
+import { useLogin } from "util/loginProvider";
 
 const Header = () => {
     const location = useLocation();

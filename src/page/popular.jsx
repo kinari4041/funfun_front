@@ -1,36 +1,24 @@
 import { Helmet } from 'react-helmet-async';
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef } from 'react'
 
-import TrendList from 'section/trendlist';
-import { renderPopularList, renderRateList } from 'util/getDataList';
-import { getProjectList } from 'util/apiService';
+import TrendList from 'util/getTrendList';
+import { useData } from 'util/useData';
 
 const Popular = () => {
 
-  const [data, setData] = useState([]);
   const likeRef1 = useRef(null);
   const likeRef2 = useRef(null);
   const rateRef1 = useRef(null);
   const rateRef2 = useRef(null);
 
-  useEffect(() => {
-    getProjectList()
-    .then(response => {
-      setData(response);
-    })
-    .catch(error => {
-      console.error('인기 프로젝트 데이터 불러오기 실패', error);
-    })
-  }, []);
+  const [errorLike1] = useData(likeRef1.current, 10, 'popular', 0, 10);
+  const [errorLike2] = useData(likeRef2.current, 10, 'popular', 11, 21);
+  const [errorRate1] = useData(rateRef1.current, 10, 'rate', 0, 10);
+  const [errorRate2] = useData(rateRef2.current, 10, 'rate', 11, 21);
 
-  useEffect(() => {
-    if (data.length > 0) {
-      if (likeRef1.current) { renderPopularList(data, likeRef1.current, 0, 10); }
-      if (likeRef2.current) { renderPopularList(data, likeRef2.current, 11, 21); }
-      if (rateRef1.current) { renderRateList(data, rateRef1.current, 0, 10); }
-      if (rateRef2.current) { renderRateList(data, rateRef2.current, 11, 21); }
-    }
-  }, [data]) // 빈 배열을 의존성으로 설정함으로서 처음 렌더링 시에만 실행
+  if (errorLike1 || errorLike2 || errorRate1 || errorRate2 ){
+    return <div>데이터 로딩에 문제가 발생했습니다.</div>
+  }
 
   return (
     <>
@@ -50,7 +38,7 @@ const Popular = () => {
                 <p>인기 프로젝트 목록 - 평점 순</p>
             </div>
             <div className="list-page" data-section="rate" ref={rateRef1}></div>
-            <TrendList item={`<><span className="hashtag">이런건</span> 어떠세요?<Link to="#"><div className="ad-icon">AD</div></Link></>`} />
+            <TrendList item={`<span className="hashtag">이런건</span> 어떠세요?<Link to="#"><div className="ad-icon">AD</div></Link>`} />
             <div className="list-page" data-section="rate" ref={rateRef2}></div>
         </section>
     </>

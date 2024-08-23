@@ -1,17 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 
-import { renderRecentList } from "util/getDataList";
-import sample from "data/sample";
+import { useData } from "util/useData";
 
 const NewProject = () => {
 
     const wrapRef = useRef(null);
 
-    useEffect(() => {
-        if (wrapRef.current) {
-            renderRecentList(sample, wrapRef.current, 0, 10);
-        }
-    }, []) // 빈 배열을 의존성으로 설정함으로서 처음 렌더링 시에만 실행
+    const [ recentError ] = useData(wrapRef.current, 10, 'recent', 0, 10);
+    if (recentError) {
+        return <div>데이터 로딩에 문제가 발생했습니다.</div>
+    }
 
     return (
         <section id="section5" className="section-area">

@@ -1,35 +1,24 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
-import { renderPremiumList } from "util/getDataList";
+import { useData } from "util/useData";
 import horizontalScroll from "util/horizontalScroll";
-import { getProjectList } from "util/apiService";
 
 const AdRecommand = () => {
-    const [data, setData] = useState([]);
     const wrapRef = useRef(null);
     const scrollRef = useRef(null);
 
-    useEffect(() => {
-        getProjectList()
-        .then(response => {
-          setData(response);
-        })
-        .catch(error => {
-          console.error('광고 프로젝트 데이터 불러오기 실패', error);
-        })
-      }, []);
+    const [ adError ] = useData(wrapRef.current, 10, 'premium'); 
 
+    if (adError) {
+        return <div>데이터 로딩에 문제가 발생했습니다.</div>
+    }
+    
     useEffect(() => {
-        if (wrapRef.current) { 
-            renderPremiumList(data, wrapRef.current, 10); 
-        }
-
         if (scrollRef.current) {
-            const cleanup = horizontalScroll(scrollRef.current);
-            return cleanup;
+            horizontalScroll(scrollRef.current);
         }
-    }, [data])
+    }, []);
 
     return (
         <section id="section2"  className="section-area">
