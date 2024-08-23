@@ -1,9 +1,10 @@
-import React, { useRef, useEffect, useCallback, useMemo } from "react";
+import React, { useRef, useEffect, useCallback, useMemo, useState } from "react";
+import { getProjectList } from "util/apiService";
 
 import Aside from "section/rank";
-import sample from "data/sample"
 
 const CateRecommand = () => {
+    const [data, setData] = useState([]);
     const wrapRef = useRef(null);
 
     const mainList = useMemo(() => [
@@ -11,25 +12,25 @@ const CateRecommand = () => {
     ], []);
 
     // 모든 리스트들을 무작위로 가져오는 메서드
-    const getRandomSubjectList = (data, subject) => {
-        const item = [...data].filter(item => item.category === subject).sort(() => 0.5 - Math.random()).slice(0, 1);
+    const getRandomSubjectList = (subject) => {
+        const item = [...data].filter(item => item.projectMainCate === subject).sort(() => 0.5 - Math.random()).slice(0, 1);
         return item[0];
     };
 
-    const renderList = useCallback((data, subject) => {
+    const renderList = useCallback((subject) => {
         const itemDiv = document.createElement("div")
         const item = getRandomSubjectList(data, subject)
         itemDiv.innerHTML = `
             <div class="project-subject">
-                <p class="project-subject-title"><i class="${item.icon}"></i>${item.category}</p>
+                <p class="project-subject-title"><i class=""></i>${item.projectMainCate}</p>
                 <p class="project-subject-more" onClick={window.location.replace("#")}>더 보기</p>
             </div>
             <div class="project-cate-thumb-wrap" onclick={window.location.replace("#")}>
                 <div class="project-cate-thumb"> <!-- 이미지 썸네일 영역 -->
-                    <img src="https://picsum.photos/400/400?random=${item.id}">
+                    <img src="https://picsum.photos/400/400?random=${item.projectId}">
                 </div>
                 <p class="project-cate title"> <!-- 프로젝트 제목 영역 -->
-                    ${item.title}
+                    ${item.articleTitle}
                 </p>
                 <div class="project-cate rate">
                     <p class="project-cate-rate percent font14"> <!-- 달성 % 표시 영역 -->
@@ -40,7 +41,7 @@ const CateRecommand = () => {
                     </p>
                 </div>
                 <p class="project-cate name font14"> <!-- 창작자/단체명 영역 -->
-                    ${item.author}
+                    ${item.userNickname}
                 </p>
             </div>
         `;
@@ -49,12 +50,22 @@ const CateRecommand = () => {
     }, [wrapRef]);
 
     useEffect(() => {
+        getProjectList()
+        .then(response => {
+          setData(response);
+        })
+        .catch(error => {
+          console.error('메인 주제별 프로젝트 데이터 불러오기 실패', error);
+        })
+      }, []);
+    a
+    useEffect(() => {
         if (wrapRef.current) { 
             mainList.forEach((subject) => {
-                renderList(sample, subject); 
+                renderList(data, subject); 
             }); 
         }
-    }, [mainList, renderList]);
+    }, [data, mainList, renderList]);
 
     return (
         <section id="section1" className="section-area">

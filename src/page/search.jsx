@@ -1,12 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
 
 import { renderRecentList } from "util/getDataList";
 import TrendList from "section/trendlist";
-import sample from "data/sample.json";
+import { getProjectList } from "util/apiService";
 
 const Search = () => {
+    const [data, setData] = useState([]);
     const location = useLocation();
     const wrapRef = useRef(null);
 
@@ -14,11 +15,21 @@ const Search = () => {
     const query = queryParams.get('q') || '';
 
     useEffect(() => {
+        getProjectList()
+        .then(response => {
+          setData(response);
+        })
+        .catch(error => {
+          console.error('검색 데이터 불러오기 실패', error);
+        })
+      }, []);
+
+    useEffect(() => {
         const readyToSearch = decodeURIComponent(query.toLowerCase().trim());
 
-        const filteredData = sample.filter(item =>
-            item.title.toLowerCase().includes(readyToSearch) ||
-            item.name.toLowerCase().includes(readyToSearch)
+        const filteredData = data.filter(item =>
+            item.articleTitle.toLowerCase().includes(readyToSearch) ||
+            item.projectName.toLowerCase().includes(readyToSearch)
         );
         if (filteredData.length > 0) {
             wrapRef.current.style.setProperty('display','grid')
@@ -32,7 +43,7 @@ const Search = () => {
             `;
         }
 
-    }, [query])
+    }, [query, data])
 
     return (
         <>

@@ -12,11 +12,11 @@ export const LoginProvider = ({children}) => {
         const savedValue = sessionStorage.getItem('context');
         return savedValue ? JSON.parse(savedValue).isLoggedIn : false;
     });
-    const [usrNickName, setUsrNickName] = useState(() => {
+    const [usrNickName, setUserNickName] = useState(() => {
         const savedValue = sessionStorage.getItem('context');
         return savedValue ? JSON.parse(savedValue).usrNickName : '';
     });
-    const [usrEmail, setUsrEmail] = useState(() => {
+    const [usrEmail, setUserEmail] = useState(() => {
         const savedValue = sessionStorage.getItem('context');
         return savedValue ? JSON.parse(savedValue).usrEmail : '';
     });
@@ -29,9 +29,9 @@ export const LoginProvider = ({children}) => {
         isLoggedIn,
         setIsLoggedIn,
         usrNickName,
-        setUsrNickName,
+        setUserNickName,
         usrEmail,
-        setUsrEmail,
+        setUserEmail,
         isMainPage,
         setIsMainPage
     }
@@ -53,8 +53,8 @@ export const LoginProvider = ({children}) => {
         if (savedValue) {
             const parsedValue = JSON.parse(savedValue);
             setIsLoggedIn(parsedValue.isLoggedIn);
-            setUsrNickName(parsedValue.usrNickName);
-            setUsrEmail(parsedValue.usrEmail);
+            setUserNickName(parsedValue.usrNickName);
+            setUserEmail(parsedValue.usrEmail);
             setIsMainPage(parsedValue.isMainPage);
         }
       }, []);

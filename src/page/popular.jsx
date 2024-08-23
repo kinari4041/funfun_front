@@ -1,23 +1,36 @@
 import { Helmet } from 'react-helmet-async';
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 
 import TrendList from 'section/trendlist';
 import { renderPopularList, renderRateList } from 'util/getDataList';
-import sample from 'data/sample.json'
+import { getProjectList } from 'util/apiService';
 
 const Popular = () => {
 
+  const [data, setData] = useState([]);
   const likeRef1 = useRef(null);
   const likeRef2 = useRef(null);
   const rateRef1 = useRef(null);
   const rateRef2 = useRef(null);
 
   useEffect(() => {
-      if (likeRef1.current) { renderPopularList(sample, likeRef1.current, 0, 10); }
-      if (likeRef2.current) { renderPopularList(sample, likeRef2.current, 11, 21); }
-      if (rateRef1.current) { renderRateList(sample, rateRef1.current, 0, 10); }
-      if (rateRef2.current) { renderRateList(sample, rateRef2.current, 11, 21); }
-  }, []) // 빈 배열을 의존성으로 설정함으로서 처음 렌더링 시에만 실행
+    getProjectList()
+    .then(response => {
+      setData(response);
+    })
+    .catch(error => {
+      console.error('인기 프로젝트 데이터 불러오기 실패', error);
+    })
+  }, []);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      if (likeRef1.current) { renderPopularList(data, likeRef1.current, 0, 10); }
+      if (likeRef2.current) { renderPopularList(data, likeRef2.current, 11, 21); }
+      if (rateRef1.current) { renderRateList(data, rateRef1.current, 0, 10); }
+      if (rateRef2.current) { renderRateList(data, rateRef2.current, 11, 21); }
+    }
+  }, [data]) // 빈 배열을 의존성으로 설정함으로서 처음 렌더링 시에만 실행
 
   return (
     <>

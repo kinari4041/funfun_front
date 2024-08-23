@@ -16,8 +16,8 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const { setIsLoggedIn, setUsrEmail, 
-            setUsrNickName, isLoggedIn, 
+    const { setIsLoggedIn, setUserEmail, 
+            setUserNickName, isLoggedIn, 
             usrNickName } = useLogin();
 
     // form 부분 초기 여백 설정을 위한 dom 접근객체 생성
@@ -159,9 +159,9 @@ const Login = () => {
             if (Object.keys(errors).length === 0) {
                 e.preventDefault();
                 const data = new FormData(e.target);
-                const usrEmail = data.get("email");
-                const usrPassword = data.get("password");
-                let userDTO = { usrEmail: usrEmail, usrPassword: usrPassword };
+                const userEmail = data.get("email");
+                const userPw = data.get("password");
+                let userDTO = { userEmail: userEmail, userPw: userPw };
                 return call("/user/login", "POST", userDTO).then((response) => {
                     if (response.result === "OK") {
                         
@@ -171,8 +171,8 @@ const Login = () => {
                       //로그인 후 응답내용 중에 uIdx, userId를 사용할 수 있도록
                       //컨텍스트 객체에 값을 할당함 -- 기존 서버의 로그인 처리 메소드에서
                       //uIdx, userId를 응답내용에 포함시키도록 변경해줌
-                      setUsrEmail(response.usrEmail);
-                      setUsrNickName(response.usrNickName);
+                      setUserEmail(response.userEmail);
+                      setUserNickName(response.userNickName);
                 
                       //컨텍스트 객체는 사용자의 요청과 함께 지속되므로 
                       //새로고침이 이루어지면 삭제되고 새로운 컨텍스트 객체가 생성됨
@@ -310,7 +310,7 @@ const Login = () => {
                 email: `${registerForm.email}@${registerForm.domain}`
             }));
         }
-    }, [registerForm.domain])
+    }, [registerForm.domain, registerForm.email])
 
     const getDomainOptions = () => {
         return [

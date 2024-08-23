@@ -6,7 +6,6 @@ import stickyNav from "util/stickyNav";
 import Search from "./Search";
 import Login from "./Login";
 import { useLogin } from "util/LoginProvider";
-import cateData from "data/catedata.json"
 
 const Header = () => {
     const location = useLocation();
@@ -16,7 +15,7 @@ const Header = () => {
 
     useEffect(() => {
         stickyNav();
-        subCategory(cateData);
+        subCategory();
     }, [])
 
     return (
@@ -50,10 +49,10 @@ const Header = () => {
                             <div className="cate-title-el" data-text="식품"><span>식품</span></div>
                             <div className="cate-title-el" data-text="커피"><span>커피</span></div>
                             <div className="cate-title-el" data-text="향초"><span>향초</span></div>
-                            <div className="cate-title-el" data-text="반려 동물"><span>반려 동물</span></div>
-                            <div className="cate-title-el" data-text="헬스 케어"><span>헬스케어</span></div>
-                            <div className="cate-title-el" data-text="디지털 미디어"><span>디지털 미디어</span></div>
-                            <div className="cate-title-el" data-text="홈/리빙"><span>홈/리빙</span></div>
+                            <div className="cate-title-el" data-text="반려동물"><span>반려 동물</span></div>
+                            <div className="cate-title-el" data-text="헬스케어"><span>헬스케어</span></div>
+                            <div className="cate-title-el" data-text="디지털미디어"><span>디지털 미디어</span></div>
+                            <div className="cate-title-el" data-text="홈리빙"><span>홈/리빙</span></div>
                             <div className="cate-title-el" data-text="패션"><span>패션</span></div>
                             <div className="cate-title-el" data-text="문구"><span>문구</span></div>
                         </div>

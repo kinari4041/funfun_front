@@ -19,7 +19,7 @@ export function renderDataList(data, wrap, count) {
 */
 export function renderPremiumList(data, wrap, count) {
     const getPremiumList = (data, count) => {
-        const pdata = data.filter(item => item.premium === 1);
+        const pdata = data.filter(item => item.projectPremium === 1);
         return [...pdata].sort(() => 0.5 - Math.random()).slice(0, count);
     };
     render(wrap, getPremiumList(data, count))
@@ -35,7 +35,7 @@ export function renderPremiumList(data, wrap, count) {
 export function renderRecentList(data, wrap, start ,end) {
     const getRecentList = (data, start, end) => {
         const RecentList = [...data].sort((a, b) => 
-            new Date(b.upload).getTime() - new Date(a.upload).getTime());
+            new Date(b.projectUpload).getTime() - new Date(a.projectUpload).getTime());
         return RecentList.slice(start, end);
     };
     render(wrap, getRecentList(data, start, end))
@@ -109,6 +109,24 @@ export function getProjectRankList (projects, count) {
     // }, []);
 
 
+// const render = (wrap, items) => {
+//     wrap.innerHTML = items.map(data => {
+//         return `
+//             <div key={index} class="list-project-wrap">
+//                 <img src="https://picsum.photos/400/400?random=${data.id}" alt=${data.title} />
+//                 <p class="project-cate title">[ ${data.name} ] ${data.title} </p>
+//                 <div class="project-cate rate">
+//                     <p class="project-cate-rate percent">
+//                         <b>${data.achive}%</b> 달성
+//                     </p>
+//                         <p class="project-cate-rate star">★ ${data.rate}</p>
+//                 </div>
+//                 <p class="project-cate name">${data.author}</p>
+//             </div>
+//         `;
+//     }).join('');
+// }
+
 /**
  * 최종적으로 만들어진 데이터를 매개변수로 받아서 
  * HTML 엘리먼트로 렌더링하는 메서드
@@ -119,15 +137,15 @@ const render = (wrap, items) => {
     wrap.innerHTML = items.map(data => {
         return `
             <div key={index} class="list-project-wrap">
-                <img src="https://picsum.photos/400/400?random=${data.id}" alt=${data.title} />
-                <p class="project-cate title">[ ${data.name} ] ${data.title} </p>
+                <img src="https://picsum.photos/400/400?random=${data.projectId}" alt=${data.projectName} />
+                <p class="project-cate title">[ ${data.projectName} ] ${data.articleTitle} </p>
                 <div class="project-cate rate">
                     <p class="project-cate-rate percent">
-                        <b>${data.achive}%</b> 달성
+                        <b>${data.projectGoal === 0 ? 0 : Math.floor((data.projectCurrent / data.projectGoal) * 100)}%</b> 달성
                     </p>
-                        <p class="project-cate-rate star">★ ${data.rate}</p>
+                        <p class="project-cate-rate star">★ ${data.projectFun}</p>
                 </div>
-                <p class="project-cate name">${data.author}</p>
+                <p class="project-cate name">${data.userNickname}</p>
             </div>
         `;
     }).join('');
