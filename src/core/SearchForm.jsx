@@ -1,18 +1,18 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 
-const Search = () => {
+const SearchForm = () => {
     const [query, setQuery] = useState('')
     const navigate = useNavigate()
     // const searchRef = useRef(null);
     // const searchFormRef = useRef(null);
     const [isActivate, setIsActivate] = useState(false);
 
-    const doSearch = (e) => {
+    const handleSearch = (e) => {
         e.preventDefault();
 
         if (query.trim().length > 0) {
-            let queryUri = `/search?q=${encodeURIComponent(query.trim())}`
+            let queryUri = `/search?q=${encodeURIComponent(query.trim())}&sortBy=upload`
             navigate(queryUri);
             setQuery('');
             
@@ -57,7 +57,7 @@ const Search = () => {
                 <span></span>프로젝트 검색
             </div>
             <div className={`search-form-wrap ${isActivate ? 'search-activate' : ''}`}>
-                <form className="search-form" onSubmit={doSearch} /*ref={searchFormRef}*/>
+                <form className="search-form" onSubmit={handleSearch} /*ref={searchFormRef}*/>
                     <label htmlFor="searchItem" className="sr-only">프로젝트 검색</label>                    
                     <input 
                             type="text" 
@@ -77,4 +77,4 @@ const Search = () => {
     );
 };
 
-export default Search;
+export default SearchForm;

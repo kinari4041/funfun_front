@@ -3,8 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 
 import subCategory from "util/subCategory";
 import stickyNav from "util/stickyNav";
-import Search from "./Search";
-import Login from "./Login";
+import SearchForm from "./SearchForm";
+import LoginForm from "./LoginForm";
 import { useLogin } from "util/loginProvider";
 
 const Header = () => {
@@ -38,7 +38,7 @@ const Header = () => {
                 </div> 
                 <div className="top-nav-btn-wrap">
                      <div className="top-nav-menu-login">
-                        <Login />
+                        <LoginForm />
                     </div>{(isLoggedIn) ? <Link to="/pjtregist" className="top-nav-btn-project">프로젝트 만들기</Link> : ''}
                 </div> 
             </div>
@@ -58,7 +58,7 @@ const Header = () => {
                         </div>
                     </div>
                      <div className="top-nav-menu-search">
-                        <Search />
+                        <SearchForm />
                     </div>
                 </div>
             </div> 

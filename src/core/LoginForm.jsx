@@ -12,7 +12,7 @@ function isEmail(id) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(id); }
 // 생년월일 입력값 유효성 검사
 function isRightBirth(birth) { return /^\d{8}$/.test(birth); }
 
-const Login = () => {
+const LoginForm = () => {
 
     const navigate = useNavigate();
 
@@ -639,4 +639,4 @@ const Login = () => {
      );
 };
 
-export default Login;
+export default LoginForm;

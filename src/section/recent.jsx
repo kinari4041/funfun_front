@@ -1,13 +1,20 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 
-import { useData } from "util/useData";
+import { useData, renderData } from "util/useData";
 
 const NewProject = () => {
 
     const wrapRef = useRef(null);
 
-    const [ recentError ] = useData(wrapRef.current, 10, 'recent', 0, 10);
-    if (recentError) {
+    const [ itemsToRender, error ] = useData(10, 'recent', 0, 10);
+    
+    useEffect(() => {
+        if (wrapRef.current && itemsToRender.length > 0) {
+            renderData(wrapRef.current, itemsToRender);
+        }
+    }, [itemsToRender]);
+
+    if (error) {
         return <div>데이터 로딩에 문제가 발생했습니다.</div>
     }
 

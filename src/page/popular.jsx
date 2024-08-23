@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import React, { useRef } from 'react'
 
-import TrendList from 'util/getTrendList';
+import TrendList from 'section/trendlist';
 import { useData } from 'util/useData';
 
 const Popular = () => {

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
 import { useData } from "util/useData";
-import TrendList from "util/getTrendList";
+import TrendList from "section/trendlist";
 import { searchProjects } from "util/apiService";
 
 const Search = () => {
@@ -13,7 +13,7 @@ const Search = () => {
 
     const queryParams = new URLSearchParams(location.search);
     const query = queryParams.get('q') || '';
-    const sortBy = queryParams.get('sort') || '';
+    const sortBy = queryParams.get('sortBy') || '';
 
     useEffect(() => {
         const fetchData = async () => {

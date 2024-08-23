@@ -12,7 +12,6 @@ const Aside = () => {
             try {
                 const response = await getProjectRank();
                 setData(response);
-                console.log(response);
                 setLoading(false);
             } catch (error) {
                 setError(error);
@@ -32,17 +31,17 @@ const Aside = () => {
                 {data.map((item) => (
                     <li key={item.projectId}>
                         <Link to="/">
-                            <div class="rank-items">
-                                <div class="rank-items__front">
-                                    <p class="rank-number">{item.projectRank}</p>
-                                    <p class="rank-title">{item.articleTitle}</p>
+                            <div className="rank-items">
+                                <div className="rank-items__front">
+                                    <p className="rank-number">{item.projectRank}</p>
+                                    <p className="rank-title">{item.articleTitle}</p>
                                 </div>
-                                <div class="rank-items__back">
-                                    <p class="rank-like">
-                                        <i class="fa-solid fa-heart"></i>
+                                <div className="rank-items__back">
+                                    <p className="rank-like">
+                                        <i className="fa-solid fa-heart"></i>
                                         {item.projectLikes}
                                     </p>
-                                    <p class="rank-title">{item.userNickname}</p>
+                                    <p className="rank-title">{item.userNickname}</p>
                                 </div>
                             </div>
                         </Link>

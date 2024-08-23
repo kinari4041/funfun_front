@@ -8,7 +8,7 @@ const CateRecommand = () => {
     const wrapRef = useRef(null);
 
     const mainList = useMemo(() => [
-        "식품", "커피", "향초", "반려 동물", "헬스케어", "디지털 미디어"
+        "식품", "커피", "향초", "반려동물", "헬스케어", "디지털미디어"
     ], []);
 
     // 모든 리스트들을 무작위로 가져오는 메서드
@@ -68,7 +68,6 @@ const CateRecommand = () => {
       }, []);
       
     useEffect(() => {
-        console.log('updated data:', data)
         if (wrapRef.current && data.length > 0) {
             renderList(); 
         }

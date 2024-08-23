@@ -9,9 +9,9 @@ import Popular from "page/popular";
 import Recent from "page/recent";
 import Search from "page/search";
 import Upload from "page/upload";
-import Home from "core/home";
-import Header from "core/header";
-import Footer from "core/footer";
+import Home from "core/Home";
+import Header from "core/Header";
+import Footer from "core/Footer";
 
 const AppRouter = () => {
     return (

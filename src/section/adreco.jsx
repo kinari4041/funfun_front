@@ -1,25 +1,25 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
-import { useData } from "util/useData";
-import horizontalScroll from "util/horizontalScroll";
+import { useData, renderData } from "util/useData";
 
 const AdRecommand = () => {
     const wrapRef = useRef(null);
-    const scrollRef = useRef(null);
 
-    const [ adError ] = useData(wrapRef.current, 10, 'premium'); 
+    const [ itemsToRender, error ] = useData(10, 'premium'); 
 
-    if (adError) {
+    useEffect(() => {
+
+        if (wrapRef.current && itemsToRender.length > 0) {
+            renderData(wrapRef.current, itemsToRender);
+        }
+
+    }, [itemsToRender]);
+
+    if (error) {
         return <div>데이터 로딩에 문제가 발생했습니다.</div>
     }
     
-    useEffect(() => {
-        if (scrollRef.current) {
-            horizontalScroll(scrollRef.current);
-        }
-    }, []);
-
     return (
         <section id="section2"  className="section-area">
             <div className="section-title">
@@ -29,7 +29,7 @@ const AdRecommand = () => {
                 </div> 
                 <span>당신에게 맞춤추천</span>
             </div>
-            <div ref={scrollRef} className="ad-recommand-projects">
+            <div className="ad-recommand-projects">
                 <span className="trend-project-btn right">
                     <i className="fa-solid fa-angle-right" />
                 </span>

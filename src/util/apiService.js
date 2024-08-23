@@ -10,7 +10,7 @@ export function call(api, method, request){
     };
     if(request){
         options.body = JSON.stringify(request);
-        // console.log("요청내용: " + options.body);
+        console.log("요청내용: " + options.body);
     }
     return fetch(options.url, options) //실행 결과 Promise객체 반환
             .then( (response) => 
@@ -42,11 +42,15 @@ export function getProjectList() {
     return call('/Project/getProjectList', 'GET');
 }
 
+export function getPremiumList() {
+    return call('/Project/getPremiumList', 'GET');
+}
+
 export function getProjectRank() {
     return call('/Project/getProjectRank', 'GET');
 }
 
 export function searchProjects(searchTerm, sortBy) {
-    const url = `/Project/getProjectSearch?searchTerm=${encodeURIComponent(searchTerm)}&sortBy=${encodeURIComponent(sortBy)}`;
+    const url = `/Project/getProjectSearch?q=${encodeURIComponent(searchTerm)}&sortBy=${encodeURIComponent(sortBy)}`;
     return call(url, 'GET');
 }
