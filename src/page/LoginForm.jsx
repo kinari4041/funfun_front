@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Naver from "img/ico_naver.png";
-import { call } from "util/apiService";
-import { useLogin } from "util/loginProvider";
-import { useNavigate } from "react-router-dom";
+import { call, join } from "util/apiService";
+import { useLogin } from "util/LoginProvider";
 
 // 비밀번호: 8글자 이상, 영문, 숫자 사용
 function strongPassword(pw) {return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(pw);}
@@ -14,8 +13,11 @@ function isRightBirth(birth) { return /^\d{8}$/.test(birth); }
 
 const LoginForm = () => {
 
-    const navigate = useNavigate();
+    // ───────────────────────────────────
+    //              공통부분
+    // ───────────────────────────────────
 
+    // 로그인 커스텀 훅에서 필요한 변수들 가져오기
     const { setIsLoggedIn, setUserEmail, 
             setUserNickName, isLoggedIn, 
             usrNickName } = useLogin();
@@ -28,44 +30,6 @@ const LoginForm = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [isActivate, setIsActivate] = useState(false);
 
-    // 이메일 도메인 입력란 활성화/비활성화
-    const [domainDisabled, setDomainDisabled] = useState(false);
-
-    // 로그인폼의 아이디, 비밀번호 값을 저장하는 useState
-    const [loginForm, setLoginForm] = useState({
-        email: '',
-        password: ''
-    })
-
-    // 회원가입 폼을 위한 useState 
-    const [step, setStep] = useState(1);
-    const [registerForm, setRegisterForm] = useState({
-        email: '',
-        domain: '',
-        password: '',
-        confirmPassword: '',
-        name: '',
-        nickname: '',
-        birthdate: '',
-        phone: '',
-        termsAccepted: false,
-        privacyAccepted: false
-    });
-
-    // 로그인, 회원가입의 에러메시지 출력하는 useState
-    const [loginErrors, setLoginErrors] = useState({ account: '' })
-
-    const [registerErrors, setRegisterErrors] = useState({
-        email: '',
-        password: '',
-        confirmPassword: '',
-        name: '',
-        birthdate: '',
-        phone: '',
-        termsAccepted: false,
-        privacyAccepted: false
-    })
-
     // 로그인, 회원가입 화면을 전환할 수 있는 메서드 정의
     const toggleForm = () => {
         setIsLogin(!isLogin);
@@ -76,6 +40,185 @@ const LoginForm = () => {
         setIsActivate(!isActivate);
     };
     
+    // 로그인, 회원가입의 에러메시지에 포커스 되어있을 때 유효성 검사
+    const handleFocus = (e) => {
+        const { name } = e.target;
+        if (isLogin) {
+            const errors = loginFormChecker(name);
+            setLoginErrors(errors);
+        } else {
+            const errors = registerFormChecker(name);
+            setRegisterErrors(errors);
+        }
+    }
+
+    // 로그인, 회원가입 제출 핸들러
+    const handleNextStep = async (e) => {
+        e.preventDefault();
+        if(isLogin) {
+            const errors = loginFormChecker();
+            if (Object.keys(errors).length === 0) {
+                e.preventDefault();
+                const data = new FormData(e.target);
+                const userEmail = data.get("email");
+                const userPw = data.get("password");
+                let userDTO = { userEmail: userEmail, userPw: userPw };
+                return call("/user/login", "POST", userDTO).then((response) => {
+                    if (response.result === "OK") {
+                        
+                      //로그인 성공시
+                      //로그인 관련 변수인 isLoggedIn 변수 값을 true로 변경해줌
+                      setIsLoggedIn(true);
+                      //로그인 후 응답내용 중에 uIdx, userId를 사용할 수 있도록
+                      //컨텍스트 객체에 값을 할당함 -- 기존 서버의 로그인 처리 메소드에서
+                      //uIdx, userId를 응답내용에 포함시키도록 변경해줌
+                      setUserEmail(response.userEmail);
+                      setUserNickName(response.userNickName);
+                
+                      //컨텍스트 객체는 사용자의 요청과 함께 지속되므로 
+                      //새로고침이 이루어지면 삭제되고 새로운 컨텍스트 객체가 생성됨
+                      //새로고침 없이 원하는 페이지로 이동함: useNavigate()훅
+                      
+                      close();
+                    } else {
+                      setLoginErrors({password: "아이디 혹은 비밀번호가 틀립니다."});
+                    }
+                  });
+            } else {
+                setLoginErrors(errors)
+            }
+        } else {
+            const errors = registerFormChecker();
+            console.log(Object.keys(errors).length);
+            if (Object.keys(errors).length <= 6 && step === 1) {
+                setStep(prevStep => prevStep + 1);
+                setRegisterErrors({});
+            } else if (Object.keys(errors).length <= 4 && step === 2) {
+                setStep(prevStep => prevStep + 1);
+                setRegisterErrors({});
+            } else if (Object.keys(errors).length <= 1 && step === 3) {
+                try {
+                    const userDTO = {
+                        userEmail: `${registerForm.email}@${registerForm.domain}`,
+                        userPw: registerForm.password,
+                        userName: registerForm.name,
+                        userNickName: registerForm.nickname,
+                        userBirthday: registerForm.birthdate,
+                        userPhone: formatPhoneNum(registerForm.phone),
+                        userGender: getGender(registerForm.socialnum),
+                        userAuthLevel: 0
+                    };
+
+                    const response = await join(userDTO);
+
+                    if (response.result === "OK") {
+                        alert("회원가입이 완료되었습니다! 환영합니다!")
+                        close();
+                    } else {
+                        alert("회원 가입에 실패하였습니다.");
+                    }
+                } catch (error) {
+                    console.error("회원가입중 오류 발생", error);
+                }
+             }else {
+                setRegisterErrors(errors)
+            }
+        }
+    };
+
+    // 실시간 유효성 검사 핸들러
+    const handleKeyUp = (e) => {
+        const { name } = e.target;
+        if(isLogin) {
+            const errors = loginFormChecker(name);
+            setLoginErrors(errors);
+        } else {
+            const errors = registerFormChecker(name);
+            setRegisterErrors(errors);
+        }
+    }
+
+    const getGender = (num) => {
+        if (num === "1" || num === "3") {
+            return 'M'
+        } else {
+            return 'F'
+        }
+    }
+
+    const formatPhoneNum = (num) => {
+        if (num.startsWith('010')) {
+            const restOfNum = num.slice(3);
+            return `${restOfNum.slice(0, 4)}-${restOfNum.slice(4)}`;
+        }
+        return num;
+    };
+
+    // 폼 내용 변경 처리
+    const handleChange = (e) => {
+        const { name, value } = e.target;      
+
+        if (isLogin) {
+            setLoginForm(prevData => ({
+                ...prevData,
+                [name]: value
+            }));
+        } else {
+            setRegisterForm(prevData => ({
+                ...prevData,
+                [name]: value
+            }));
+        }
+
+        if (name === 'email') {
+            handleEmailChange(e);
+        } else if (name === 'domain') {
+            handleDomainChange(e);
+        } else {
+        }
+    };
+
+    // 창 닫을시 기존의 요소들 초기화하는 메서드
+    const close = useCallback(() => {
+        setIsLogin(true);
+        setIsActivate(false);
+        setStep(1);
+        setLoginForm({ email: '', password: '' });
+        setRegisterForm({
+            email: '',
+            password: '',
+            confirmPassword: '',
+            name: '',
+            nickname: '',
+            birthdate: '',
+            phone: '',
+            termsAccepted: false,
+            privacyAccepted: false
+        });
+        setLoginErrors({});
+        setRegisterErrors({});
+    }, []);
+
+    // 로그아웃시 세션 스토리지 클리어 후 새로고침
+    const logOut = () => {
+        sessionStorage.clear();
+        window.location.href = '/';
+    }
+
+
+    // ───────────────────────────────────
+    //              로그인 부분
+    // ───────────────────────────────────
+
+    // 로그인 폼의 아이디, 비밀번호 값을 저장하는 useState
+    const [loginForm, setLoginForm] = useState({
+        email: '',
+        password: ''
+    })
+
+    // 로그인 에러메시지 useState
+    const [loginErrors, setLoginErrors] = useState({ account: '' })
+
     // 로그인 유효성 검사 메소드
     const loginFormChecker = (field) => {
         let errors = {};
@@ -92,6 +235,42 @@ const LoginForm = () => {
         }
         return errors;
     }
+
+
+    // ───────────────────────────────────
+    //            회원가입 부분
+    // ───────────────────────────────────
+
+    // 이메일 도메인 입력란 활성화/비활성화
+    const [domainDisabled, setDomainDisabled] = useState(false);
+
+    // 회원가입 폼을 위한 useState 
+    const [step, setStep] = useState(1);
+    const [registerForm, setRegisterForm] = useState({
+        email: '',
+        domain: '',
+        password: '',
+        confirmPassword: '',
+        name: '',
+        nickname: '',
+        birthdate: '',
+        phone: '',
+        socialnum: '',
+        termsAccepted: false,
+        privacyAccepted: false
+    });
+
+    // 회원가입 에러메시지 useState
+    const [registerErrors, setRegisterErrors] = useState({
+        email: '',
+        password: '',
+        confirmPassword: '',
+        name: '',
+        birthdate: '',
+        phone: '',
+        termsAccepted: false,
+        privacyAccepted: false
+    })
 
     // 회원가입 유효성 검사 메소드
     const registerFormChecker = (field) => {
@@ -124,6 +303,8 @@ const LoginForm = () => {
                 errors.birthdate = '생년월일을 입력하세요';
             } else if (!isRightBirth(registerForm.birthdate)) {
                 errors.birthdate = '생년월일은 8자리 숫자이어야 합니다.'
+            } else if (!registerForm.birthdate || !registerForm.socialnum) {
+                errors.birthdate = '주민등록번호 뒤 1자리를 입력해주세요.'
             }
         }
         if (field === 'phone' || !field) {
@@ -139,70 +320,13 @@ const LoginForm = () => {
         return errors;
     }
 
-    // 로그인, 회원가입의 에러메시지에 포커스 되어있을 때 유효성 검사
-    const handleFocus = (e) => {
-        const { name } = e.target;
-        if (isLogin) {
-            const errors = loginFormChecker(name);
-            setLoginErrors(errors);
-        } else {
-            const errors = registerFormChecker(name);
-            setRegisterErrors(errors);
-        }
-    }
-
-    // 로그인, 회원가입 제출 핸들러
-    const handleNextStep = (e) => {
-        e.preventDefault();
-        if(isLogin) {
-            const errors = loginFormChecker();
-            if (Object.keys(errors).length === 0) {
-                e.preventDefault();
-                const data = new FormData(e.target);
-                const userEmail = data.get("email");
-                const userPw = data.get("password");
-                let userDTO = { userEmail: userEmail, userPw: userPw };
-                return call("/user/login", "POST", userDTO).then((response) => {
-                    if (response.result === "OK") {
-                        
-                      //로그인 성공시
-                      //로그인 관련 변수인 isLoggedIn 변수 값을 true로 변경해줌
-                      setIsLoggedIn(true);
-                      //로그인 후 응답내용 중에 uIdx, userId를 사용할 수 있도록
-                      //컨텍스트 객체에 값을 할당함 -- 기존 서버의 로그인 처리 메소드에서
-                      //uIdx, userId를 응답내용에 포함시키도록 변경해줌
-                      setUserEmail(response.userEmail);
-                      setUserNickName(response.userNickName);
-                
-                      //컨텍스트 객체는 사용자의 요청과 함께 지속되므로 
-                      //새로고침이 이루어지면 삭제되고 새로운 컨텍스트 객체가 생성됨
-                      //새로고침 없이 원하는 페이지로 이동함: useNavigate()훅
-                      
-                      close();
-                      navigate("/");
-                    } else {
-                      setLoginErrors({password: "아이디 혹은 비밀번호가 틀립니다."});
-                    }
-                  });
-            } else {
-                setLoginErrors(errors)
-            }
-        } else {
-            const errors = registerFormChecker();
-            console.log(Object.keys(errors).length);
-            if (Object.keys(errors).length <= 6 && step === 1) {
-                setStep(prevStep => prevStep + 1);
-                setRegisterErrors({});
-            } else if (Object.keys(errors).length <= 4 && step === 2) {
-                setStep(prevStep => prevStep + 1);
-                setRegisterErrors({});
-            } else if (Object.keys(errors).length === 0 && step === 3) {
-                alert("회원가입 테스트")
-                close();
-             }else {
-                setRegisterErrors(errors)
-            }
-        }
+    // 이메일 변경 감지 핸들러
+    const handleEmailChange = (e) => {
+        const { value } = e.target;
+        setRegisterForm(prevData => ({
+            ...prevData,
+            email: value
+        }));
     };
 
     // 회원가입 폼 이전 버튼 핸들러
@@ -210,83 +334,41 @@ const LoginForm = () => {
       setStep(prevStep => prevStep - 1);
     };
     
-    // 실시간 유효성 검사 핸들러
-    const handleKeyUp = (e) => {
-        const { name } = e.target;
-        if(isLogin) {
-            const errors = loginFormChecker(name);
-            setLoginErrors(errors);
-        } else {
-            const errors = registerFormChecker(name);
-            setRegisterErrors(errors);
-        }
-    }
-
-    // 폼 내용 변경을 감지 핸들러
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        if(isLogin) {
-            setLoginForm(prevData => {
-                const newForm = {
-                    ...prevData,
-                    [name]: value
-                };
-                return newForm;
-            });
-        } else {
-            setRegisterForm(prevData => {
-                const newForm = {
-                    ...prevData,
-                    [name]: type === 'checkbox' ? checked : value,
-                };
-                const errors = registerFormChecker(name);
-                setRegisterErrors(errors);
-                return newForm;
-            });
-        }
-    };
-  
     // 이메일 도메인 내용 변경 감지 핸들러
     const handleDomainChange = (e) => {
         const selectedValue = e.target.value;
-        console.log(selectedValue);
-        if(isLogin) {
+
+        if(!isLogin) {
             if (selectedValue !== "type") {
+                // 선택한 도메인이 있다면
                 setRegisterForm(prevData => ({
                     ...prevData,
                     domain: selectedValue
                 }));
                 setDomainDisabled(true);
+
             } else {
+                setDomainDisabled(false);
                 setRegisterForm(prevData => ({
                     ...prevData,
-                    domain: ''
+                    domain: '',
                 }));
-                setDomainDisabled(false);
             }
         } 
     };
 
-    // 창 닫을시 기존의 요소들 초기화하는 메서드
-    const close = useCallback(() => {
-        setIsLogin(true);
-        setIsActivate(false);
-        setStep(1);
-        setLoginForm({ email: '', password: '' });
-        setRegisterForm({
-            email: '',
-            password: '',
-            confirmPassword: '',
-            name: '',
-            nickname: '',
-            birthdate: '',
-            phone: '',
-            termsAccepted: false,
-            privacyAccepted: false
-        });
-        setLoginErrors({});
-        setRegisterErrors({});
-    }, []);
+    // 도메인 옵션들
+    const getDomainOptions = () => {
+        return [
+            'gmail.com',
+            'daum.net',
+            'naver.com',
+            'hanmail.net',
+            'kakao.com'
+        ].map((domain, index) => (
+            <option key={index} value={domain}>{domain}</option>
+        ));
+    };
 
     // PC의 경우 로그인,검색 팝업을 ESC키로 닫을 수 있게 하기
     useEffect(() => {
@@ -303,32 +385,6 @@ const LoginForm = () => {
         };
     }, [close]);
 
-    useEffect(() => {
-        if (registerForm.email && registerForm.domain) {
-            setRegisterForm(prevData => ({
-                ...prevData,
-                email: `${registerForm.email}@${registerForm.domain}`
-            }));
-        }
-    }, [registerForm.domain, registerForm.email])
-
-    const getDomainOptions = () => {
-        return [
-            'gmail.com',
-            'daum.net',
-            'naver.com',
-            'hanmail.net',
-            'kakao.com'
-        ].map((domain, index) => (
-            <option key={index} value={domain}>{domain}</option>
-        ));
-    };
-
-    const logOut = () => {
-        sessionStorage.clear();
-        window.location.href = '/';
-    }
-
     // HTML
     return (
         <>  
@@ -336,7 +392,9 @@ const LoginForm = () => {
             <div className={`login-background ${isActivate ? 'login-activate' : ''}`}>
                 <div className="login-form">
                     <div className={`login-form-wrapper ${!isLogin ? 'flip' : ''}`}>
-                        {/* Front - 로그인화면 */}
+                        {/* ─────────────────────
+                         / Front - 로그인화면
+                        ────────────────────────*/}
                         {isLogin && (
                             <div className="front-login">
                                 <div className="login-form-title">
@@ -420,7 +478,9 @@ const LoginForm = () => {
                                 </div>
                             </div>
                         )}
-                        {/* Back - 회원가입 화면 */}
+                        {/* ─────────────────────
+                         / Back - 회원가입 화면
+                        ────────────────────────*/}
                         {!isLogin && (
                             <div className="back-register">
                                 <div className="login-form-title">
@@ -454,17 +514,19 @@ const LoginForm = () => {
                                                             type="text"
                                                             name="domain"
                                                             value={registerForm.domain}
-                                                            onChange={handleDomainChange}
+                                                            onChange={handleChange}
                                                             onFocus={handleFocus}
+                                                            disabled={domainDisabled}
+                                                            ref={formRef}
                                                         />
                                                     </fieldset>
                                                     <fieldset>
                                                         <select 
                                                             className="login-input" 
+                                                            name="domain-list"
                                                             id="domain-list" 
                                                             onChange={handleDomainChange}
                                                             value={registerForm.domain}
-                                                            disabled={domainDisabled}
                                                         >
                                                             <option value="type">직접 입력</option>
                                                             {getDomainOptions()}
@@ -526,16 +588,46 @@ const LoginForm = () => {
                                                     <input
                                                         className="login-input"
                                                         type="text"
-                                                        name="birthdate"
-                                                        placeholder="생년월일 (YYYYMMDD)"
-                                                        value={registerForm.birthdate}
+                                                        name="nickname"
+                                                        placeholder="별명"
+                                                        value={registerForm.nickname}
                                                         onChange={handleChange}
                                                         onKeyUp={handleKeyUp}
                                                         onFocus={handleFocus}
-                                                        maxLength="8"
                                                         ref={formRef}
                                                     />
                                                 </fieldset>
+                                                <div className="social-num-wrap">
+                                                    <fieldset>
+                                                        <input
+                                                            className="login-input"
+                                                            type="text"
+                                                            name="birthdate"
+                                                            placeholder="주민번호 앞 8자리"
+                                                            value={registerForm.birthdate}
+                                                            onChange={handleChange}
+                                                            onKeyUp={handleKeyUp}
+                                                            onFocus={handleFocus}
+                                                            maxLength="8"
+                                                            ref={formRef}
+                                                        />
+                                                    </fieldset>
+                                                    <span>-</span>
+                                                    <fieldset>
+                                                        <input
+                                                            className="login-input"
+                                                            type="text"
+                                                            name="socialNumber"
+                                                            placeholder="뒤 1자리"
+                                                            value={registerForm.socialnum}
+                                                            onChange={handleChange}
+                                                            onKeyUp={handleKeyUp}
+                                                            onFocus={handleFocus}
+                                                            maxLength="1"
+                                                            ref={formRef}
+                                                        />
+                                                    </fieldset>
+                                                </div>
                                                 <fieldset>
                                                     <input
                                                         className="login-input"

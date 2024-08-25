@@ -5,13 +5,13 @@ import { useData, renderData } from "util/useData";
 const WillOpen = () => {
     const wrapRef = useRef(null);
 
-    const [ itemsToRender, error ] = useData(10);
+    const [ data, error ] = useData(8, 'ready');
 
     useEffect(() => {
-        if (wrapRef.current && itemsToRender.length > 0) {
-            renderData(wrapRef.current, itemsToRender);
+        if (wrapRef.current && data.length > 0) {
+            renderData(wrapRef.current, data, 'ready');
         }
-    }, [itemsToRender]);
+    }, [data]);
 
     if (error) {
         return <div>데이터 로딩에 문제가 발생했습니다.</div>

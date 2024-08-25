@@ -13,6 +13,42 @@ header {
     display: none;
 }
 
+/* 상단 스크롤 버튼 */
+.btn-scroll-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 18px 13px;
+    border-radius: 30px;;
+    font-size: 40px;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+    background: none;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.btn-scroll-top:hover {
+    animation: floating 1s infinite;
+    opacity: 1;
+}
+
+.btn-scroll-top.show {
+    opacity: 1;
+}
+
+@keyframes floating {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px); 
+    }
+    100% {
+        transform: translateY(0); 
+    }
+}
 
 /* ─────────────────────────────────────────────────────────
                         최상단 메뉴바
@@ -74,7 +110,7 @@ header {
     margin-left: 50px;
     font-weight: 700;
     line-height: 50px;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .top-nav-site-menu li::after {
@@ -187,7 +223,7 @@ header {
 .cate-title {
     height: 100%;
     position: relative;
-    width: 1000px;
+    width: 80%;
 }
 
 .cate-title-block {
@@ -216,21 +252,29 @@ header {
 }
 
 .cate-title-el {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 17px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-bottom: 0px solid var(--color-primary);
     transition: border .05s ease;
     height: 100%;
+    background: none;
 }
 
 .cate-title-el:hover {
     color: var(--color-primary);
     border-bottom: 5px solid var(--color-primary);
+    cursor: pointer;
 }
 
 .cate-title-el span {
     width: max-content;
+}
+
+.cate-title-el i {
+    margin-right: 5px;
 }
 
 .cate-item {
@@ -256,7 +300,8 @@ header {
 }
 
 .cate-items li {
-    font-weight: 300;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 400;
 }
 
 .cate-items li:hover {
@@ -272,7 +317,7 @@ header {
 .search-icon {
     font-family: "Noto Sans KR", sans-serif;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 18px;
     display: flex;
     height: 100%;
     justify-content: center;
@@ -396,6 +441,71 @@ header {
   font-size: 64px;
   cursor: pointer;
 }
+
+.search-sort {
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.search-sort button {
+    font-family: "Noto Sans KR", sans-serif;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background-color: var(--color-lgray);
+    margin-right: 20px;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.search-sort button.active {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-weight: bold;
+}
+
+/* ─────────────────────────────────────────────────────────
+                카테고리별 화면 - 추가 네비게이션
+────────────────────────────────────────────────────────── */
+
+.cate-discover-scroll-wrapper {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.cate-discover-scroll-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    flex: 1;
+}
+
+.cate-discover-scroll-content {
+    display: flex;
+    align-items: center;
+}
+
+.cate-discover-item {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    display: inline-block;
+    padding: 10px;
+    margin: 0 5px;
+}
+
+.cate-discover-btn {
+    padding: 10px;
+}
+
+.cate-discover-scroll-wrapper button {
+    background: none;
+}
+
+.cate-discover-scroll-wrapper button:hover {
+    cursor: pointer;
+}
+
 
 /* ─────────────────────────────────────────────────────────
                     로그인 / 회원가입
@@ -822,6 +932,29 @@ header {
     width: 100%;
 }
 
+.social-num-wrap {
+    display: flex;
+    width: 80%;
+    margin-top: 10px;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-num-wrap span {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--color-primary)
+}
+
+.social-num-wrap fieldset {
+    margin: 0;
+}
+
+.social-num-wrap fieldset:last-child {
+    width: 40%;
+}
+
 .register-button-wrap {
     width: 80%;
     display: flex;
@@ -1237,6 +1370,153 @@ aside li:hover .rank-items {
     background-color: #eee;
 }
 
+/* ─────────────────────────────────────────────────────────
+                자동 렌더링 리스트 스타일
+────────────────────────────────────────────────────────── */
+
+/* 주제별 추천 프로젝트 섹션 */
+
+.project-cate {
+    width: 100%;
+}
+
+.project-cate-thumb {
+    margin-bottom: 10px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.project-cate-thumb img {
+    border-radius: 20px;
+    height: 230px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.project-subject {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    padding: 20px;
+    width: 100%;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid #ddd;
+}
+
+.project-subject-title {
+    margin-left: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.project-subject-more {
+    margin-right: 10px;
+    transition: all .2s ease;
+}
+
+.project-subject-more:hover {
+    color: var(--color-pink)
+}
+
+/* 큰 리스트: 섹션 */
+.list-page {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(4,calc(25% - 26.5px));
+    padding-top: 40px;
+    padding-bottom: 50px;
+    gap: 35px;
+}
+
+.list-project-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s;
+}
+
+.list-project-wrap:hover {
+    transform: translateY(-5px);
+    cursor: pointer;
+}
+
+.list-project-img-container {
+    position: relative;
+    overflow: hidden;
+    padding-top: 66.6%;
+}
+
+.list-project-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.list-project-desc-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+    height: 100%;
+    padding: 12px;
+}
+
+.project-cate.title {
+    font-size: 18px;
+    font-weight: bold;
+    overflow: hidden;
+    word-break: break-word;
+    line-height: 30px;
+    width: 100%;
+    
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical
+}
+
+.project-cate.rate {
+    display: flex;
+    font-size: 18px;
+    justify-content: space-between;
+}
+
+.project-cate-rate.percent {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.project-cate-rate.percent > b,
+.project-cate-rate.star {
+    color: orange;
+    font-weight: bold;
+}
+
+.project-cate-rate.heart {
+    color: red;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.project-cate.name {
+    color: #777;
+    font-weight: bold;
+}
+
+/* 작은 리스트: 트렌드, 광고 등 */
+
 .trend-project {
     padding-top: 30px;
     padding-bottom: 30px;
@@ -1259,22 +1539,6 @@ aside li:hover .rank-items {
 
 .trend-project-block::-webkit-scrollbar {
     display:none;
-}
-
-.trend-project-list {
-    display: flex;
-    gap: 30px;
-    width: max-content;
-    margin-bottom: 50px;
-    padding: 10px 10px 10px 0;
-}
-
-.trend-project-list .list-project-wrap {
-    width: 200px;
-}
-
-.trend-project-list:last-child {
-    margin-bottom: 0;
 }
 
 .trend-project-title {
@@ -1327,147 +1591,46 @@ aside li:hover .rank-items {
     margin-top: 1px;
 }
 
-
-/* ─────────────────────────────────────────────────────────
-        오픈예정, 최근 프로젝트 2줄 그리드 섹션 리스트
-────────────────────────────────────────────────────────── */
-
-.list-page {
-    display: grid;
-    grid-template-columns: repeat(5,1fr);
-    padding-top: 40px;
-    padding-bottom: 50px;
-    column-gap: 30px;
-    row-gap: 30px;
-}
-
-.list-project-wrap {
+.trend-project-list {
     display: flex;
-    flex-direction: column;
-    padding-bottom: 5px;
-    cursor: pointer;
-    border: 5px solid #00000000;
-    transition: border .2s ease-in-out;
+    gap: 40px;
+    width: max-content;
+    padding: 20px 5px;
 }
 
-.list-project-wrap:hover {
-    border: 5px solid #bbb;
+.trend-project-list .list-project-wrap {
+    width: 200px;
 }
 
-.recent-project-thumb {
-    margin-bottom: 10px;
-}
-
-.list-project-wrap img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    margin-bottom: 10px;
-}
-
-
-/* ─────────────────────────────────────────────────────────
-                    프로젝트 썸네일 스타일
-────────────────────────────────────────────────────────── */
-
-.project-cate {
-    margin-bottom: 5px;
-    width: 100%;
-    margin-left: 5px;
-}
-
-.project-cate-thumb {
-    margin-bottom: 10px;
-    width: 100%;
+.trend-project-list .list-project-img-container {
+    position: relative;
     overflow: hidden;
+    padding-top: 78.8%;
 }
 
-.project-cate-thumb img {
-    border-radius: 20px;
-    height: 230px;
-    width: 100%;
-    object-fit: cover;
+.trend-project-list .list-project-desc-wrap {
+    gap: 3px;
 }
 
-.project-cate.name {
-    color: #777;
-    font-weight: bold;
+.trend-project-list .project-cate.name {
+    font-size: 14px;
 }
 
-.project-cate.title {
-    font-size: 18px;
-    font-weight: bold;
-    overflow: hidden;
-    word-break: break-word;
-    line-height: 30px;
-    width: 100%;
-    
-    display: -webkit-box;
-    text-overflow: ellipsis;
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical
+.trend-project-list .project-cate.title {
+    font-size: 15px;
 }
 
-.project-cate.rate {
-    display: flex;
-    font-size: 16px;
-    justify-content: space-between;
+.trend-project-list .project-cate.rate {
+    font-size: 15px;
 }
 
-#section3 .project-cate.rate {
-    display: flex;
-    justify-content: space-between;
+.trend-project-list .project-cate-rate.percent {
+    font-size: 15px;
 }
 
-.project-cate-rate.percent {
-    font-weight: bold;
+.trend-project-list .project-cate.title {
+    line-height: 25px;
 }
-
-.project-cate-rate.percent > b {
-    color: orange;
-}
-
-.project-cate-rate.star {
-    color: rgb(226, 58, 7);
-    font-weight: bold;
-    margin-right: 5px;
-}
-
-.project-cate.desc {
-    color: #777;
-    display: flex;
-}
-
-.project-subject {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 30px;
-    padding: 20px;
-    width: 100%;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 3px solid #ddd;
-}
-
-.project-subject-title {
-    margin-left: 10px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.project-subject-more {
-    margin-right: 10px;
-    transition: all .2s ease;
-}
-
-.project-subject-more:hover {
-    color: var(--color-pink)
-}
-
 
 /* ─────────────────────────────────────────────────────────
                          푸터
@@ -1625,10 +1788,14 @@ footer {
 }
 
 .footer-copyright {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: 14px;
+    text-align: center;
+}
+
+.footer-copyright a {
+    background-color: #ddd;
+    padding: 2px 11px;
+    border-radius: 10px;
 }
 
 
@@ -1696,4 +1863,8 @@ footer {
     font-size: 22px;
     font-weight: bold;
     color: #ccc;
+}
+
+.banner {
+    margin-top: 20px;
 }

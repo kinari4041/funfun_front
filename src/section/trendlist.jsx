@@ -10,7 +10,7 @@ const TrendList = (props) => {
     const wrapRef = useRef(null);
 
     const [ item ] = useState(props.item);
-    const [ data, error ] = useData(10, 'default', 0, 10); 
+    const [ data, error ] = useData(10, props.dataType, 0, 10); 
 
 
     useEffect(() => {
@@ -22,41 +22,40 @@ const TrendList = (props) => {
     useEffect(() => {
         if (scrollRef.current && wrapRef.current) {
             const container = scrollRef.current;
-            const block = container.querySelector('.trend-project-list');
+            const element = container.querySelector('.trend-project-block');
             const rightBtn = container.querySelector('.right');
             const leftBtn = container.querySelector('.left');
-            const itemWidth = block.querySelector('.list-project-wrap')?.offsetWidth || 0;
         
             const buttonVisibility = () => {
-                const { scrollWidth, clientWidth, scrollLeft } = block;
+                const { scrollWidth, clientWidth, scrollLeft } = element;
                 leftBtn.style.display = scrollLeft > 0 ? 'flex' : 'none';
                 rightBtn.style.display = scrollWidth > clientWidth + scrollLeft ? 'flex' : 'none';
             };
-
-            const scrollHandler = () => {
+            
+            const handleScroll = (direction) => {
+                const itemWidth = element.querySelector('.list-project-wrap')?.offsetWidth || 0;
+                const scrollAmount = itemWidth * 2;
+                if (direction === 'left') {
+                    element.scrollBy({left: -scrollAmount, behavior: 'smooth'});
+                } else {
+                    element.scrollBy({left: scrollAmount, behavior: 'smooth'});
+                }
                 buttonVisibility();
             };
 
-            const rightButtonHandler = () => {
-                const scrollAmount = itemWidth * 2;
-                block.scrollTo({left: block.scrollLeft + scrollAmount, behavior: 'smooth'});
-            };
-
-            const leftButtonHandler = () => {
-                const scrollAmount = itemWidth * 2;
-                block.scrollTo({left: block.scrollLeft - scrollAmount, behavior: 'smooth'});
-            };
+            const rightButtonHandler = () => handleScroll('right');
+            const leftButtonHandler = () => handleScroll('left');
 
             rightBtn.addEventListener('click', rightButtonHandler);
             leftBtn.addEventListener('click', leftButtonHandler);
-            block.addEventListener('scroll', scrollHandler);
-
+            element.addEventListener('scroll', buttonVisibility);
+            
             buttonVisibility();
             
             return () => {
                 rightBtn.removeEventListener('click', rightButtonHandler);
                 leftBtn.removeEventListener('click', leftButtonHandler);
-                block.removeEventListener('scroll', scrollHandler);
+                element.removeEventListener('scroll', buttonVisibility);
             };   
         }
     }, [data]);

@@ -40,7 +40,7 @@ const CateRecommand = () => {
                             </p>
                             <div class="project-cate rate">
                                 <p class="project-cate-rate percent font14"> <!-- 달성 % 표시 영역 -->
-                                    <b>100%</b> 달성
+                                    <b>${item.projectGoal === 0 ? 0 : Math.floor((item.projectCurrent / item.projectGoal) * 100)}%</b> 달성
                                 </p>
                                 <p class="project-cate-rate star font14"> <!-- 달성 % 표시 영역 -->
                                     ★ 4.0

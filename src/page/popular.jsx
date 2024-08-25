@@ -1,46 +1,131 @@
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async';
-import React, { useRef } from 'react'
 
-import TrendList from 'section/trendlist';
-import { useData } from 'util/useData';
+import { renderData } from 'util/useData';
+import { getPopularList } from 'util/apiService';
 
 const Popular = () => {
 
-  const likeRef1 = useRef(null);
-  const likeRef2 = useRef(null);
-  const rateRef1 = useRef(null);
-  const rateRef2 = useRef(null);
+  const wrapRef = useRef(null);
+  const observerRef = useRef(null);
 
-  const [errorLike1] = useData(likeRef1.current, 10, 'popular', 0, 10);
-  const [errorLike2] = useData(likeRef2.current, 10, 'popular', 11, 21);
-  const [errorRate1] = useData(rateRef1.current, 10, 'rate', 0, 10);
-  const [errorRate2] = useData(rateRef2.current, 10, 'rate', 11, 21);
+  const [data, setData] = useState([]);
+  const [fullData, setFullData] = useState([]);
+  const [sortBy, setSortBy] = useState('likes');
+  const [error, setError] = useState(null);
 
-  if (errorLike1 || errorLike2 || errorRate1 || errorRate2 ){
-    return <div>데이터 로딩에 문제가 발생했습니다.</div>
-  }
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(0);
+  const [limit] = useState(8);
+
+  const fetchData = useCallback(async () => {
+    if (isLoading || !hasMore) return;
+
+    setIsLoading(false);
+      try {
+        const response = await getPopularList(sortBy);
+        setFullData(prevData => [...prevData, ...response]);
+
+        if (response.length < limit) {
+          setHasMore(false);
+        }
+      } catch (err) {
+        setError(err);
+      } finally {
+      setIsLoading(false);
+      }
+  }, [isLoading, hasMore, sortBy, limit]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  useEffect(() => {
+    const observerEl = observerRef.current;
+    if (!observerEl) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasMore && !isLoading) {
+          setPage(prevPage => prevPage + 1);
+        }
+      },
+      { threshold: 1.0 }
+    );
+    observer.observe(observerEl);
+
+    return () => {
+      if (observerEl) {
+        observer.unobserve(observerEl);
+      }
+    };
+  }, [hasMore, isLoading]);
+
+  useEffect(() => {
+    setData(fullData.slice(0, (page + 1) * limit));
+  }, [fullData, page, limit]);
+
+  useEffect (() => {
+    if (wrapRef.current) {
+      if (error) {
+          wrapRef.current.style.setProperty('display','block')
+          wrapRef.current.innerHTML = `
+              <div className="search-no-result-wrap">
+              <p class="search-no-result">데이터를 불러오는 중 문제가 발생했습니다.</p>
+              </div>
+          `;
+      } else if (data.length > 0) {
+          wrapRef.current.style.setProperty('display','grid')
+          renderData(wrapRef.current, data)
+      } else {
+          wrapRef.current.style.setProperty('display','block')
+          wrapRef.current.innerHTML = `
+              <div className="search-no-result-wrap">
+              <p class="search-no-result">프로젝트가 존재하지 않거나 불러오는 중 입니다.</p>
+              </div>
+          `;
+        }
+      }
+    }, [data, error]);
+
+  const handleSortChange = (sort) => {
+      setSortBy(sort);
+      setData([]);
+      setPage(0);
+      setHasMore(true);
+  };
 
   return (
     <>
       <Helmet>
         <title>FunFun - 인기 프로젝트</title>
       </Helmet>
-        <section id="like" className="section-area">
+        <section id="popular" className="section-area">
             <div className="section-title">
-                <p>인기 프로젝트 목록 - 좋아요 순</p>
+                <p>인기 프로젝트 목록 - {(sortBy === 'likes') ? '좋아요 순' : 'FUN 점수'}</p>
             </div>
-            <div className="list-page" data-section="like" ref={likeRef1}></div>
-            <TrendList item={`<span className="hashtag">이런건</span> 어떠세요?<Link to="#"><div className="ad-icon">AD</div></Link>`} />
-            <div className="list-page" data-section="like" ref={likeRef2}></div>
-        </section>
-        <section id="rate" className="section-area">
-            <div className="section-title">
-                <p>인기 프로젝트 목록 - 평점 순</p>
+            <div className="search-sort">
+                <button 
+                    type="button"
+                    className={sortBy === 'likes' ? 'active' : ''} 
+                    onClick={() => handleSortChange('likes')}>
+                    좋아요 순
+                </button>
+                <button 
+                    type="button"
+                    className={sortBy === 'fun' ? 'active' : ''} 
+                    onClick={() => handleSortChange('fun')}>
+                    FUN 점수
+                </button>
             </div>
-            <div className="list-page" data-section="rate" ref={rateRef1}></div>
-            <TrendList item={`<span className="hashtag">이런건</span> 어떠세요?<Link to="#"><div className="ad-icon">AD</div></Link>`} />
-            <div className="list-page" data-section="rate" ref={rateRef2}></div>
-        </section>
+            <div className="list-page" data-section="like" ref={wrapRef}></div>
+            {isLoading && 
+              <div className="search-no-result-wrap">
+              <p class="search-no-result">불러오는 중...</p>
+              </div>}
+            <div id="observer" style={{ height: "10px" }} ref={observerRef}></div>
+          </section>
     </>
   );
 }

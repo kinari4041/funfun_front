@@ -1,24 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-
-import { useData, renderData } from "util/useData";
+import TrendList from "section/trendlist";
 
 const AdRecommand = () => {
-    const wrapRef = useRef(null);
-
-    const [ itemsToRender, error ] = useData(10, 'premium'); 
-
-    useEffect(() => {
-
-        if (wrapRef.current && itemsToRender.length > 0) {
-            renderData(wrapRef.current, itemsToRender);
-        }
-
-    }, [itemsToRender]);
-
-    if (error) {
-        return <div>데이터 로딩에 문제가 발생했습니다.</div>
-    }
     
     return (
         <section id="section2"  className="section-area">
@@ -29,17 +13,7 @@ const AdRecommand = () => {
                 </div> 
                 <span>당신에게 맞춤추천</span>
             </div>
-            <div className="ad-recommand-projects">
-                <span className="trend-project-btn right">
-                    <i className="fa-solid fa-angle-right" />
-                </span>
-                <span className="trend-project-btn left">
-                    <i className="fa-solid fa-angle-left" />
-                </span>
-                <div className="trend-project-block" data-section="recommand">
-                    <div ref={wrapRef} className="trend-project-list ad-projects" />
-                </div>
-            </div>
+            <TrendList item='' dataType="premium"/>  
             <Link to="#">
                 <div className="banner">
                     <p>AD AREA</p>

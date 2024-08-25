@@ -1,4 +1,4 @@
-const cateDatas = {
+export const cateDatas = {
     식품: ['냉동식품', '안주류', '고기류/육류', '빵/간식', '비건', '음료', '해산물', '와인', '전통주', '요리책', '푸드 페스티벌'],
     커피: ['원두','콜드브루','커피용품','머신','캡슐','드립커피','디카페인'],
     향초: ['캔들','캔들워머','방향제','향수/공병','인센스','차량용 방향제','디퓨저','오일'],
@@ -10,14 +10,14 @@ const cateDatas = {
     문구: ['캘린더','다이어리','스티커','파우치']
 };
 
-export default function subCategory() {
+export default function subCategory(navigate) {
     const cateEl = document.querySelectorAll('.cate-title-el');
     const cateNav = document.querySelector("#cate-nav");
 
     cateEl.forEach((el) => {
         el.addEventListener('mouseenter', (e) => {
             const dataSet = e.target.dataset.text;
-            updateNav(cateNav, dataSet, cateDatas);
+            updateNav(cateNav, dataSet, cateDatas, navigate);
             
             cateNav.addEventListener('mouseleave', () => {
                 removeItem(cateNav);
@@ -26,10 +26,10 @@ export default function subCategory() {
     });
 }
 
-const updateNav = (cateNav, dataSet, cateData) => {
+const updateNav = (cateNav, dataSet, cateData, navigate) => {
     removeItem(cateNav);
     createList(cateNav);
-    appendItem(dataSet, cateData);
+    appendItem(dataSet, cateData, navigate);
 }
 
 const createList = (cateNav) => {
@@ -44,15 +44,20 @@ const createList = (cateNav) => {
     cateNav.append(cateItem);
 }
 
-const appendItem = (dataSet, itemData) => {
+const appendItem = (dataSet, itemData, navigate) => {
     const cateItems = document.querySelector(".cate-items");
     const items = itemData[dataSet] || [];
     items.forEach((item) => {
-        // if (dataSet === `${data.id}`) {
-            const cateItem = document.createElement("li");
-            cateItem.innerHTML = `<a href="#">${item}</a>`;
-            cateItems.append(cateItem);
-        // }
+        const cateItem = document.createElement("li");
+        const link = document.createElement("a");
+        link.textContent = item;
+        link.href = "#";
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            navigate(`/category?main=${encodeURIComponent(dataSet)}&sub=${encodeURIComponent(item)}`);
+        })
+        cateItem.append(link);
+        cateItems.append(cateItem);
     });
 }
 

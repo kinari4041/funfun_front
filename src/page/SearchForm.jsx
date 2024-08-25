@@ -12,7 +12,7 @@ const SearchForm = () => {
         e.preventDefault();
 
         if (query.trim().length > 0) {
-            let queryUri = `/search?q=${encodeURIComponent(query.trim())}&sortBy=upload`
+            let queryUri = `/search?q=${encodeURIComponent(query.trim())}`
             navigate(queryUri);
             setQuery('');
             

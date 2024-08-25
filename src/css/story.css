@@ -1,0 +1,108 @@
+
+.story-posts-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 80px;
+  width: 80%;
+}
+.story-post {
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.story-1);
+  margin-bottom: 20px;
+  margin-left: 20px;
+  width: 45%;
+  ;
+  box-sizing: border-box;
+}
+.story-post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.story-profile-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.story-seller-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+.story-post-time {
+  color: #888;
+  font-size: 14px;
+}
+.story-post-image {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+.story-post-description {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.story-tagged-item {
+  font-size: 14px;
+  color: #333;
+  background-color: #f1f1f1;
+  padding: 5px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 15px;
+}
+.story-post-footer {
+  display: flex;
+  justify-content: space-between;
+}
+.story-post-footer button {
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #555;
+  display: flex;
+  align-items: center;
+}
+.story-post-footer button:hover {
+  color: #000;
+}
+.story-post-footer button img {
+  width: 20px;
+  margin-right: 5px;
+}
+.story-tagged-item-button {
+  position: relative;
+  padding: 8px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.story-tagged-item-details {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+
+.story-tagged-item-detail {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.story-tagged-item-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+}
+
+.story-tagged-item-price {
+  font-size: 14px;
+  color: #333;
+}
+

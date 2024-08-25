@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async';
 
 import { renderData } from 'util/useData';
-import { getRecentList } from 'util/apiService';
+import { getReadyList } from 'util/apiService';
 
-const Recent = () => {
+const Comming = () => {
 
   const wrapRef = useRef(null);
   const observerRef = useRef(null);
@@ -23,7 +23,7 @@ const Recent = () => {
 
     setIsLoading(false);
       try {
-        const response = await getRecentList();
+        const response = await getReadyList();
         setFullData(prevData => [...prevData, ...response]);
 
         if (response.length < limit) {
@@ -76,7 +76,7 @@ const Recent = () => {
           `;
       } else if (data.length > 0) {
           wrapRef.current.style.setProperty('display','grid')
-          renderData(wrapRef.current, data, 'recent')
+          renderData(wrapRef.current, data, 'ready')
       } else {
           wrapRef.current.style.setProperty('display','block')
           wrapRef.current.innerHTML = `
@@ -91,11 +91,11 @@ const Recent = () => {
   return (
     <>
       <Helmet>
-        <title>FunFun - 최신 프로젝트</title>
+        <title>FunFun - 오픈 예정 프로젝트</title>
       </Helmet>
         <section id="popular" className="section-area">
             <div className="section-title">
-                <p>최신 프로젝트</p>
+                <p>오픈 예정 프로젝트</p>
             </div>
             <div className="list-page" data-section="like" ref={wrapRef}></div>
             {isLoading && 
@@ -108,4 +108,4 @@ const Recent = () => {
   );
 }
 
-export default Recent;
+export default Comming;

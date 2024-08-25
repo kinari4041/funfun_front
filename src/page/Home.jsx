@@ -1,4 +1,4 @@
-import Main from "page/main";
+import Main from "page/Main";
 import React from "react";
 import { Helmet } from "react-helmet-async";
 

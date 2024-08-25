@@ -50,7 +50,29 @@ export function getProjectRank() {
     return call('/Project/getProjectRank', 'GET');
 }
 
+export function getRecentList() {
+    return call('/Project/getRecentList', 'GET');
+}
+
+export function getReadyList() {
+    return call('/Project/getReadyList', 'GET');
+}
+
+export function getViewList() {
+    return call('/Project/getViewList', 'GET');
+}
+
+export function getPopularList(sortBy) {
+    const url = `/Project/getPopularList?sortBy=${sortBy}`;
+    return call(url, 'GET');
+}
+
 export function searchProjects(searchTerm, sortBy) {
-    const url = `/Project/getProjectSearch?q=${encodeURIComponent(searchTerm)}&sortBy=${encodeURIComponent(sortBy)}`;
+    const url = `/Project/getProjectSearch?q=${encodeURIComponent(searchTerm)}&sortBy=${sortBy}`;
+    return call(url, 'GET');
+}
+
+export function discoverProjects(main, sub, sortBy) {
+    const url = `/Project/getProjectDiscover?main=${main}&sub=${sub}&sortBy=${sortBy}`;
     return call(url, 'GET');
 }
