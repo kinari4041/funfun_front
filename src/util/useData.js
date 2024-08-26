@@ -108,6 +108,14 @@ const setProjectDesc = (dataType, data) => {
     }
 }
 
+const setProjectType = (dataType, data) => {
+    if (dataType === 'likes') {
+        return `<p class="project-cate-rate heart"><i class="fa-solid fa-heart"></i> ${data.projectLikes}</p>`
+    } else {
+        return `<p class="project-cate-rate star"><i class="fa-solid fa-star"></i> ${data.projectFun}</p>`
+    }
+}
+
 // 렌더링 메소드
 export const renderData = (wrap, items, dataType) => {
     if (!wrap) return;
@@ -127,7 +135,7 @@ export const renderData = (wrap, items, dataType) => {
                         <span class="project-cate-rate percent">
                             <b>${data.projectGoal === 0 ? 0 : Math.floor((data.projectCurrent / data.projectGoal) * 100)}%</b> 달성
                         </span>
-                        <p class="project-cate-rate star"><i class="fa-solid fa-star"></i> ${data.projectFun}</p>
+                    ${setProjectType(dataType, data)}
                     </div>
                     <p class="project-cate name">${data.userNickname}</p>
                 </div>

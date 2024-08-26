@@ -44,7 +44,7 @@ const Category = () => {
                 `;
             } else if (data.length > 0) {
                 wrapRef.current.style.setProperty('display','grid')
-                renderData(wrapRef.current, data)
+                renderData(wrapRef.current, data, sortBy)
             } else {
                 wrapRef.current.style.setProperty('display','block')
                 wrapRef.current.innerHTML = `
