@@ -587,7 +587,7 @@ header {
 .login-form-wrapper {
     border-radius: 20px;
     width: 100%;
-    height: 600px;
+    height: 530px;
     position: absolute;
     left: 0;
     background: #fff;
@@ -752,7 +752,6 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
     width: 100%;
 }
 
@@ -767,11 +766,10 @@ header {
     color: var(--color-blue);
 }
 
-.fa-instagram {
+.login-method .fa-instagram {
     width: 30px;
     height: 30px;
     border-radius: 30px;
-    margin-top: 3px;
     display:flex;
     justify-content: center;
     align-items: center;
@@ -841,7 +839,7 @@ header {
     align-items: center;
     height: auto;
     padding: 12px;
-    border-radius: 50px;
+    border-radius: 20px;
     background: var(--color-white);
     border: 2px solid var(--color-primary);
     transition: box-shadow 0.2s ease;
@@ -872,6 +870,16 @@ header {
     overflow: hidden;
 }
 
+.register-wrap {
+    gap: 15px;
+    height: inherit;
+}
+
+.register-form-wrap .login-error-message {
+    margin-top: -10px;
+}
+
+
 .register-form-wrapper {
     width: 100%;
     max-width: 550px;
@@ -893,16 +901,18 @@ header {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    gap: 10px;
+}
+
+.register-page h1 {
+    font-family: "Noto Sans KR";
+    font-weight: 400;
+    margin-bottom: 20px;
 }
 
 .back-register fieldset {
-    margin-top: 10px;
     border-radius: 10px;
     padding: 15px 10px; 
-}
-
-.back-register fieldset:nth-of-type(1){
-    margin-top: 0;
 }
 
 .email-wrap {
@@ -910,7 +920,6 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
 }
 
 .email-wrap fieldset {
@@ -935,7 +944,6 @@ header {
 .social-num-wrap {
     display: flex;
     width: 80%;
-    margin-top: 10px;
     gap: 10px;
     justify-content: center;
     align-items: center;

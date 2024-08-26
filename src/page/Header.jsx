@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import subCategory from "util/subCategory";
-import stickyNav from "util/stickyNav";
 import SearchForm from "./SearchForm";
 import LoginForm from "./LoginForm";
-import { useLogin } from "util/LoginProvider";
+import { useLogin } from "util/loginProvider";
 import { cateDatas } from "util/subCategory";
 
 const Header = () => {
@@ -36,6 +35,18 @@ const Header = () => {
         }
     };
     
+    const stickyNav = () => {
+        const cateNav = document.getElementById('cate-nav');
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            if (scrollY > 140) {
+                cateNav.classList.add('active');
+            } else {
+                cateNav.classList.remove('active');
+            }
+        });
+    }
+
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const mainParam = params.get('main');
@@ -47,7 +58,7 @@ const Header = () => {
     }, [location])
 
     useEffect(() => {
-        stickyNav();
+        stickyNav()
         subCategory(navigate);
     }, [navigate])
 

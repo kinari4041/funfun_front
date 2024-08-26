@@ -62,7 +62,7 @@ const Category = () => {
     return (
         <>
             <Helmet>
-              <title>FUNFUN - {(currentSub === 'all') ? main : `${main}, ${sub}`} 프로젝트</title>
+              <title>FUNFUN - {(sub === 'all') ? main : `${main}, ${sub}`} 프로젝트</title>
             </Helmet>
             <section id="category" className="section-area">
                 <div className="search-title-wrap">

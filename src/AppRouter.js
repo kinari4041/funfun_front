@@ -2,9 +2,10 @@ import "css/style.css";
 import "css/default.css";
 
 import React from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
-import { LoginProvider } from "util/LoginProvider";
+import { Route, Routes, useLocation, Navigate } from "react-router-dom";
+import { LoginProvider } from "util/loginProvider";
 
+import Error404 from "page/Error404";
 import Popular from "page/Popular";
 import Recent from "page/Recent";
 import Search from "page/Search";
@@ -24,11 +25,12 @@ import ScrollToTop from "util/scrollToTop"
 
 const AppRouter = () => {
     const location = useLocation();
-    const isFooterNeed = !['/search', '/category'].includes(location.pathname);
+    const isHeaderNeed = !['/404'].includes(location.pathname);
+    const isFooterNeed = !['/404','/search', '/category'].includes(location.pathname);
 
     return (
       <LoginProvider>
-          <Header />
+          {isHeaderNeed && <Header />}
           <ScrollToTop />
             <Routes>
             {/* 메인 index 페이지 */}
@@ -55,6 +57,12 @@ const AppRouter = () => {
               <Route path="/fee-information" element={<FeeInformation />} />
               <Route path="/examination-guideline" element={<ExaminationGuideline />} />
               <Route path="/utilization-policy" element={<UtilizationPolicy />} />
+
+              {/* 404 에러 페이지 */}
+              <Route path="/404" element={<Error404 />} />
+              {/* 모든 기타 경로는 404 페이지로 리다이렉트 */}
+              <Route path="*" element={<Navigate to="/404" replace />} />
+
             </Routes>
           {isFooterNeed && <Footer />}
       </LoginProvider>

@@ -2,12 +2,14 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Naver from "img/ico_naver.png";
 import { call, join } from "util/apiService";
-import { useLogin } from "util/LoginProvider";
+import { useLogin } from "util/loginProvider";
 
 // 비밀번호: 8글자 이상, 영문, 숫자 사용
 function strongPassword(pw) {return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(pw);}
 // 이메일 형식 유효성 검사
 function isEmail(id) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(id); }
+// 주민등록번호 뒷자리 유효성 검사
+function isRightSocialNum(socialnum) { return /^[1234]*$/.test(socialnum); }
 // 생년월일 입력값 유효성 검사
 function isRightBirth(birth) { return /^\d{8}$/.test(birth); }
 
@@ -33,6 +35,7 @@ const LoginForm = () => {
     // 로그인, 회원가입 화면을 전환할 수 있는 메서드 정의
     const toggleForm = () => {
         setIsLogin(!isLogin);
+        reset();
     };
 
     // 로그인 화면을 띄우고 없애는 메서드 정의
@@ -78,7 +81,6 @@ const LoginForm = () => {
                       //컨텍스트 객체는 사용자의 요청과 함께 지속되므로 
                       //새로고침이 이루어지면 삭제되고 새로운 컨텍스트 객체가 생성됨
                       //새로고침 없이 원하는 페이지로 이동함: useNavigate()훅
-                      
                       close();
                     } else {
                       setLoginErrors({password: "아이디 혹은 비밀번호가 틀립니다."});
@@ -90,13 +92,13 @@ const LoginForm = () => {
         } else {
             const errors = registerFormChecker();
             console.log(Object.keys(errors).length);
-            if (Object.keys(errors).length <= 6 && step === 1) {
+            if (Object.keys(errors).length < 6 && step === 1) {
                 setStep(prevStep => prevStep + 1);
                 setRegisterErrors({});
-            } else if (Object.keys(errors).length <= 4 && step === 2) {
+            } else if (Object.keys(errors).length < 4 && step === 2) {
                 setStep(prevStep => prevStep + 1);
                 setRegisterErrors({});
-            } else if (Object.keys(errors).length <= 1 && step === 3) {
+            } else if (Object.keys(errors).length === 0 && step === 3) {
                 try {
                     const userDTO = {
                         userEmail: `${registerForm.email}@${registerForm.domain}`,
@@ -120,7 +122,7 @@ const LoginForm = () => {
                 } catch (error) {
                     console.error("회원가입중 오류 발생", error);
                 }
-             }else {
+             } else {
                 setRegisterErrors(errors)
             }
         }
@@ -138,14 +140,13 @@ const LoginForm = () => {
         }
     }
 
+    // 주민등록번호 뒷자리가 홀수면 남성, 짝수면 여성으로 지정
     const getGender = (num) => {
-        if (num === "1" || num === "3") {
-            return 'M'
-        } else {
-            return 'F'
-        }
+        console.log(num);
+        return num % 2 === 0 ? 'F' : 'M';
     }
 
+    // 입력받은 전화번호를 저장하는 데이터베이스의 형식에 맞게 재설정
     const formatPhoneNum = (num) => {
         if (num.startsWith('010')) {
             const restOfNum = num.slice(3);
@@ -154,9 +155,9 @@ const LoginForm = () => {
         return num;
     };
 
-    // 폼 내용 변경 처리
+    // 폼 내용 변경 감지 핸들러
     const handleChange = (e) => {
-        const { name, value } = e.target;      
+        const { name, value, type, checked } = e.target;      
 
         if (isLogin) {
             setLoginForm(prevData => ({
@@ -164,17 +165,16 @@ const LoginForm = () => {
                 [name]: value
             }));
         } else {
-            setRegisterForm(prevData => ({
-                ...prevData,
-                [name]: value
-            }));
-        }
-
-        if (name === 'email') {
-            handleEmailChange(e);
-        } else if (name === 'domain') {
-            handleDomainChange(e);
-        } else {
+            if (name === 'email') {
+                handleEmailChange(e);
+            } else if (name === 'domain' && value === 'type') {
+                handleDomainChange(e);
+            } else {
+                setRegisterForm(prevData => ({
+                    ...prevData,
+                    [name]: type === 'checkbox' ? checked : value
+                }));
+            }
         }
     };
 
@@ -190,6 +190,27 @@ const LoginForm = () => {
             confirmPassword: '',
             name: '',
             nickname: '',
+            socialnum: '',
+            birthdate: '',
+            phone: '',
+            termsAccepted: false,
+            privacyAccepted: false
+        });
+        setLoginErrors({});
+        setRegisterErrors({});
+    }, []);
+
+    // 창 닫을시 기존의 요소들 초기화하는 메서드
+    const reset = useCallback(() => {
+        setStep(1);
+        setLoginForm({ email: '', password: '' });
+        setRegisterForm({
+            email: '',
+            password: '',
+            confirmPassword: '',
+            name: '',
+            nickname: '',
+            socialnum: '',
             birthdate: '',
             phone: '',
             termsAccepted: false,
@@ -266,6 +287,7 @@ const LoginForm = () => {
         password: '',
         confirmPassword: '',
         name: '',
+        nickname: '',
         birthdate: '',
         phone: '',
         termsAccepted: false,
@@ -298,13 +320,23 @@ const LoginForm = () => {
                 errors.name = '이름을 입력하세요';
             }
         }
+        if (field === 'nickname' || !field) {
+            if (!registerForm.nickname) {
+                errors.nickname = '별명을 입력하세요';
+            }
+        }
         if (field === 'birthdate' || !field) {
             if (!registerForm.birthdate) {
                 errors.birthdate = '생년월일을 입력하세요';
             } else if (!isRightBirth(registerForm.birthdate)) {
                 errors.birthdate = '생년월일은 8자리 숫자이어야 합니다.'
-            } else if (!registerForm.birthdate || !registerForm.socialnum) {
-                errors.birthdate = '주민등록번호 뒤 1자리를 입력해주세요.'
+            } 
+        }
+        if (field === 'socialnum' || !field) {
+            if (!registerForm.socialnum) {
+                errors.birthdate = '생년월일과 주민등록번호 뒤 1자리를 입력해주세요.'
+            } else if (!isRightSocialNum(registerForm.socialnum)) {
+                errors.birthdate = '유효하지 않은 번호입니다.'
             }
         }
         if (field === 'phone' || !field) {
@@ -313,13 +345,18 @@ const LoginForm = () => {
             }
         }
         if (field === 'termsAccepted' || field === 'privacyAccepted' || !field) {
-            if (!registerForm.termsAccepted || !registerForm.privacyAccepted) {
+            if (!registerForm.termsAccepted && !registerForm.privacyAccepted) {
                 errors.termsAccepted = '약관에 모두 동의해주세요';
             }
         }
         return errors;
     }
 
+    // 회원가입 폼 이전 버튼 핸들러
+    const handleBackStep = () => {
+      setStep(prevStep => prevStep - 1);
+    };
+    
     // 이메일 변경 감지 핸들러
     const handleEmailChange = (e) => {
         const { value } = e.target;
@@ -329,32 +366,23 @@ const LoginForm = () => {
         }));
     };
 
-    // 회원가입 폼 이전 버튼 핸들러
-    const handleBackStep = () => {
-      setStep(prevStep => prevStep - 1);
-    };
-    
     // 이메일 도메인 내용 변경 감지 핸들러
     const handleDomainChange = (e) => {
         const selectedValue = e.target.value;
-
-        if(!isLogin) {
-            if (selectedValue !== "type") {
-                // 선택한 도메인이 있다면
-                setRegisterForm(prevData => ({
-                    ...prevData,
-                    domain: selectedValue
-                }));
-                setDomainDisabled(true);
-
-            } else {
-                setDomainDisabled(false);
-                setRegisterForm(prevData => ({
-                    ...prevData,
-                    domain: '',
-                }));
-            }
-        } 
+        if (selectedValue !== "type") {
+            // 선택한 도메인이 있다면
+            setRegisterForm(prevData => ({
+                ...prevData,
+                domain: selectedValue
+            }));
+            setDomainDisabled(true);
+        } else {
+            setDomainDisabled(false);
+            setRegisterForm(prevData => ({
+                ...prevData,
+                domain: '',
+            }));
+        }
     };
 
     // 도메인 옵션들
@@ -388,10 +416,15 @@ const LoginForm = () => {
     // HTML
     return (
         <>  
-            {(!isLoggedIn) ? <div className="login-button" onClick={toggleActive}> 로그인 / 회원가입</div> : <div className="logged-in"><span>{usrNickName} 님</span><div className="login-button" onClick={logOut}> 로그아웃</div></div>}
+            {/* 로그인 상태 여부에 따라 버튼 달라지기 */}
+            {(!isLoggedIn) 
+                ? <div className="login-button" onClick={toggleActive}> 로그인 / 회원가입</div> 
+                : <div className="logged-in"><Link to="/mypage" className="btn-my-page"><i className="fas fa-user-alt"></i> {usrNickName} 님</Link>
+                    <div className="login-button" onClick={logOut}> 로그아웃</div></div>}
+
             <div className={`login-background ${isActivate ? 'login-activate' : ''}`}>
                 <div className="login-form">
-                    <div className={`login-form-wrapper ${!isLogin ? 'flip' : ''}`}>
+                    <div className={`login-form-wrapper ${!isLogin ? 'flip' : ''}`} style={{ height: `${isLogin ? '530px' : (step === 2) ? '750px' : '650px'}` }}>
                         {/* ─────────────────────
                          / Front - 로그인화면
                         ────────────────────────*/}
@@ -533,6 +566,7 @@ const LoginForm = () => {
                                                         </select>
                                                     </fieldset>
                                                     </div>
+                                                    {registerErrors.email && <div className="login-error-message">{registerErrors.email}</div>}
                                                     <fieldset>
                                                         <input
                                                             className="login-input"
@@ -547,6 +581,7 @@ const LoginForm = () => {
                                                             ref={formRef}
                                                         />
                                                     </fieldset>
+                                                    {registerErrors.password && <div className="login-error-message">{registerErrors.password}</div>}
                                                     <fieldset>
                                                         <input
                                                             className="login-input"
@@ -561,8 +596,6 @@ const LoginForm = () => {
                                                             ref={formRef}
                                                         />
                                                     </fieldset>
-                                                    {registerErrors.email && <div className="login-error-message">{registerErrors.email}</div>}
-                                                    {registerErrors.password && <div className="login-error-message">{registerErrors.password}</div>}
                                                     {registerErrors.confirmPassword && <div className="login-error-message">{registerErrors.confirmPassword}</div>}
                                                 </form>
                                                 <div className="register-button-wrap">
@@ -571,79 +604,83 @@ const LoginForm = () => {
                                             </div>
                                             {/* 스텝 2 */}
                                             <div className="register-page">
-                                                <fieldset>
-                                                    <input
-                                                        className="login-input"
-                                                        type="text"
-                                                        name="name"
-                                                        placeholder="이름"
-                                                        value={registerForm.name}
-                                                        onChange={handleChange}
-                                                        onKeyUp={handleKeyUp}
-                                                        onFocus={handleFocus}
-                                                        ref={formRef}
-                                                    />
-                                                </fieldset>
-                                                <fieldset>
-                                                    <input
-                                                        className="login-input"
-                                                        type="text"
-                                                        name="nickname"
-                                                        placeholder="별명"
-                                                        value={registerForm.nickname}
-                                                        onChange={handleChange}
-                                                        onKeyUp={handleKeyUp}
-                                                        onFocus={handleFocus}
-                                                        ref={formRef}
-                                                    />
-                                                </fieldset>
-                                                <div className="social-num-wrap">
+                                                <form className="register-wrap">
                                                     <fieldset>
                                                         <input
                                                             className="login-input"
                                                             type="text"
-                                                            name="birthdate"
-                                                            placeholder="주민번호 앞 8자리"
-                                                            value={registerForm.birthdate}
+                                                            name="name"
+                                                            placeholder="이름"
+                                                            value={registerForm.name}
                                                             onChange={handleChange}
                                                             onKeyUp={handleKeyUp}
                                                             onFocus={handleFocus}
-                                                            maxLength="8"
                                                             ref={formRef}
                                                         />
                                                     </fieldset>
-                                                    <span>-</span>
+                                                    {registerErrors.name && <div className="login-error-message">{registerErrors.name}</div>}
                                                     <fieldset>
                                                         <input
                                                             className="login-input"
                                                             type="text"
-                                                            name="socialNumber"
-                                                            placeholder="뒤 1자리"
-                                                            value={registerForm.socialnum}
+                                                            name="nickname"
+                                                            placeholder="별명"
+                                                            value={registerForm.nickname}
                                                             onChange={handleChange}
                                                             onKeyUp={handleKeyUp}
                                                             onFocus={handleFocus}
-                                                            maxLength="1"
                                                             ref={formRef}
                                                         />
                                                     </fieldset>
-                                                </div>
-                                                <fieldset>
-                                                    <input
-                                                        className="login-input"
-                                                        type="tel"
-                                                        name="phone"
-                                                        placeholder="휴대전화"
-                                                        value={registerForm.phone}
-                                                        onChange={handleChange}
-                                                        onKeyUp={handleKeyUp}
-                                                        onFocus={handleFocus}
-                                                        ref={formRef}
-                                                    />
-                                                </fieldset>
-                                                {registerErrors.name && <div className="login-error-message">{registerErrors.name}</div>}
-                                                {registerErrors.birthdate && <div className="login-error-message">{registerErrors.birthdate}</div>}
-                                                {registerErrors.phone && <div className="login-error-message">{registerErrors.phone}</div>}
+                                                    {registerErrors.nickname && <div className="login-error-message">{registerErrors.nickname}</div>}
+                                                    <div className="social-num-wrap">
+                                                        <fieldset>
+                                                            <input
+                                                                className="login-input"
+                                                                type="text"
+                                                                name="birthdate"
+                                                                placeholder="생년월일(주민번호 앞 8자리)"
+                                                                value={registerForm.birthdate}
+                                                                onChange={handleChange}
+                                                                onKeyUp={handleKeyUp}
+                                                                onFocus={handleFocus}
+                                                                maxLength="8"
+                                                                ref={formRef}
+                                                            />
+                                                        </fieldset>
+                                                        <span>-</span>
+                                                        <fieldset>
+                                                            <input
+                                                                className="login-input"
+                                                                type="text"
+                                                                name="socialnum"
+                                                                placeholder="뒤 1자리"
+                                                                value={registerForm.socialnum}
+                                                                onChange={handleChange}
+                                                                onKeyUp={handleKeyUp}
+                                                                onFocus={handleFocus}
+                                                                maxLength="1"
+                                                                ref={formRef}
+                                                            />
+                                                        </fieldset>
+                                                    </div>
+                                                    {registerErrors.birthdate && <div className="login-error-message">{registerErrors.birthdate}</div>}
+                                                    <fieldset>
+                                                        <input
+                                                            className="login-input"
+                                                            type="tel"
+                                                            name="phone"
+                                                            placeholder="휴대전화"
+                                                            value={registerForm.phone}
+                                                            onChange={handleChange}
+                                                            onKeyUp={handleKeyUp}
+                                                            onFocus={handleFocus}
+                                                            maxLength="11"
+                                                            ref={formRef}
+                                                        />
+                                                    </fieldset>
+                                                    {registerErrors.phone && <div className="login-error-message">{registerErrors.phone}</div>}
+                                                </form>
                                                 <div className="register-button-wrap">
                                                     <button onClick={handleBackStep} className="login prev-page">이전</button>
                                                     <button onClick={handleNextStep} className="login next-page">다음</button>

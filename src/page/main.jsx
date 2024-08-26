@@ -6,7 +6,7 @@ import Slide from "section/slide";
 import AdRecommand from "section/adreco"
 import CateRecommand from "section/catereco"
 import TrendList from "section/trendlist";
-import { useLogin } from "util/LoginProvider";
+import { useLogin } from "util/loginProvider";
 
 const Main = () => {
     const { usrNickName, isLoggedIn } = useLogin();
