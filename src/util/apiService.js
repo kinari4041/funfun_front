@@ -26,6 +26,11 @@ export function call(api, method, request){
             );
 }
 
+
+/* ──────────────────────────────────────
+            USER 관련 메서드
+───────────────────────────────────────── */
+
 export function update(userDTO) {
     return call("/user/updateUser", "PUT", userDTO);
 }
@@ -37,6 +42,11 @@ export function deleteUser(uIdx) {
 export function join(userDTO) {//회원가입
     return call("/user/insertUser", "POST", userDTO);
 }
+
+
+/* ──────────────────────────────────────
+        프로젝트 데이터 관련 메서드
+───────────────────────────────────────── */
 
 export function getProjectList() {
     return call('/Project/getProjectList', 'GET');
@@ -75,4 +85,14 @@ export function searchProjects(searchTerm, sortBy) {
 export function discoverProjects(main, sub, sortBy) {
     const url = `/Project/getProjectDiscover?main=${main}&sub=${sub}&sortBy=${sortBy}`;
     return call(url, 'GET');
+}
+
+
+/* ──────────────────────────────────────
+      프로젝트 세부 게시글 관련 메서드
+───────────────────────────────────────── */
+
+export function getArticle(id) {
+    const url = `/Article/getArticle?id=${id}`;
+    return call(url, "GET");
 }

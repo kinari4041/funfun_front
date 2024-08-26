@@ -14,6 +14,8 @@ const ProjectDetail = () => {
   const queryParams = new URLSearchParams(location.project);
   const projectid = queryParams.get('id') || '';
 
+  
+
   const sliderSettings = {
     infinite: true,
     speed: 500,
