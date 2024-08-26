@@ -30,7 +30,7 @@ const Aside = () => {
             <ul className="rank-wrap">
                 {data.map((item) => (
                     <li key={item.projectId}>
-                        <Link to="/">
+                        <Link to={`/project?id=${item.projectId}`}>
                             <div className="rank-items">
                                 <div className="rank-items__front">
                                     <p className="rank-number">{item.projectRank}</p>

@@ -91,7 +91,7 @@ const Popular = () => {
 
   const handleSortChange = (sort) => {
       setSortBy(sort);
-      setData([]);
+      setFullData([]);
       setPage(0);
       setHasMore(true);
   };
@@ -119,7 +119,7 @@ const Popular = () => {
                     FUN 점수
                 </button>
             </div>
-            <div className="list-page" data-section="like" ref={wrapRef}></div>
+            <div className="list-page" ref={wrapRef}></div>
             {isLoading && 
               <div className="search-no-result-wrap">
               <p class="search-no-result">불러오는 중...</p>

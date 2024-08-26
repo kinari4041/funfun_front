@@ -4,10 +4,16 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick';
 import LikeButton from 'util/likeButton';
+import { useLocation, } from 'react-router-dom';
 import { FaShareAlt } from 'react-icons/fa';
 // import { Link } from 'react-router-dom';
 
-function ProjectDetail() {
+const ProjectDetail = () => {
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.project);
+  const projectid = queryParams.get('id') || '';
+
   const sliderSettings = {
     infinite: true,
     speed: 500,

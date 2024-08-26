@@ -114,7 +114,7 @@ export const renderData = (wrap, items, dataType) => {
 
     wrap.innerHTML = items.map((data) => {
         return `
-            <div class="list-project-wrap">
+            <a href="/project?id=${data.projectId}" class="list-project-wrap">
                 <div class="list-project-img-container">
                     <img src="https://picsum.photos/400/400?random=${data.projectId}" alt=${data.projectName} />
                 </div>
@@ -131,7 +131,7 @@ export const renderData = (wrap, items, dataType) => {
                     </div>
                     <p class="project-cate name">${data.userNickname}</p>
                 </div>
-            </div>
+            </a>
         `;
     }).join('');
 }
