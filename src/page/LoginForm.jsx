@@ -92,10 +92,10 @@ const LoginForm = () => {
         } else {
             const errors = registerFormChecker();
             console.log(Object.keys(errors).length);
-            if (Object.keys(errors).length < 6 && step === 1) {
+            if (Object.keys(errors).length < 7 && step === 1) {
                 setStep(prevStep => prevStep + 1);
                 setRegisterErrors({});
-            } else if (Object.keys(errors).length < 2 && step === 2) {
+            } else if (Object.keys(errors).length < 3 && step === 2) {
                 setStep(prevStep => prevStep + 1);
                 setRegisterErrors({});
             } else if (Object.keys(errors).length === 0 && step === 3) {
