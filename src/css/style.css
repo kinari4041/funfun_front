@@ -269,6 +269,11 @@ header {
     cursor: pointer;
 }
 
+.cate-title-el.active {
+    color: var(--color-primary);
+    border-bottom: 5px solid var(--color-primary);
+}
+
 .cate-title-el span {
     width: max-content;
 }
@@ -467,6 +472,11 @@ header {
 /* ─────────────────────────────────────────────────────────
                 카테고리별 화면 - 추가 네비게이션
 ────────────────────────────────────────────────────────── */
+
+#discover-nav {
+    width: 1330px;
+    margin: 0 auto;
+}
 
 .cate-discover-scroll-wrapper {
     display: flex;
@@ -1692,21 +1702,45 @@ footer {
                ProjectDetail 펀딩 세부화면
 ────────────────────────────────────────────────────────── */
 
+.project-menu-wrap {
+    width: 100%;
+    height: 100%;
+}
+
+.project-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    gap: 40px;
+}
+
+.project-menu .cate-title-el {
+    font-weight: 400;
+    font-size: 16px
+}
+
+#project-story.main {
+    margin-top: 20px;
+}
+
 .detail-container {
-    max-width: 1300px;
+    margin-top: 30px;
     height: auto;
-    margin: 0px auto;
-    padding: 0px;
-    font-family: Arial, sans-serif;
     display: flex;
     justify-content: space-between;
-    scroll-behavior: smooth;
+    gap: 5%;
   }
   
-  .detail-slider {
-    width: 50%;
+  .detail-left-area {
     height: 100%;
-    margin: 10px;
+    padding-top: 30px;
+    flex: 1
+  }
+  
+  .detail-right-area {
+    width:100%;
+    flex: 0.6
   }
   
   .detail-container img {
@@ -1715,78 +1749,13 @@ footer {
     border-radius: 10px;
   }
   
-  .detail-info-panel {
-    width: 40%;
-    height: 100%;
-    margin: 30px;
-  }
-  
-  .detail-slick-prev {
-    display: block !important;  /* 항상 보이도록 */
-    z-index: 1;                 /* 이미지 위에 표시되도록 */
-    font-size: 30px;            /* 크기 조정 */
-    color: black;               /* 색상 설정 */
-    width: 30px;
-    height: 30px;
-    background: white;          /* 배경색 설정 */
-    border-radius: 50%;         /* 동그랗게 */
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.detail-5); /* 그림자 추가 */
-    opacity: 0.detail-7;               /* 약간 투명하게 */
-    margin: 20px;
-  }
-  
-  .detail-slick-next {
-    display: block !important;  /* 항상 보이도록 */
-    z-index: 1;                 /* 이미지 위에 표시되도록 */
-    font-size: 30px;            /* 크기 조정 */
-    color: black;               /* 색상 설정 */
-    width: 30px;
-    height: 30px;
-    background: white;          /* 배경색 설정 */
-    border-radius: 50%;         /* 동그랗게 */
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.detail-5); /* 그림자 추가 */
-    opacity: 0.detail-7;               /* 약간 투명하게 */
-    margin: 20px;
-  }
-  
-  .detail-slick-prev:before, .detail-slick-next:before {
-    font-size: 30px;
-    color: black;
-  }
-  
-  .detail-slick-prev {
-    left: 10px;
-  }
-  
-  .detail-slick-next {
-    right: 10px;
-  }
-  
   .detail-like-container {
-    display: flex;
-    flex-direction: column; /* 수직으로 배치 */
+    display: flex;  
+    flex-direction: column;
     align-items: center;
     justify-content: space-around;
   }
-  
-  .detail-like-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
-    padding: 5px;
-    transition: color 0.detail-3s ease;
-    margin-top: 30px;
-  }
-  
-  .detail-like-button.detail-liked {
-    color: red; /* 하트에 불이 켜졌을 때 빨간색으로 변경 */ 
-  }
-  
-  .detail-like-button:focus {
-    outline: none;
-  }
-  
+
   .detail-icons {
     display: flex;
     align-items: center;
@@ -1814,12 +1783,13 @@ footer {
     border-radius: 5px;
   }
   
-  .detail-info-panel-bar{
+  .detail-info-panel-bar {
     width: 100%;
-    height: 700px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.detail-1);
+    border-radius: 30px;
     padding: 5px;
+    margin-bottom: 50px;
   }
+
   .detail-main_content1{
     display: flex;
     width: 100%;
@@ -1837,16 +1807,12 @@ footer {
   
   .detail-reward-selection {
     max-width: 600px;
-    margin: 0x auto;
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.detail-1);
-    overflow-y: auto;  /* 스크롤바 표시 */
-    max-height: 1100px;  /* 최대 높이 설정 */
+    padding: 20px;
+    border-radius: 30px;
+    overflow-y: auto;
+    max-height: 1100px;
     position: sticky;
-    margin-top: 50px;
-  
+    top: 48px;
   }
   
   .detail-reward-selection h1 {
@@ -2082,36 +2048,89 @@ footer {
   .detail-reward-footer span {
     font-weight: bold;
   }
-  
-  @media (min-width: 1096px) {
-    .detail-app-container {
-      padding: 10px;
-    }
-  
-    .detail-buttons, .detail-reward-footer div {
-      flex-direction: column;
-    }
-  
-    .detail-btn, .detail-reward-footer div {
-      width: 100%;
-    }
-  
-    h1, h2, h3 {
-      font-size: 1.detail-5em;  /* 모든 제목 크기 축소 */
-    }
-  
-    .detail-reward-price {
-      flex-direction: column;
-      align-items: start;
-    }
-  
-    .detail-reward-price strong {
-      margin-bottom: 5px;
-    }
+
+
+/* ─────────────────────────────────────────────────────────
+                    공지사항 리스트
+────────────────────────────────────────────────────────── */
+
+.notice-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #ddd;
   }
   
-
-
+  .header-left h1 {
+    font-size: 1.5em;
+    margin: 0;
+  }
+  
+  .header-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-right label {
+    margin-right: 10px;
+    font-size: 1em;
+  }
+  
+  .header-right select {
+    padding: 10px 7px;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .notice-item {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    background-color: #fff;
+  }
+  
+  .notice-list {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .notice-category {
+    font-size: 0.9em;
+    color: #888;
+  }
+  
+  .notice-title {
+    font-size: 1.2em;
+    margin: 10px 0;
+    font-weight: bold;
+  }
+  
+  .notice-info {
+    font-size: 0.9em;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .notice-date {
+    font-style: italic;
+  }
+  
+  .notice-comments {
+    font-weight: bold;
+  }
+  
+  .notice-divider {
+    margin-top: 15px;
+    border: 0;
+    border-top: 1px solid #ddd;
+  }
+  
 
 /* ─────────────────────────────────────────────────────────
                 푸터: 고객 지원센터 안내 영역

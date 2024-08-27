@@ -92,13 +92,15 @@ export function discoverProjects(main, sub, sortBy) {
 ───────────────────────────────────────── */
 
 export function getArticle(id) {
-    const url = `/Article/getArticle?id=${id}`;
+    const url = `/Article/getArticle/${id}`;
     return call(url, "GET");
 }
 
 export function getLike(id) {
-    const url = `/Article/getLike/${id}`;
-    return call(url, "GET");
+    if (id !== undefined) {
+        const url = `/Article/getLike/${id}`;
+        return call(url, "GET");
+    }
 }
 
 export function articleLike(id) {

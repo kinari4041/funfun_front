@@ -4,23 +4,14 @@ import "css/default.css";
 import React from "react";
 import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import { LoginProvider } from "util/loginProvider";
-
-import Error404 from "page/Error404";
-import Popular from "page/Popular";
-import Recent from "page/Recent";
-import Search from "page/Search";
-import Upload from "page/Upload";
-import Comming from "page/Comming";
-import Home from "page/Home";
-import Header from "page/Header";
-import Footer from "page/Footer";
-import Category from "page/Category";
+import { Header, Footer } from "core";
+import { Category, Comming, Error404, Home, 
+          Popular, Project, Recent, 
+          Story, Search, Upload } from "page";
 import NoticeBoard from "section/noticeBoard";
 import FeeInformation from "section/feeInformation";
 import ExaminationGuideline from "section/examinationGuideline";
 import UtilizationPolicy from "section/utilizationPolicy";
-import ProjectDetail from "page/ProjectDetail";
-import Story from "page/Story";
 import ScrollToTop from "util/scrollToTop"
 
 const AppRouter = () => {
@@ -44,7 +35,7 @@ const AppRouter = () => {
               <Route path="/comming_soon" element={<Comming />} />
 
               {/* 프로젝트 세부페이지 */}
-              <Route path="/project" element={<ProjectDetail />} />
+              <Route path="/project/*" element={<Project />} />
 
               {/* 업로드 페이지 */}
               <Route path="/pjtregist" element={<Upload />} />

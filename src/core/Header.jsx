@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import subCategory from "util/subCategory";
-import SearchForm from "./SearchForm";
-import LoginForm from "./LoginForm";
 import { useLogin } from "util/loginProvider";
 import { cateDatas } from "util/subCategory";
+import stickyNav from "util/stickyNav";
+import SearchForm from "./SearchForm";
+import LoginForm from "./LoginForm";
 
 const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const isPage = (page) => location.pathname === page;
-
+    const isCateNavNeed = !location.pathname.startsWith('/project/detail');
     const [main, setMain] = useState('');
 
     const { isLoggedIn } = useLogin();
@@ -34,18 +35,6 @@ const Header = () => {
             element.scrollBy({left: 300, behavior: 'smooth'});
         }
     };
-    
-    const stickyNav = () => {
-        const cateNav = document.getElementById('cate-nav');
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            if (scrollY > 140) {
-                cateNav.classList.add('active');
-            } else {
-                cateNav.classList.remove('active');
-            }
-        });
-    }
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -58,9 +47,11 @@ const Header = () => {
     }, [location])
 
     useEffect(() => {
-        stickyNav()
-        subCategory(navigate);
-    }, [navigate])
+        if (isCateNavNeed) {
+            subCategory(navigate);
+            stickyNav();
+        }
+    }, [navigate, isCateNavNeed])
 
     return (
         <>
@@ -87,6 +78,7 @@ const Header = () => {
                         </div>{(isLoggedIn) ? <Link to="/pjtregist" className="top-nav-btn-project">프로젝트 만들기</Link> : ''}
                     </div> 
                 </div>
+                {isCateNavNeed && (
                 <div id="cate-nav">
                     <div className="cate-nav-wrap">
                         <div className="cate-title">
@@ -106,10 +98,10 @@ const Header = () => {
                             <SearchForm />
                         </div>
                     </div>
-                </div> 
+                </div> )}
             </header>
             {location.pathname === '/category' && main && (
-                <section id="discover-nav">
+                <nav id="discover-nav">
                     <div className="cate-discover-scroll-wrapper">
                         <button className="-discoverbtn-left" onClick={() => handleScroll('left')}>‹</button>
                         <div className="cate-discover-scroll-container">
@@ -123,7 +115,7 @@ const Header = () => {
                         </div>
                         <button className="btn-discover-right" onClick={() => handleScroll('right')}>›</button>
                     </div>
-                </section>
+                </nav>
             )}
         </>
     );

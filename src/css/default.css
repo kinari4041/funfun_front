@@ -87,6 +87,14 @@ hr {
     clear: both;
 }
 
+h1,
+h2,
+h3,
+h4 {
+    font-family: "Noto Sans KR";
+    font-weight: 400;
+}
+
 b,
 strong {
     font-weight: bold;
@@ -228,21 +236,17 @@ strong {
                     좋아요 버튼 css
 ────────────────────────────────────────────────────────── */
 
-.heart-wrap {
-    width: 20px;
-    fill: gray;
-    transition: fill 0.5s, transform 0.5s;
-    pointer-events: auto;
+.heart-btn {
+    background: transparent;
+    position: relative;
+    cursor: pointer;
 }
 
-.heart-btn {
-    position: relative;
-    background: transparent;
-    border-radius: 50%;
-    background-color: white;
-    padding: 10px 10px 8px 10px;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25), 0px 2px 5px 0px rgba(0, 0, 0, 0.2);
-    border: 0;
+.heart {
+    width: 28px;
+    fill: gray;
+    transition: fill 0.5s, transform 0.5s;
+    pointer-events: none;
 }
 
 .heart-btn.liked .heart {
@@ -257,13 +261,9 @@ strong {
     animation-direction: normal;
 }
 
-.heart-btn:active {
-    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
-}
-
 .heart-pop {
     position: absolute;
-    width: 30%;
+    width: 60%;
     opacity: 0;
     left: 0;
     animation: pop 1s ease forwards reverse;

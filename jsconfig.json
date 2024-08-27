@@ -3,9 +3,9 @@
         "baseUrl": "src",
         "paths": {
           "page/*": ["page/*"],
+          "core/*": ["core/*"],
           "section/*": ["section/*"],
           "util/*": ["util/*"],
-          "data/*": ["data/*"],
           "css/*": ["css/*"],
           "test/*": ["test/comp/*"]
         }
