@@ -20,7 +20,6 @@ export function call(api, method, request){
                             //response.ok가 true이면 정상적인 응답,그렇지 않으면 에러 응답
                             return Promise.reject(json);
                         }
-                        // console.log(json);
                         return json;
                     })
             );
@@ -95,4 +94,19 @@ export function discoverProjects(main, sub, sortBy) {
 export function getArticle(id) {
     const url = `/Article/getArticle?id=${id}`;
     return call(url, "GET");
+}
+
+export function getLike(id) {
+    const url = `/Article/getLike/${id}`;
+    return call(url, "GET");
+}
+
+export function articleLike(id) {
+    const url = `/Article/articleLike?id=${id}`;
+    return call(url, "PUT");
+}
+
+export function articleCancleLike(id) {
+    const url = `/Article/articleCancleLike?id=${id}`;
+    return call(url, "PUT");
 }

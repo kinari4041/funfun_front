@@ -11,7 +11,7 @@ const Search = () => {
     const [data, setData] = useState([]);
     const [sortBy, setSortBy] = useState('upload');
     const [error, setError] = useState(null);
-
+    
     const queryParams = new URLSearchParams(location.search);
     const searchTerm = queryParams.get('q') || '';
 

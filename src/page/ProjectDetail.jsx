@@ -1,20 +1,21 @@
 import React from 'react';
-import 'css/projectDetail.css';
+// import 'css/projectDetail.css';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick';
 import LikeButton from 'util/likeButton';
 import { useLocation, } from 'react-router-dom';
 import { FaShareAlt } from 'react-icons/fa';
+import { useArticle } from 'util/useArticle';
+import { Helmet } from 'react-helmet-async';
 // import { Link } from 'react-router-dom';
 
 const ProjectDetail = () => {
   const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const articleId = queryParams.get('id');
 
-  const queryParams = new URLSearchParams(location.project);
-  const projectid = queryParams.get('id') || '';
-
-  
+  const [data, error] = useArticle(articleId);
 
   const sliderSettings = {
     infinite: true,
@@ -25,6 +26,10 @@ const ProjectDetail = () => {
   };
 
   return (
+    <>
+        <Helmet>
+          <title>{`FUNFUN - ${data.articleTitle}`}</title>
+        </Helmet>
         <div className="container">
           <div className="slider">
             <Slider {...sliderSettings}>
@@ -72,85 +77,86 @@ const ProjectDetail = () => {
           </div>
           <div className="info-panel">
             <div className='info-panel-bar'>
-              <h1>"집안에 향기를 더하다! 지금 바로 향초를 켜고, 특별한 순간을 만들어보세요!"</h1>
-              <p>"커피 애호가들을 위한 특별한 혜택! 지금 구매하시면, 추가 할인과 함께 특별한 사은품을 받아보실 수 있습니다. 커피 한 잔의 여유를 더욱 풍성하게 즐기세요."</p>
+              <h1>{data.projectName}</h1>
+              <p>{data.articleTitle}</p>
               <div className="funding-info">
-                <p><strong>18,164%</strong> 달성</p>
-                <p><strong>90,820,000</strong> 원 달성</p>
-                <p>1,528명 참여</p>
+                <p><strong>{data.projectGoal === 0 ? 0 : Math.floor((data.projectCurrent / data.projectGoal) * 100)}%</strong> 달성</p>
+                <p><strong>{parseInt(data.projectCurrent).toLocaleString()}</strong> 원 달성</p>
+                <p>{data.projectPeople} 명 참여</p>
               </div>
-              <div class="bottom-section">
-                <LikeButton />
+              <div className="bottom-section">
+                <LikeButton id={data.articleId} />
                 <FaShareAlt className="share-icon" />
                 <button className="funding-button">펀딩하기</button>
             </div>
             
             </div>
-            <div class="reward-selection">
+            <div className="reward-selection">
                 <h1>리워드 선택</h1>
-                <p class="duration">진행기간: 7.29 - 8.29</p>
+                <p className="duration">진행기간: 7.29 - 8.29</p>
                 
-                <div class="reward-card">
-                    <div class="reward-header">
-                        <span class="price">19,000원</span>
-                        <span class="remaining">현재 100개 남음!</span>
+                <div className="reward-card">
+                    <div className="reward-header">
+                        <span className="price">19,000원</span>
+                        <span className="remaining">현재 100개 남음!</span>
                     </div>
-                    <div class="reward-content">
+                    <div className="reward-content">
                         <h2>[슈퍼 얼리버드] 다크 머스코바도 시럽</h2>
                         <p>혜택: 20% 혜택 적용 + 5% 추가혜택 + 무료배송</p>
                         <p>구성: 다크 머스코바도 시럽 A</p>
                         <p>콜드브루 500ml</p>
                     </div>
-                    <div class="reward-footer">
+                    <div className="reward-footer">
                         <p>배송비: 무료배송</p>
                         <p>발송 시작일: 2024년 08월 말순 (25~29일) 예정</p>
                         <p>제한 수량: 100개</p>
                     </div>
                 </div>
 
-                <div class="reward-card">
-                    <div class="reward-header">
-                        <span class="price">28,000원</span>
-                        <span class="remaining">현재 100개 남음!</span>
+                <div className="reward-card">
+                    <div className="reward-header">
+                        <span className="price">28,000원</span>
+                        <span className="remaining">현재 100개 남음!</span>
                     </div>
-                    <div class="reward-content">
+                    <div className="reward-content">
                         <h2>[슈퍼 얼리버드] 다크 머스코바도 시럽</h2>
                         <p>혜택: 20% 혜택 적용 + 5% 추가혜택 + 무료배송</p>
                         <p>구성: 다크 머스코바도 시럽 B</p>
                         <p>콜드브루 1000ml</p>
                     </div>
-                    <div class="reward-footer">
+                    <div className="reward-footer">
                         <p>배송비: 무료배송</p>
                         <p>발송 시작일: 2024년 08월 말순 (25~29일) 예정</p>
                         <p>제한 수량: 100개</p>
                     </div>
                 </div>
 
-                <div class="reward-card">
-                    <div class="reward-header">
-                        <span class="price">46,000원</span>
-                        <span class="remaining">현재 50개 남음!</span>
+                <div className="reward-card">
+                    <div className="reward-header">
+                        <span className="price">46,000원</span>
+                        <span className="remaining">현재 50개 남음!</span>
                     </div>
-                    <div class="reward-content">
+                    <div className="reward-content">
                         <h2>[슈퍼 얼리버드] 다크 머스코바도 시럽</h2>
                         <p>혜택: 20% 혜택 적용 + 5% 추가혜택 + 10% 커플혜택 + 무료배송</p>
                         <p>구성: 다크 머스코바도 시럽 C</p>
                         <p>콜드브루 2000ml</p>
                     </div>
-                    <div class="reward-footer">
+                    <div className="reward-footer">
                         <p>배송비: 무료배송</p>
                         <p>발송 시작일: 2024년 08월 말순 (25~29일) 예정</p>
                         <p>제한 수량: 100개</p>
                     </div>
                 </div>
             </div>
-            <div class="bottom-section">
-              <span><LikeButton /></span>
+            <div className="bottom-section">
+              {/* <span><LikeButton id={data.articleId} /></span> */}
               <span><FaShareAlt className="share-icon" /></span>
               <button className="funding-button">펀딩하기</button>
             </div>
           </div>
         </div>
+        </>
       );
     }
     

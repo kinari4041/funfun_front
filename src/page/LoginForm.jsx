@@ -95,7 +95,7 @@ const LoginForm = () => {
             if (Object.keys(errors).length < 6 && step === 1) {
                 setStep(prevStep => prevStep + 1);
                 setRegisterErrors({});
-            } else if (Object.keys(errors).length < 4 && step === 2) {
+            } else if (Object.keys(errors).length < 2 && step === 2) {
                 setStep(prevStep => prevStep + 1);
                 setRegisterErrors({});
             } else if (Object.keys(errors).length === 0 && step === 3) {
@@ -290,8 +290,8 @@ const LoginForm = () => {
         nickname: '',
         birthdate: '',
         phone: '',
-        termsAccepted: false,
-        privacyAccepted: false
+        termsAccepted: '',
+        privacyAccepted: ''
     })
 
     // 회원가입 유효성 검사 메소드
@@ -344,9 +344,14 @@ const LoginForm = () => {
                 errors.phone = '전화번호를 입력하세요';
             }
         }
-        if (field === 'termsAccepted' || field === 'privacyAccepted' || !field) {
-            if (!registerForm.termsAccepted && !registerForm.privacyAccepted) {
-                errors.termsAccepted = '약관에 모두 동의해주세요';
+        if (field === 'termsAccepted' || !field) {
+            if (!registerForm.termsAccepted) {
+                errors.termsAccepted = '약관에 동의해주세요.';
+            }
+        }
+        if (field === 'privacyAccepted' || !field) {
+            if (!registerForm.privacyAccepted) {
+                errors.privacyAccepted = '약관에 동의해주세요.';
             }
         }
         return errors;
@@ -701,6 +706,7 @@ const LoginForm = () => {
                                                         서비스 이용 약관 동의
                                                     </label>
                                                 </fieldset>
+                                                {registerErrors.termsAccepted && <div className="login-error-message">{registerErrors.termsAccepted}</div>}
                                                 <fieldset className="accept-box">
                                                     <label>
                                                         <input
@@ -713,7 +719,7 @@ const LoginForm = () => {
                                                         개인정보 처리방침 동의
                                                     </label>
                                                 </fieldset>
-                                                {registerErrors.termsAccepted && <div className="login-error-message">{registerErrors.termsAccepted}</div>}
+                                                {registerErrors.privacyAccepted && <div className="login-error-message">{registerErrors.privacyAccepted}</div>}
                                                 <div className="register-button-wrap final-step">
                                                     <button onClick={handleBackStep} className="login prev-page">이전</button>
                                                     <button onClick={handleNextStep} className="login next-page">가입하기</button>
