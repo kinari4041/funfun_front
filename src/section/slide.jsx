@@ -1,191 +1,151 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
-class Popular extends Component {
+const Slider = ({ images, title, slideHeight }) => {
 
-    componentDidMount() {
-        // queryselect로 슬라이드를 구현할 요소 선택하여 크기 구하기
-        const slide = document.querySelector(".popular-projects");
-        const transitionTime = 0.8;
-        let slideWidth = slide.clientWidth;
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const [pagenation, setPagenation] = useState(`1 / ${images.length}`);
+    const slideRef = useRef(null);
+    const slideInterval = 6000;
+    const intervalRef = useRef(null);
+    const isDragging = useRef(false);
     
-        // 이전 슬라이드, 다음 슬라이드 버튼 엘리먼트 선택하기
-        const prevBtn = document.querySelector(".prev");
+    // 슬라이드 이동
+    const moveSlide = useCallback(() => {
+        const slideContainer = slideRef.current;
+        const slideWidth = slideContainer.clientWidth;
+        const slideItems = slideContainer.querySelectorAll(".slide-item");
+        slideItems.forEach((item) => {
+            item.style.transform = `translateX(-${slideWidth * currentSlide}px)`;
+        });
+        setPagenation(`${currentSlide + 1} / ${images.length}`);
+    }, [currentSlide, images.length]);
+
+    // 다음 슬라이드 핸들러
+    const handleNext = useCallback (() => {
+        setCurrentSlide(prevIndex => {
+            const maxSlide = images.length;
+            return (prevIndex + 1) % maxSlide;
+        });
+    }, [images.length]);
+
+    // 이전 슬라이드 핸들러
+    const handlePrev = useCallback (() => {
+        setCurrentSlide(prevIndex => {
+            const maxSlide = images.length;
+            return (prevIndex - 1 + maxSlide) % maxSlide;;
+        });
+    }, [images.length]);
+
+    useEffect(() => {
+        moveSlide();
+
+        // 슬라이드 루프 딜레이 시간 지정
+        intervalRef.current = setInterval(handleNext, slideInterval);
+
+        const slideContainer = slideRef.current;
+        if (!slideContainer) return;
+
+        // 버튼 클릭 이벤트 리스너 등록
         const nextBtn = document.querySelector(".next");
-    
-        // 슬라이드 전체를 선택해 값을 변경해주기 위한 전체 선택문
-        let slideItems = document.querySelectorAll(".slide-item");
-        const maxSlide = slideItems.length;
-    
-        // 버튼을 클릭할 때 마다 현재 슬라이드 위치 저장하는 변수 생성
-        let nowSlide = 1;
-    
-        // 페이지네이션 생성하기
-        const pagination = document.querySelector(".slide-pagenation");
-        pagination.innerHTML = `${nowSlide} / ${maxSlide}`;
-    
-        // const paginationItems = document.querySelectorAll(".slide-pagenation > li");
-    
-        // 슬라이드가 게속 반복되도록 시작과 끝 슬라이드 복사
-        const slideStart = slideItems[0];
-        const slideEnd = slideItems[slideItems.length - 1];
-        const elmStart = document.createElement("div");
-        const elmEnd = document.createElement("div");
-    
-        slideEnd.classList.forEach((c) => elmEnd.classList.add(c));
-        elmEnd.innerHTML = slideEnd.innerHTML;
-    
-        slideStart.classList.forEach((c) => elmStart.classList.add(c));
-        elmStart.innerHTML = slideStart.innerHTML;
-    
-        // 복사했던 앨리먼트를 붙여넣기
-        slideItems[0].before(elmEnd);
-        slideItems[slideItems.length - 1].after(elmStart);
-    
-        slideItems = document.querySelectorAll(".slide-item");
-    
-        let offset = slideWidth + nowSlide;
-        slideItems.forEach((i) => {
-            i.setAttribute("style", `left: ${-offset}px`);
-        });
-    
-        // 다음 슬라이드로 넘기는 메서드
-        const nextSlide = () => {
-            nowSlide++;
-            if (nowSlide <= maxSlide) {
-                const offset = slideWidth * nowSlide;
-                slideItems.forEach((i) => {
-                    i.setAttribute("style", `left: ${-offset}px`);
-                });
-                pagination.innerHTML = `${nowSlide} / ${maxSlide}`;
-            } else {
-                nowSlide = 0;
-                let offset = slideWidth * nowSlide;
-                slideItems.forEach((i) => {
-                    i.setAttribute("style", `transition: ${0}s; left: ${-offset}px`);
-                });
-                nowSlide++;
-                offset = slideWidth * nowSlide;
-                setTimeout(() => {
-                    slideItems.forEach((i) => {
-                        i.setAttribute("style", `transition: ${transitionTime}s ease-in-out; left: {-offset}px`);
-                    });
-                }, 0);
-                pagination.innerHTML = `${nowSlide} / ${maxSlide}`;
-            }
+        const prevBtn = document.querySelector(".prev");
+
+        if (nextBtn && prevBtn) {
+            nextBtn.addEventListener("click", handleNext);
+            prevBtn.addEventListener("click", handlePrev);
         }
-    
-        // 이전 슬라이드로 넘기는 메서드
-        const prevSlide = () => {
-            nowSlide--;
-    
-            if (nowSlide > 0) {
-                const offset = slideWidth * nowSlide;
-                slideItems.forEach((i) => {
-                    i.setAttribute("style", `left: ${-offset}px`);
-                });
-                pagination.innerHTML = `${nowSlide} / ${maxSlide}`;
-            } else {
-                nowSlide = maxSlide + 1;
-                let offset = slideWidth * nowSlide;
-                slideItems.forEach((i) => {
-                    i.setAttribute("style", `transition: ${0}s; left: ${-offset}px`);
-                });
-                nowSlide--;
-                offset = slideWidth * nowSlide;
-                setTimeout(() => {
-                    slideItems.forEach((i) => {
-                        i.setAttribute("style", `transition: ${transitionTime}s ease-in-out; left: {-offset}px`);
-                    });
-                }, 0);
-                pagination.innerHTML = `${nowSlide} / ${maxSlide}`;
-            }
-        }
-    
-        nextBtn.addEventListener("click", () => {
-            nextSlide();
-        });
-    
-        prevBtn.addEventListener("click", () => {
-            prevSlide();
-        });
-    
-        // window.addEventListener("resize", () => {
-        //     slideWidth = slide.clientWidth;
-        // });
-    
-        // 드래그 이벤트를 위한 변수
-        let pointStart = 0;
-        let pointEnd = 0;
-    
-        // pc 드래그 이벤트
-        slide.addEventListener("mousedown", (e) => {
+
+        // 슬라이드 드래그 이벤트
+        let pointStart = 0, pointEnd = 0;
+
+        const onMouseDown = (e) => {
+            isDragging.current = true;
             pointStart = e.pageX;
-        });
-    
-        slide.addEventListener("mouseup", (e) => {
+        };
+
+        const onMouseUp = (e) => {
+            if (!isDragging.current) return;
             pointEnd = e.pageX;
+            isDragging.current = false;
             if (pointStart < pointEnd) {
-                prevSlide();
-                clearInterval(loopInterval);
+                handlePrev();
             } else if (pointStart > pointEnd) {
-                nextSlide();
-                clearInterval(loopInterval);
-            }
-        });
-    
-        // 모바일 터치
-        slide.addEventListener("touchstart", (e) => {
+                handleNext();
+             }
+             clearInterval(intervalRef.current);
+             intervalRef.current = setInterval(handleNext, slideInterval);
+        };
+
+        slideContainer.addEventListener("mousedown", onMouseDown);
+        slideContainer.addEventListener("mouseup", onMouseUp);
+
+        // 슬라이드 터치 이벤트
+        const onTouchStart = (e) => {
             pointStart = e.touches[0].pageX;
-        }, {passive: true});
-    
-        slide.addEventListener("touchend", (e) => {
+        };
+
+        const onTouchEnd = (e) => {
             pointEnd = e.changedTouches[0].pageX;
             if (pointStart < pointEnd) {
-                prevSlide();
-                clearInterval(loopInterval);
+                handlePrev();
             } else if (pointStart > pointEnd) {
-                nextSlide();
-                clearInterval(loopInterval);
+                handleNext();
             }
-        });
-    
-        // 슬라이드 넘어가는 인터벌
-        let loopInterval = setInterval(() => {
-            nextSlide();
-        }, 5000);
-    
-        // 슬라이드에 마우스 올렸을때 정지
-        slide.addEventListener("mouseover", () => {
-            clearInterval(loopInterval);
-        });
-    
-        // 슬라이드에서 마우스가 벗어났을때 다시 타이머 시작
-        slide.addEventListener("mouseout", () => {
-            loopInterval = setInterval(() => {
-                nextSlide();
-            }, 5000);
-        });
-    }
+            clearInterval(intervalRef.current);
+            intervalRef.current = setInterval(handleNext, slideInterval);
+        };
 
-    render() {
-        return (
-                <section id="popular" className="section-area">
-                <div className="popular-projects">
-                    <p className="slide-title">금주의 인기 프로젝트!</p>
-                    <div className="slide-item item1"></div>
-                    <div className="slide-item item2"></div>
-                    <div className="slide-item item3"></div>
-                    <div className="slide-item item4"></div>
-                    <div className="slide-item item5"></div>
-                    <div className="slide-ui">
-                        <div className="slide-btn prev"><i className="fa-solid fa-chevron-left"></i></div>
-                        <p className="slide-pagenation"></p>
-                        <div className="slide-btn next"><i className="fa-solid fa-chevron-right"></i></div>
-                    </div>
+        slideContainer.addEventListener("touchStart", onTouchStart, { passive: true });
+        slideContainer.addEventListener("touchend", onTouchEnd);
+
+        // const onMouseOver = () => {
+        //     clearInterval(intervalRef.current);
+        // }
+
+        // const onMouseOut = () => {
+        //     intervalRef.current = setInterval(handleNext, slideInterval);
+        // }
+
+        // 슬라이드에 마우스 올렸을때 정지
+        // slideContainer.addEventListener("mouseover", onMouseOver);
+        // slideContainer.addEventListener("mouseout", onMouseOut);
+
+        return () => {
+            clearInterval(intervalRef.current);
+            if (nextBtn && prevBtn) {
+                nextBtn.removeEventListener("click", handleNext);
+                prevBtn.removeEventListener("click", handlePrev);
+            }
+            slideContainer.removeEventListener("mousedown", onMouseDown);
+            slideContainer.removeEventListener("mouseup", onMouseUp);
+            slideContainer.removeEventListener("touchstart", onTouchStart);
+            slideContainer.removeEventListener("touchend", onTouchEnd);
+            // slideContainer.removeEventListener("mouseover", onMouseOver);
+            // slideContainer.removeEventListener("mouseout", onMouseOut);
+        };
+
+    }, [currentSlide, handleNext, handlePrev, moveSlide, images.length]);
+    
+    return (
+        <div className="slider-area" style={{height: `${slideHeight}`}}>
+            {title && <p className="slider-title">{title}</p>}
+            <div className="slider-container" ref={slideRef}>
+                <div className="slides">
+                    {images.map((image, index) => (
+                        <div
+                            key={index}
+                            className={`slide-item ${index === currentSlide ? 'active' : ''}`}
+                            style={{ backgroundImage: `url(${image})` }}
+                        />
+                    ))}
                 </div>
-            </section>
-        )
-    }
+            </div>
+            <div className="slider-ui">
+                <div className="slide-btn prev"><i className="fa-solid fa-chevron-left" /></div>
+                <span className="slide-pagenation">{pagenation}</span>
+                <div className="slide-btn next"><i className="fa-solid fa-chevron-right" /></div>
+            </div>
+        </div>
+    );
 }
 
-export default Popular;
+export default Slider;

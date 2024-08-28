@@ -111,15 +111,14 @@ const DetailInfoPanel = (props) => {
                   </div>
               </div>
             ))}
-
-        </div>
-        <div className="detail-bottom-section">
-          <div className="like-container">
-            {likeButton()}
-            <p className="like-count">{(!likeError) ? likes : 'fun'}</p>
-          </div>
-          <span><FaShareAlt className="detail-share-icon" /></span>
-          <button className="detail-funding-button">펀딩하기</button>
+            <div className="detail-bottom-section">
+              <div className="like-container">
+                {likeButton()}
+                <p className="like-count">{(!likeError) ? likes : 'fun'}</p>
+              </div>
+              <span><FaShareAlt className="detail-share-icon" /></span>
+              <button className="detail-funding-button">펀딩하기</button>
+            </div>
         </div>
       </>
     )

@@ -12,7 +12,7 @@ const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const isPage = (page) => location.pathname === page;
-    const isCateNavNeed = !location.pathname.startsWith('/project/detail');
+    const isCateNavNeed = !location.pathname.startsWith('/project');
     const [main, setMain] = useState('');
 
     const { isLoggedIn } = useLogin();

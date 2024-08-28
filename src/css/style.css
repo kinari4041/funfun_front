@@ -1061,10 +1061,6 @@ section {
     border-radius: 30px;
 }
 
-#popular {
-    margin-bottom: 0;
-}
-
 #section1 {
     display: grid;
     grid-template-columns: 950px auto;
@@ -1083,20 +1079,23 @@ section {
                     인기 프로젝트 영역
 ────────────────────────────────────────────────────────── */
 
+#popular {
+    margin-bottom: 0;
+}
+
 .popular-projects {
     width: 1330px;
     margin: 0 auto;
     height: 400px;
     background-color: #ccc;
     display: flex;
-    flex-wrap: nowrap;
     position: relative;
     overflow: hidden;
     user-select: none;
 }
 
-/* 금주의 인기 프로젝트! 영역 스타일 */
-.slide-title {
+/* 슬라이드 타이틀 */
+.slider-title {
     font-family: "Noto Sans KR", sans-serif;
     position: absolute;
     top: 20px;
@@ -1111,57 +1110,45 @@ section {
     box-shadow: var(--shadow-medium);
 }
 
+.slider-area {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+.slider-container {
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+.slides {
+    display: flex;
+    width: 100%;
+}
+
 /* 슬라이드에 들어가는 각 div의 스타일 적용 */
 .slide-item {
-    position: relative;
-    left: 0px;
-    flex-shrink: 0; /* flex item들이 컨테이너 크기에 맞게 줄어들지 않도록 값을 0으로 설정 */
-    width: 100%;
+    min-width: 100%;
     height: 100%;
-    transition: left 0.8s ease-in-out;
-}
-
-/* 무한루프 구현을 위해 복사본 스타일 정의 */
-.slide-item-duplicate {
-    position: relative;
-    z-index: 2;
-    left: 0px;
-    flex-shrink: 0;
-    width: 100%;
-    height: 300px;
-    transition: left 0.8s ease-in-out;
-}
-
-.item1 {
-    background-image: url("https://picsum.photos/1330/400?random=1");
-}
-
-.item2 {
-    background-image: url("https://picsum.photos/1330/400?random=2");
-}
-
-.item3 {
-    background-image: url("https://picsum.photos/1330/400?random=3");
-}
-
-.item4 {
-    background-image: url("https://picsum.photos/1330/400?random=4");
-}
-
-.item5 {
-    background-image: url("https://picsum.photos/1330/400?random=5");
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.8s ease-in-out;
 }
 
 /* 페이지 넘기는 버튼 및 현재 페이지 표시 ui영역 */
-.slide-ui {
+.slider-ui {
     position: absolute;
     display: flex;
     align-items: center;
     z-index: 5;
-    bottom: 20px;
+    bottom: 5%;
     left: 50%;
     transform: translateX(-50%);
     gap: 25px;
+    height: fit-content;
 }
 
 /* 페이지 넘기는 버튼 스타일 */
@@ -1176,7 +1163,7 @@ section {
 
 /* 현재 페이지를 알려주는 ui 스타일 */
 .slide-pagenation {
-    padding: 10px;
+    padding: 12px;
     border-radius: 10px;
     background-color: #fff;
     color:#000;
@@ -1892,11 +1879,10 @@ footer {
   .detail-funding-button:hover {
     background-color: #0056b3;
   }
-  
-  .detail-slider-container .detail-slick-slide img {
-    display: block;
-    width: 100%;
-    height: auto;
+
+  .detail-slider {
+    overflow: hidden;
+    border-radius: 20px;
   }
   
   .detail-content-container {

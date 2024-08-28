@@ -44,8 +44,8 @@ const NoticeItem = ({ notice }) => {
 
 const DetailInfoNotice = (props) => {
 
-    const data = props.data;
-    const articleId = data.articleId;
+    // const data = props.data;
+    // const articleId = data.articleId;
     const [selectedCategory, setSelectedCategory] = useState('전체');
     const filteredNotices = selectedCategory === '전체' ? notices : notices.filter(n => n.category === selectedCategory);
   
@@ -53,7 +53,7 @@ const DetailInfoNotice = (props) => {
       <>
         <div className="notice-list-header">
           <div className="header-left">
-            <h1>공지사항 [{filteredNotices.length}]</h1>
+            <h1>소식 [{filteredNotices.length}]</h1>
           </div>
           <div className="header-right">
             <label className="sr-only" htmlFor="category-select">전체</label>

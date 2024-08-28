@@ -8,6 +8,14 @@ import CateRecommand from "section/catereco"
 import TrendList from "section/trendlist";
 import { useLogin } from "util/loginProvider";
 
+const images = [
+    "https://picsum.photos/1330/400?random=1",
+    "https://picsum.photos/1330/400?random=2",
+    "https://picsum.photos/1330/400?random=3",
+    "https://picsum.photos/1330/400?random=4",
+    "https://picsum.photos/1330/400?random=5"
+]
+
 const Main = () => {
     const { usrNickName, isLoggedIn } = useLogin();
 
@@ -15,7 +23,11 @@ const Main = () => {
         <main>
             <div id="section-content">
                 <div id="section-content-wrap">
-                    <Slide />
+                    <section id="popular" className="section-area">
+                        <div className="popular-projects">
+                            <Slide images={images} title={'금주의 인기 프로젝트!'}/>
+                        </div>
+                    </section>
                     <CateRecommand />
                     <hr />
                     <AdRecommand />

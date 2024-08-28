@@ -3,7 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { useArticle } from 'util/useArticle';
 import { Helmet } from 'react-helmet-async';
 import stickyNav from 'util/stickyNav';
-import { Article, Notice, Panel } from 'section/projectDetail';
+import { Article, Notice, Panel, Story, Review } from 'section/projectDetail';
 
 const ProjectDetail = () => {
 
@@ -32,8 +32,8 @@ const ProjectDetail = () => {
               <ul className="project-menu">
                   <li className={`cate-title-el ${isCurrentPage(`/project/detail/${articleId}`) ? 'active' : ''}`}><Link to={`/project/detail/${data.articleId}`}>프로젝트 이야기</Link></li>
                   <li className={`cate-title-el ${isCurrentPage(`/project/detailNotice/${articleId}`) ? 'active' : ''}`}><Link to={`/project/detailNotice/${data.articleId}`}>업데이트</Link></li>
-                  <li className={`cate-title-el ${isCurrentPage(`#`) ? 'active' : ''}`}><a href='#community'>커뮤니티</a></li>
-                  <li className={`cate-title-el ${isCurrentPage(`#`) ? 'active' : ''}`}><a href='#reviews'>후기</a></li>
+                  <li className={`cate-title-el ${isCurrentPage(`/project/storyAbout/${articleId}`) ? 'active' : ''}`}><Link to={`/project/storyAbout/${data.articleId}`}>스토리</Link></li>
+                  <li className={`cate-title-el ${isCurrentPage(`/project/review/${articleId}`) ? 'active' : ''}`}><Link to={`/project/review/${data.articleId}`}>후기</Link></li>
               </ul>
           </div>
         </nav>
@@ -41,6 +41,8 @@ const ProjectDetail = () => {
           <div className='detail-left-area'>
             {isCurrentPage(`/project/detail/${articleId}`) && <Article data={data} />}
             {isCurrentPage(`/project/detailNotice/${articleId}`) && <Notice data={data} />}
+            {isCurrentPage(`/project/storyAbout/${articleId}`) && <Story data={data} />}
+            {isCurrentPage(`/project/review/${articleId}`) && <Review data={data} />}
           </div>
           <div className="detail-right-area">
             <Panel data={data} />
