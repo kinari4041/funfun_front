@@ -1713,6 +1713,7 @@ footer {
 
 .detail-container {
     margin-top: 30px;
+    margin-bottom: 50px;
     height: auto;
     display: flex;
     justify-content: space-between;
@@ -2035,6 +2036,98 @@ footer {
     font-weight: bold;
   }
 
+
+/* ─────────────────────────────────────────────────────────
+                Funding detail 글 전용 스타일
+────────────────────────────────────────────────────────── */
+
+/* 제목 스타일 */
+.funding-detail h1 {
+    font-size: 2em; /* 제목 크기 */
+    color: #2c3e50; /* 제목 색상 */
+    margin-bottom: 20px; /* 하단 여백 */
+}
+
+/* 부제목 스타일 */
+.funding-detail h2 {
+    font-size: 1.5em; /* 부제목 크기 */
+    color: #34495e; /* 부제목 색상 */
+    margin-top: 20px; /* 상단 여백 */
+    margin-bottom: 15px; /* 하단 여백 */
+    border-bottom: 2px solid #3498db; /* 하단 밑줄 */
+    padding-bottom: 5px; /* 하단 패딩 */
+}
+
+/* 단락 스타일 */
+.funding-detail p {
+    margin-bottom: 15px; /* 하단 여백 */
+    font-size: 1.1em; /* 글꼴 크기 */
+    line-height: 2em;
+    margin: 0;
+}
+
+/* 목록 스타일 */
+.funding-detail ul {
+    padding-left: 20px; /* 왼쪽 패딩 */
+    margin-bottom: 15px; /* 하단 여백 */
+}
+
+.funding-detail li {
+    margin-bottom: 10px; /* 하단 여백 */
+    font-size: 1em; /* 글꼴 크기 */
+}
+
+/* 인용구 스타일 */
+.funding-detail blockquote {
+    border-left: 4px solid #3498db; /* 왼쪽 경계선 */
+    padding-left: 15px; /* 왼쪽 패딩 */
+    margin: 20px 0; /* 상하 여백 */
+    font-style: italic; /* 기울임꼴 */
+    color: #7f8c8d; /* 텍스트 색상 */
+    background-color: #e9ecef; /* 배경 색상 */
+    border-radius: 5px; /* 모서리 둥글기 */
+    padding: 15px; /* 내부 여백 */
+}
+
+/* 이미지 컨테이너 스타일 */
+.funding-detail .image-container {
+    text-align: center; /* 이미지 중앙 정렬 */
+    margin: 20px 0; /* 상하 여백 */
+}
+
+.funding-detail .image-container img {
+    max-width: 100%; /* 이미지 너비 조정 */
+    height: auto; /* 이미지 높이 자동 조정 */
+    border-radius: 8px; /* 모서리 둥글기 */
+}
+
+/* 링크 스타일 */
+.funding-detail a {
+    color: #3498db; /* 링크 색상 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.funding-detail a:hover {
+    text-decoration: underline; /* 마우스 오버 시 밑줄 */
+}
+
+/* 버튼 스타일 */
+.funding-detail .button {
+    display: inline-block; /* 인라인 블록 */
+    padding: 10px 20px; /* 내부 여백 */
+    font-size: 1em; /* 글꼴 크기 */
+    color: #fff; /* 텍스트 색상 */
+    background-color: #3498db; /* 배경 색상 */
+    border: none; /* 경계선 없음 */
+    border-radius: 5px; /* 모서리 둥글기 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    text-decoration: none; /* 밑줄 제거 */
+    cursor: pointer; /* 커서 포인터 */
+}
+
+.funding-detail .button:hover {
+    background-color: #2980b9; /* 마우스 오버 시 배경 색상 변경 */
+}
 
 /* ─────────────────────────────────────────────────────────
                     공지사항 리스트
