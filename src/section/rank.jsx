@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getProjectRank } from "util/apiService";
+import { SyncLoader } from "react-spinners";
 
 const Aside = () => {
     const [data, setData] = useState([]);
@@ -21,8 +22,21 @@ const Aside = () => {
         fetchData();
     }, []);
 
-    if (loading) return <p>불러오는중...</p>;
-    if (error) return <p>랭킹을 불러오는 도중 문제가 발생했습니다.</p>;
+    if (loading) {
+        return (
+            <aside className="loading-screen">
+                <SyncLoader />
+            </aside>
+        );
+    }
+
+    if (error) {
+        return (
+            <aside className="error-screen">
+                <p>랭킹을 불러오는 도중 문제가 발생했습니다.</p>
+            </aside>
+        );
+    }
 
     return (
         <aside>

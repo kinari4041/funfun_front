@@ -8,6 +8,7 @@ const Popular = () => {
 
   const wrapRef = useRef(null);
   const observerRef = useRef(null);
+  const needSort = true;
 
   const [data, setData] = useState([]);
   const [fullData, setFullData] = useState([]);
@@ -16,83 +17,63 @@ const Popular = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(0);
-  const [limit] = useState(8);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(0);
+  const perPage = 8;
 
   const fetchData = useCallback(async () => {
-    if (isLoading || !hasMore) return;
 
-    setIsLoading(false);
+      setIsLoading(true);
       try {
         const response = await getPopularList(sortBy);
+        setLimit(response.length);
         setFullData(prevData => [...prevData, ...response]);
-
-        if (response.length < limit) {
-          setHasMore(false);
-        }
       } catch (err) {
         setError(err);
       } finally {
       setIsLoading(false);
       }
-  }, [isLoading, hasMore, sortBy, limit]);
+  }, [sortBy]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
   useEffect(() => {
+    // 옵저버가 탐지할 엘리먼트를 useRef를 사용하여 지정
     const observerEl = observerRef.current;
-    if (!observerEl) return;
 
+    // 무한 스크롤 구현을 위한 옵저버 생성
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && hasMore && !isLoading) {
           setPage(prevPage => prevPage + 1);
+          if (data.length >= limit) {
+            setHasMore(false);
+          }
         }
       },
-      { threshold: 1.0 }
+      { threshold: 1 }
     );
     observer.observe(observerEl);
 
+    // 언마운트되면 클린업 함수로 옵저버 삭제
     return () => {
       if (observerEl) {
         observer.unobserve(observerEl);
       }
     };
-  }, [hasMore, isLoading]);
+  }, [hasMore, isLoading, page, data.length, limit]);
 
   useEffect(() => {
-    setData(fullData.slice(0, (page + 1) * limit));
+    setData(fullData.slice(0, page * perPage));
   }, [fullData, page, limit]);
 
-  useEffect (() => {
-    if (wrapRef.current) {
-      if (error) {
-          wrapRef.current.style.setProperty('display','block')
-          wrapRef.current.innerHTML = `
-              <div className="search-no-result-wrap">
-              <p class="search-no-result">데이터를 불러오는 중 문제가 발생했습니다.</p>
-              </div>
-          `;
-      } else if (data.length > 0) {
-          wrapRef.current.style.setProperty('display','grid')
-          renderData(wrapRef.current, data, sortBy)
-      } else {
-          wrapRef.current.style.setProperty('display','block')
-          wrapRef.current.innerHTML = `
-              <div className="search-no-result-wrap">
-              <p class="search-no-result">프로젝트가 존재하지 않거나 불러오는 중 입니다.</p>
-              </div>
-          `;
-        }
-      }
-    }, [data, error]);
-
+  // 정렬 기준 변경시, 기존에 렌더링된 데이터 초기화
   const handleSortChange = (sort) => {
       setSortBy(sort);
       setFullData([]);
-      setPage(0);
+      setPage(1);
       setHasMore(true);
   };
 
@@ -105,24 +86,40 @@ const Popular = () => {
             <div className="section-title">
                 <p>인기 프로젝트 목록 - {(sortBy === 'likes') ? '좋아요 순' : 'FUN 점수'}</p>
             </div>
-            <div className="search-sort">
-                <button 
-                    type="button"
-                    className={sortBy === 'likes' ? 'active' : ''} 
-                    onClick={() => handleSortChange('likes')}>
-                    좋아요 순
-                </button>
-                <button 
-                    type="button"
-                    className={sortBy === 'fun' ? 'active' : ''} 
-                    onClick={() => handleSortChange('fun')}>
-                    FUN 점수
-                </button>
+            {/* 정렬 버튼 활성화/비활성화 */}
+            {needSort &&
+              <div className="search-sort">
+                  <button 
+                      type="button"
+                      className={sortBy === 'likes' ? 'active' : ''} 
+                      onClick={() => handleSortChange('likes')}>
+                      좋아요 순
+                  </button>
+                  <button 
+                      type="button"
+                      className={sortBy === 'fun' ? 'active' : ''} 
+                      onClick={() => handleSortChange('fun')}>
+                      FUN 점수
+                  </button>
+              </div>
+            }
+            {/* 오류가 발생했을 경우, 오류 문구 출력 */}
+            {(error) ? (
+              <div className="search-no-result-wrap">
+                <p className="search-no-result">데이터를 불러오지 못했습니다.</p>
+                <p className="search-no-result">데이터가 없거나, 오류가 발생했습니다.</p>
             </div>
-            <div className="list-page" ref={wrapRef}></div>
+            ) : ( 
+              <>
+                {/* 정상적으로 로딩되면, 데이터 렌더링 메서드 호출 */}
+                <div className="list-page" ref={wrapRef}></div>
+                {renderData(wrapRef.current, data, sortBy)}
+              </>
+            )}
+            {/* 추가 로딩중이면 불러오는 안내문구 출력 */}
             {isLoading && 
               <div className="search-no-result-wrap">
-              <p class="search-no-result">불러오는 중...</p>
+              <p className="search-no-result">불러오는 중...</p>
               </div>}
             <div id="observer" style={{ height: "10px" }} ref={observerRef}></div>
           </section>

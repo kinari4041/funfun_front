@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 
 import { renderData } from 'util/useData';
 import { getRecentList } from 'util/apiService';
+// import { SyncLoader } from 'react-spinners';
 
 const Recent = () => {
 
@@ -34,7 +35,7 @@ const Recent = () => {
       } finally {
       setIsLoading(false);
       }
-  }, [isLoading, hasMore, limit]);
+  }, [hasMore, limit, isLoading]);
 
   useEffect(() => {
     fetchData();
@@ -98,12 +99,12 @@ const Recent = () => {
                 <p>최신 프로젝트</p>
             </div>
             <div className="list-page" data-section="like" ref={wrapRef}></div>
-            {isLoading && 
+            {error && 
               <div className="search-no-result-wrap">
-              <p class="search-no-result">불러오는 중...</p>
+              <p class="search-no-result">데이터 로딩중 문제 발생!</p>
               </div>}
             <div id="observer" style={{ height: "10px" }} ref={observerRef}></div>
-          </section>
+        </section>
     </>
   );
 }

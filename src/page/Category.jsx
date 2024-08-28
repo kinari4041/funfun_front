@@ -53,7 +53,7 @@ const Category = () => {
                     </div>
                 `;
             }
-    }}, [data, error]);
+    }}, [data, error, sortBy]);
 
     const handleSortChange = (sort) => {
         setSortBy(sort);

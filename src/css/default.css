@@ -338,3 +338,17 @@ strong {
         opacity: 0;
    }
 }
+
+
+/* ─────────────────────────────────────────────────────────
+                        로딩 스크린
+────────────────────────────────────────────────────────── */
+
+.loading-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
