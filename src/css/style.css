@@ -823,9 +823,18 @@ header {
     gap: 20px;
 }
 
-/* .login-method-control {
-    width: 80%;
-} */
+.login-method-action.ready,
+.login-method-action.ready i {
+    color: gray !important;
+    border-color: gray !important;
+    pointer-events: none;
+}
+
+.login-method-action.ready i.fa-instagram {
+    color: white !important;
+    background: gray !important;
+    pointer-events: none;
+}
 
 .login-method-action {
     font-size: 18px;

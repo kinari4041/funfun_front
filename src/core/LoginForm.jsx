@@ -486,12 +486,12 @@ const LoginForm = () => {
                                         </div>
                                         <div className="login-method">
                                             <div className="login-method-control">
-                                                <Link to="#" className="login-method-action">
+                                                <Link to="#" className="login-method-action ready">
                                                     <i className="fa-brands fa-google-plus" />
                                                 </Link>
                                             </div>
                                             <div className="login-method-control">
-                                                    <Link to="#" className="login-method-action">
+                                                    <Link to="#" className="login-method-action ready">
                                                 <i className="fa-brands fa-facebook" />
                                                 </Link>
                                             </div>
@@ -501,7 +501,7 @@ const LoginForm = () => {
                                                 </Link>
                                             </div>
                                             <div className="login-method-control">
-                                                <Link to="#" className="login-method-action">
+                                                <Link to="#" className="login-method-action ready">
                                                     <i className="fa-brands fa-instagram" />
                                                 </Link>
                                             </div>
@@ -737,12 +737,12 @@ const LoginForm = () => {
                                         </div>
                                         <div className="login-method">
                                             <div className="login-method-control">
-                                                <Link to="#" className="login-method-action">
+                                                <Link to="#" className="login-method-action ready">
                                                     <i className="fa-brands fa-google-plus" />
                                                 </Link>
                                             </div>
                                             <div className="login-method-control">
-                                                    <Link to="#" className="login-method-action">
+                                                    <Link to="#" className="login-method-action ready">
                                                 <i className="fa-brands fa-facebook" />
                                                 </Link>
                                             </div>
@@ -752,7 +752,7 @@ const LoginForm = () => {
                                                 </Link>
                                             </div>
                                             <div className="login-method-control">
-                                                <Link to="#" className="login-method-action">
+                                                <Link to="#" className="login-method-action ready">
                                                     <i className="fa-brands fa-instagram" />
                                                 </Link>
                                             </div>

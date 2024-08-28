@@ -5,7 +5,7 @@ import { renderData } from 'util/useData';
 import { getPopularList } from 'util/apiService';
 import { SyncLoader } from 'react-spinners';
 
-const Popular = () => {
+const InfinityScroll = () => {
 
   const wrapRef = useRef(null);
   const observerRef = useRef(null);
@@ -131,4 +131,4 @@ const Popular = () => {
   );
 }
 
-export default Popular;
+export default InfinityScroll;

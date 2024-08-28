@@ -242,14 +242,14 @@ strong {
     cursor: pointer;
 }
 
-.heart {
+.svg-heart {
     width: 28px;
     fill: gray;
     transition: fill 0.5s, transform 0.5s;
     pointer-events: none;
 }
 
-.heart-btn.liked .heart {
+.heart-btn.liked .svg-heart {
     fill: #ee3529;
 }
 
