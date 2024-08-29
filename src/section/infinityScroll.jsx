@@ -8,6 +8,8 @@ const InfinityScroll = ({
   initialSortBy = 'likes',
   perPage = 8,
   title,
+  cateMain,
+  cateSub,
   sortOptions = []
 }) => {
   const wrapRef = useRef(null);
@@ -26,15 +28,19 @@ const InfinityScroll = ({
   const loadData = useCallback(async () => {
       setIsLoading(true);
       try {
-        const response = await fetchData(sortBy);
+        let response = await fetchData(sortBy);
+        if (cateMain || cateSub) {
+          response = await fetchData(cateMain, cateSub, sortBy);
+        }
         setLimit(response.length);
+        console.log(response.length);
         setFullData(prevData => [...prevData, ...response]);
       } catch (err) {
         setError(err);
       } finally {
         setIsLoading(false);
       }
-  }, [sortBy, fetchData]);
+  }, [sortBy, fetchData, cateMain, cateSub]);
 
   useEffect(() => {
     loadData();
@@ -74,11 +80,14 @@ const InfinityScroll = ({
   const handleSortChange = (sort) => {
       if (sort !== sortBy) {
         setSortBy(sort);
-        setFullData([]);
-        setPage(1);
-        setHasMore(true);
       }
   };
+
+  useEffect(() => {
+    setFullData([]);
+    setPage(1);
+    setHasMore(true);
+  }, [cateMain, cateSub, sortBy])
 
   return (
     <>
@@ -110,8 +119,7 @@ const InfinityScroll = ({
       {/* 오류가 발생했을 경우, 오류 문구 출력 */}
       {error ? (
         <div className="search-no-result-wrap">
-          <p className="search-no-result">데이터를 불러오지 못했습니다.</p>
-          <p className="search-no-result">데이터가 없거나, 오류가 발생했습니다.</p>
+          <p className="search-no-result">데이터를 불러오지 못했습니다.<br />데이터가 없거나, 오류가 발생했습니다.</p>
       </div>
       ) : ( 
         <>

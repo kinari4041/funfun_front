@@ -11,7 +11,7 @@ const ProjectDetail = () => {
   const location = useLocation();
   const articlePath = location.pathname.split('/').filter(Boolean);
   const articleId = articlePath[2];
-  const isCurrentPage = (page) => location.pathname.includes(page);
+  const isCurrentPage = (page) => location.pathname === page;
 
   // 게시글 데이터 저장
   const [data, error] = useArticle(articleId);

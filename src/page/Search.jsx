@@ -13,6 +13,7 @@ const Search = () => {
     const [error, setError] = useState(null);
     
     const queryParams = new URLSearchParams(location.search);
+    console.log(location.search)
     const searchTerm = queryParams.get('q') || '';
 
     useEffect(() => {

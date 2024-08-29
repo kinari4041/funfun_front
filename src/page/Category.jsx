@@ -20,16 +20,18 @@ const Category = () => {
 
   return (
     <>
-      <Helmet>
-        <title>FUNFUN - {(sub === 'all') ? main : `${main}, ${sub}`} 프로젝트</title>
+      <Helmet>  
+        <title>FUNFUN - {(sub === 'all') ? main : sub} 프로젝트</title>
       </Helmet>
         <section id="recent" className="section-area">
             <InfinityScroll 
-              fetchData={discoverProjects(main, currentSub)}
+              fetchData={discoverProjects}
               renderData={renderData}
               initialSortBy='upload'
+              cateMain={main}
+              cateSub={currentSub}
               perPage={8}
-              title='최근에 올라온 프로젝트 목록'
+              title={(sub === 'all') ? `${main} 관련 프로젝트` : `${main} - ${sub} 관련 프로젝트`}
               sortOptions={[
                 {value: 'upload', label: '최신순'},
                 {value: 'likes', label: '좋아요'},
