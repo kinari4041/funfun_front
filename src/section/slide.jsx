@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 
-const Slider = ({ images, title, slideHeight }) => {
+const Slider = ({ images, title, slideHeight, uiNeed = true }) => {
 
     const [currentSlide, setCurrentSlide] = useState(0);
     const [pagenation, setPagenation] = useState(`1 / ${images.length}`);
@@ -139,11 +139,12 @@ const Slider = ({ images, title, slideHeight }) => {
                     ))}
                 </div>
             </div>
+            {uiNeed &&
             <div className="slider-ui">
                 <div className="slide-btn prev"><i className="fa-solid fa-chevron-left" /></div>
                 <span className="slide-pagenation">{pagenation}</span>
                 <div className="slide-btn next"><i className="fa-solid fa-chevron-right" /></div>
-            </div>
+            </div> }
         </div>
     );
 }

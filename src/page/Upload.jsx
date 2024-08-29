@@ -109,25 +109,26 @@ const categoryOptions = {
       </Helmet>
       <section id="upload">
       <div id="box"> 
-        <h4 style={{ color: 'black', fontSize: '37px', fontWeight: 'bold' }}>최고의 프로젝트를 보여주세요!</h4><br/>
+        <h4 style={{ color: 'black', fontSize: '37px', fontWeight: 'bold'}}>최고의 프로젝트를 보여주세요!</h4><br/>
         
-        <h3 style={{ color: 'orange', fontSize: '23px'}}>대분류 선택</h3>
+        <h3 style={{ color: 'orange', fontSize: '23px', marginBottom: '10px'}}>카테고리 선택</h3>
+        <div style= {{display: 'flex'}}>
         <select value={mainCategory} onChange={handleMainCategoryChange} style={{ width: '25%', padding: '10px', fontSize: '16px' , borderRadius: '12px'}}>
           <option value="">대분류 선택</option>
           {Object.keys(categoryOptions).map(category => (
             <option key={category} value={category}>{category}</option>
           ))}
         </select>
-
-        <h3 style={{ color: 'orange', fontSize: '23px'  }}>소분류 선택</h3>
         <select value={subCategory} onChange={handleSubCategoryChange} style={{ width: '25%', padding: '10px', fontSize: '16px' , borderRadius: '12px'}}
          disabled={!mainCategory}>
           <option value="">소분류 선택</option>
           {mainCategory && categoryOptions[mainCategory].map(sub => (
             <option key={sub} value={sub}>{sub}</option>
           ))}
-        </select><br/><br/>
-        <h3 style={{color:'orange', fontSize:'23px'}}>프로젝트명 등록</h3>
+        </select>
+        </div>
+        <br/><br/>
+        <h3 style={{color:'orange', fontSize:'23px', marginBottom: '10px'}}>프로젝트명 등록</h3>
         <textarea
           value={projectName}
           onChange={handleProjectNameChange}
@@ -145,7 +146,7 @@ const categoryOptions = {
           }}
         /><br/><br/>
 
-        <h3 style={{color:'orange', fontSize:'23px'}}>대표 사진 등록</h3>
+        <h3 style={{color:'orange', fontSize:'23px', marginBottom: '10px'}}>대표 사진 등록</h3>
         <input 
           type="file" 
           accept="image/*" 
@@ -161,7 +162,7 @@ const categoryOptions = {
         )}
         <br/><br/>
 
-        <h3 style={{color:'orange', fontSize:'23px'}}>프로젝트 소개(2000자 이내)</h3>
+        <h3 style={{color:'orange', fontSize:'23px', marginBottom: '10px'}}>프로젝트 소개(2000자 이내)</h3>
         <textarea
           value={description}
           onChange={handleDescriptionChange}
@@ -179,7 +180,7 @@ const categoryOptions = {
           }}
         /><br/><br/>
 
-        <h3 style={{color:'orange', fontSize:'23px'}}>소개 사진 등록</h3>
+        <h3 style={{color:'orange', fontSize:'23px', marginBottom: '10px'}}>소개 사진 등록</h3>
         <input 
           type="file" 
           accept="image/*" 
@@ -194,7 +195,7 @@ const categoryOptions = {
         )}
         <br/><br/>
 
-        <h3 style={{color:'orange', fontSize:'23px'}}>보상 설계</h3>
+        <h3 style={{color:'orange', fontSize:'23px', marginBottom: '10px'}}>보상 설계</h3>
         <textarea
           value={compensation}
           onChange={handleCompensationChange}
@@ -212,7 +213,9 @@ const categoryOptions = {
           }}
         />
 
-        <br/><button
+        <br/>
+        
+  <br/><br/><button
   onClick={openModal}
   style={{
     color: 'black',
@@ -252,6 +255,7 @@ const categoryOptions = {
               placeholder="내용을 이해했으며 등록하겠습니다"
               style={{ width: '100%' }}
             />
+            <div className="upload-btn-wrap">
             {errorMessage && <p className="error-message">{errorMessage}</p>}<br/>
             <button type="submit" disabled={isButtonDisabled}>
               등록하기
@@ -259,6 +263,7 @@ const categoryOptions = {
             <button type="button" onClick={() => setIsModalOpen(false)}>
               취소
             </button>
+            </div>
           </form>
         </Modal>
       </div>

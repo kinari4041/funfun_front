@@ -104,7 +104,7 @@ const CateRecommand = () => {
                     <span>이벤트를 통한 특별한 혜택을 놓치지 마세요!</span>
                 </div>
                 <div className="events-container">
-                    <Slide images={images}/>
+                    <Slide images={images} uiNeed={false}/>
                 </div>
             </div>
             <Aside />    

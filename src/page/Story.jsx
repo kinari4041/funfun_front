@@ -1,5 +1,4 @@
 import React from 'react';
-import 'css/story.css';
 
 function Post({ profilePic, sellerName, postTime, postImage, postDescription, taggedItemCount, taggedItems }) {
     return (
@@ -43,56 +42,89 @@ function Post({ profilePic, sellerName, postTime, postImage, postDescription, ta
 
 function Story() {
     return (
-        <section id="search" className="section-area">
+        <section id="story" className="section-area">
             <div className="section-title">
                 <p>스토리 - 우리들의 이야기</p>
             </div>
-        <div className="posts-container">
-            <Post
-                profilePic={'https://picsum.photos/400/400?random=1'}
-                sellerName="SojoNyang (소주냥)"
-                postTime="26분 전"
-                postImage={'https://picsum.photos/400/400?random=1'}
-                postDescription="소중한 분에게 소중한 나에게 소주를 💕"
-                taggedItemCount={1}
-                taggedItems={[
-                    { image: 'https://picsum.photos/400/400?random=1', price: "₩15,000" },
-                ]}
-            />
-            <Post
-                profilePic={'https://picsum.photos/400/400?random=1'}
-                sellerName="미라공방"
-                postTime="26분 전"
-                postImage={'https://picsum.photos/400/400?random=1'}
-                postDescription="연탄봉사 갔다왔습니다 💕"
-                taggedItemCount={0}
-                taggedItems={[
-                ]}
-            />
-            <Post
-                profilePic={'https://picsum.photos/400/400?random=1'}
-                sellerName="하루아침"
-                postTime="26분 전"
-                postImage={'https://picsum.photos/400/400?random=1'}
-                postDescription="이번달 소식입니다 💕"
-                taggedItemCount={2}
-                taggedItems={[
-                    { image: 'https://picsum.photos/400/400?random=1', price: "₩30,000" },
-                    { image: 'https://picsum.photos/400/400?random=1', price: "₩25,000 "}
-                ]}
-            />
-            <Post
-                profilePic={'https://picsum.photos/400/400?random=1'}
-                sellerName="코코"
-                postTime="26분 전"
-                postImage={'https://picsum.photos/400/400?random=1'}
-                postDescription="뚱냥이거울 제작 현황입니다. 💕"
-                taggedItemCount={1}
-                taggedItems={[
-                    { image: 'https://picsum.photos/400/400?random=1', price: "₩10,000" },
-                ]}
-            />
-        </div>
+            <div className="posts-container">
+                <Post
+                    profilePic={'https://picsum.photos/400/400?random=1'}
+                    sellerName="SojoNyang (소주냥)"
+                    postTime="26분 전"
+                    postImage={'https://picsum.photos/400/400?random=2'}
+                    postDescription="소중한 분에게 소중한 나에게 소주를 💕"
+                    taggedItemCount={1}
+                    taggedItems={[
+                        { image: 'https://picsum.photos/400/400?random=3', price: "₩15,000" },
+                    ]}
+                />
+                <Post
+                    profilePic={'https://picsum.photos/400/400?random=4'}
+                    sellerName="미라공방"
+                    postTime="26분 전"
+                    postImage={'https://picsum.photos/400/400?random=5'}
+                    postDescription="연탄봉사 갔다왔습니다 💕"
+                    taggedItemCount={0}
+                    taggedItems={[
+                    ]}
+                />
+                <Post
+                    profilePic={'https://picsum.photos/400/400?random=6'}
+                    sellerName="하루아침"
+                    postTime="26분 전"
+                    postImage={'https://picsum.photos/400/400?random=7'}
+                    postDescription="이번달 소식입니다 💕"
+                    taggedItemCount={2}
+                    taggedItems={[
+                        { image: 'https://picsum.photos/400/400?random=8', price: "₩30,000" },
+                        { image: 'https://picsum.photos/400/400?random=9', price: "₩25,000 "}
+                    ]}
+                />
+                <Post
+                    profilePic={'https://picsum.photos/400/400?random=10'}
+                    sellerName="코코"
+                    postTime="26분 전"
+                    postImage={'https://picsum.photos/400/400?random=11'}
+                    postDescription="테스트중이에요"
+                    taggedItemCount={1}
+                    taggedItems={[
+                        { image: 'https://picsum.photos/400/400?random=12', price: "₩10,000" },
+                    ]}
+                />
+                <Post
+                    profilePic={'https://picsum.photos/400/400?random=55'}
+                    sellerName="우리공방"
+                    postTime="26분 전"
+                    postImage={'https://picsum.photos/400/400?random=44'}
+                    postDescription="공방의 하루~"
+                    taggedItemCount={0}
+                    taggedItems={[
+                        { image: 'https://picsum.photos/400/400?random=66', price: "₩10,000" },
+                    ]}
+                />
+                <Post
+                    profilePic={'https://picsum.photos/400/400?random=34'}
+                    sellerName="NAT"
+                    postTime="26분 전"
+                    postImage={'https://picsum.photos/400/400?random=653'}
+                    postDescription="현재 열심히 준비중이에요!"
+                    taggedItemCount={1}
+                    taggedItems={[
+                        { image: 'https://picsum.photos/400/400?random=1345', price: "₩10,000" },
+                    ]}
+                />
+                <Post
+                    profilePic={'https://picsum.photos/400/400?random=13'}
+                    sellerName="인토"
+                    postTime="26분 전"
+                    postImage={'https://picsum.photos/400/400?random=3213'}
+                    postDescription="오늘도 좋은 하루~"
+                    taggedItemCount={1}
+                    taggedItems={[
+                        { image: 'https://picsum.photos/400/400?random=15', price: "₩10,000" },
+                    ]}
+                />
+            </div>
         </section>
     );
 }

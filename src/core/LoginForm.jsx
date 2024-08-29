@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import Naver from "img/ico_naver.png";
 import { call, join } from "util/apiService";
 import { useLogin } from "util/loginProvider";
+import SnsLogin from "section/snsLogin";
 
 // 비밀번호: 8글자 이상, 영문, 숫자 사용
 function strongPassword(pw) {return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(pw);}
@@ -484,28 +484,7 @@ const LoginForm = () => {
                                           <span className="stripe-text">간편 로그인</span>
                                           <span className="stripe-line"></span>
                                         </div>
-                                        <div className="login-method">
-                                            <div className="login-method-control">
-                                                <Link to="#" className="login-method-action ready">
-                                                <i className="fab fa-google" />
-                                                </Link>
-                                            </div>
-                                            <div className="login-method-control">
-                                                    <Link to="#" className="login-method-action ready">
-                                                <i className="fa-brands fa-facebook" />
-                                                </Link>
-                                            </div>
-                                            <div className="login-method-control">
-                                                <Link to="#" className="login-method-action">
-                                                    <img src={Naver} alt="네이버 로고" className="fa-naver"/>
-                                                </Link>
-                                            </div>
-                                            <div className="login-method-control">
-                                                <Link to="#" className="login-method-action ready">
-                                                    <i className="fa-brands fa-instagram" />
-                                                </Link>
-                                            </div>
-                                        </div>
+                                        <SnsLogin type='login' />
                                     </div>
                                     <div className="login-form-bottom">
                                         <div className="login-btn-area">
@@ -559,10 +538,10 @@ const LoginForm = () => {
                                                         />
                                                     </fieldset>
                                                     <fieldset>
-                                                        <select 
-                                                            className="login-input" 
+                                                        <select
+                                                            className="login-input"
                                                             name="domain-list"
-                                                            id="domain-list" 
+                                                            id="domain-list"
                                                             onChange={handleDomainChange}
                                                             value={registerForm.domain}
                                                         >
@@ -735,28 +714,7 @@ const LoginForm = () => {
                                           <span className="stripe-text">간편 회원가입</span>
                                           <span className="stripe-line"></span>
                                         </div>
-                                        <div className="login-method">
-                                            <div className="login-method-control">
-                                                <Link to="#" className="login-method-action ready">
-                                                    <i className="fa-brands fa-google-plus" />
-                                                </Link>
-                                            </div>
-                                            <div className="login-method-control">
-                                                    <Link to="#" className="login-method-action ready">
-                                                <i className="fa-brands fa-facebook" />
-                                                </Link>
-                                            </div>
-                                            <div className="login-method-control">
-                                                <Link to="#" className="login-method-action">
-                                                    <img src={Naver} alt="네이버 로고" className="fa-naver"/>
-                                                </Link>
-                                            </div>
-                                            <div className="login-method-control">
-                                                <Link to="#" className="login-method-action ready">
-                                                    <i className="fa-brands fa-instagram" />
-                                                </Link>
-                                            </div>
-                                        </div>
+                                        <SnsLogin type='register' />
                                     </div>
                                     <div className="login-form-bottom">
                                         <div className="login-btn-area">
