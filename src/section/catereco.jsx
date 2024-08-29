@@ -1,7 +1,16 @@
 import React, { useRef, useEffect, useCallback, useMemo, useState } from "react";
 import { getProjectList } from "util/apiService";
+import Slide from "section/slide"
 
 import Aside from "section/rank";
+
+const images = [
+    "https://picsum.photos/1330/400?random=8",
+    "https://picsum.photos/1330/400?random=9",
+    "https://picsum.photos/1330/400?random=10",
+    "https://picsum.photos/1330/400?random=11",
+    "https://picsum.photos/1330/400?random=12"
+]
 
 const CateRecommand = () => {
     const [data, setData] = useState([]);
@@ -25,31 +34,37 @@ const CateRecommand = () => {
                 const item = getRandomSubjectList(subject);
                 if (item) {
                     const itemDiv = document.createElement("div");
-                    itemDiv.classList.add('project-cate-wrap');
+                    itemDiv.classList.add('catereco-cate-wrap');
                     itemDiv.innerHTML = `
-                        <div class="project-subject">
-                            <p class="project-subject-title"><i class=""></i>${item.projectMainCate}</p>
-                            <p class="project-subject-more" onClick={window.location.replace("#")}>더 보기</p>
-                        </div>
-                        <div class="project-cate-thumb-wrap" onclick={window.location.replace("#")}>
-                            <div class="project-cate-thumb"> <!-- 이미지 썸네일 영역 -->
-                                <img src="https://picsum.photos/400/400?random=${item.projectId}">
+                        <a href="/project/detail/${item.projectId}" class="catereco-cate-thumb-wrap"}>
+                            <div class="catereco-cate-thumb"> <!-- 이미지 썸네일 영역 -->
+                                <img src="https://picsum.photos/300/300?random=${item.projectId}">
                             </div>
-                            <p class="project-cate title"> <!-- 프로젝트 제목 영역 -->
-                                ${item.articleTitle}
-                            </p>
-                            <div class="project-cate rate">
-                                <p class="project-cate-rate percent font14"> <!-- 달성 % 표시 영역 -->
-                                    <b>${item.projectGoal === 0 ? 0 : Math.floor((item.projectCurrent / item.projectGoal) * 100)}%</b> 달성
+                            <div class="catereco-cate-desc">
+                                <div class="catereco-subject">
+                                    <p class="catereco-subject-title"><i class=""></i>${item.projectMainCate}</p>
+                                </div>
+                                <p class="catereco-cate title"> <!-- 프로젝트 제목 영역 -->
+                                    ${item.articleTitle}
                                 </p>
-                                <p class="project-cate-rate star font14"> <!-- 달성 % 표시 영역 -->
-                                    ★ 4.0
+                                <div class="catereco-cate rate">
+                                    <p class="catereco-cate-rate percent font14"> <!-- 달성 % 표시 영역 -->
+                                        <b>${item.projectGoal === 0 ? 0 : Math.floor((item.projectCurrent / item.projectGoal) * 100)}%</b> 달성
+                                    </p>
+                                </div>
+                                <div class="catereco-cate icons">
+                                    <p class="catereco-cate-rate star"> <!-- 달성 % 표시 영역 -->
+                                        <i class="fas fa-stars"></i> ${item.projectFun}
+                                    </p>
+                                    <p class="catereco-cate-rate heart"> <!-- 달성 % 표시 영역 -->
+                                        <i class="fas fa-heart"></i> ${item.projectLikes}
+                                    </p>
+                                </div>
+                                <p class="catereco-cate name font14"> <!-- 창작자/단체명 영역 -->
+                                    ${item.userNickname}
                                 </p>
                             </div>
-                            <p class="project-cate name font14"> <!-- 창작자/단체명 영역 -->
-                                ${item.userNickname}
-                            </p>
-                        </div>
+                        </a>
                     `;
                     wrapRef.current.appendChild(itemDiv);
                 }
@@ -80,10 +95,19 @@ const CateRecommand = () => {
                     <p>주제별 추천 프로젝트!</p>
                     <span>FunFun에서 선정한 주제별 추천 프로젝트</span>
                 </div>
-                <div className="main-cate-project" ref={wrapRef}>
+                <div id="catereco">
+                    <div className="catereco-container" ref={wrapRef}>
+                    </div>
+                </div>
+                <div className="section-title">
+                    <p>진행중인 이벤트</p>
+                    <span>이벤트를 통한 특별한 혜택을 놓치지 마세요!</span>
+                </div>
+                <div className="events-container">
+                    <Slide images={images}/>
                 </div>
             </div>
-            <Aside />
+            <Aside />    
         </section>
     )
 }

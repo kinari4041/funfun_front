@@ -107,6 +107,7 @@ const categoryOptions = {
       <Helmet>
         <title>FUNFUN - 새로운 프로젝트 등록</title>
       </Helmet>
+      <section id="upload">
       <div id="box"> 
         <h4 style={{ color: 'black', fontSize: '37px', fontWeight: 'bold' }}>최고의 프로젝트를 보여주세요!</h4><br/>
         
@@ -261,6 +262,7 @@ const categoryOptions = {
           </form>
         </Modal>
       </div>
+      </section>
     </>
   );
 };

@@ -7,7 +7,7 @@ import { LoginProvider } from "util/loginProvider";
 import { Header, Footer } from "core";
 import { Category, Comming, Error404, Home, 
           Popular, Project, Recent, 
-          Story, Search, Upload } from "page";
+          Story, Search, Upload, MyPage } from "page";
 import NoticeBoard from "section/noticeBoard";
 import FeeInformation from "section/feeInformation";
 import ExaminationGuideline from "section/examinationGuideline";
@@ -33,12 +33,13 @@ const AppRouter = () => {
               <Route path="/search" element={<Search />} />
               <Route path="/category" element={<Category />} />
               <Route path="/comming_soon" element={<Comming />} />
+              <Route path="/mypage" element={<MyPage />} />
 
               {/* 프로젝트 세부페이지 */}
               <Route path="/project/*" element={<Project />} />
 
               {/* 업로드 페이지 */}
-              <Route path="/pjtregist" element={<Upload />} />
+              <Route path="/project/upload" element={<Upload />} />
 
               {/* 스토리 페이지 */}
               <Route path="/story" element={<Story />} />

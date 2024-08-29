@@ -10,6 +10,7 @@ const InfinityScroll = ({
   title,
   cateMain,
   cateSub,
+  searchTerm,
   sortOptions = []
 }) => {
   const wrapRef = useRef(null);
@@ -28,10 +29,16 @@ const InfinityScroll = ({
   const loadData = useCallback(async () => {
       setIsLoading(true);
       try {
-        let response = await fetchData(sortBy);
-        if (cateMain || cateSub) {
+        let response;
+
+        if ((cateMain || cateSub)) {
           response = await fetchData(cateMain, cateSub, sortBy);
+        } else if (searchTerm) {
+          response = await fetchData(searchTerm, sortBy);
+        } else {
+          response = await fetchData(sortBy);
         }
+
         setLimit(response.length);
         console.log(response.length);
         setFullData(prevData => [...prevData, ...response]);
@@ -40,7 +47,7 @@ const InfinityScroll = ({
       } finally {
         setIsLoading(false);
       }
-  }, [sortBy, fetchData, cateMain, cateSub]);
+  }, [sortBy, fetchData, cateMain, cateSub, searchTerm]);
 
   useEffect(() => {
     loadData();
@@ -55,12 +62,13 @@ const InfinityScroll = ({
       ([entry]) => {
         if (entry.isIntersecting && hasMore && !isLoading) {
           setPage(prevPage => prevPage + 1);
+          console.log("observer triggered")
           if (data.length >= limit) {
             setHasMore(false);
           }
         }
       },
-      { threshold: 1 }
+      { threshold: 0 }
     );
     observer.observe(observerEl);
 
@@ -74,7 +82,7 @@ const InfinityScroll = ({
 
   useEffect(() => {
     setData(fullData.slice(0, page * perPage));
-  }, [fullData, page, limit, perPage]);
+  }, [fullData, limit, page, perPage]);
 
   // 정렬 기준 변경시, 기존에 렌더링된 데이터 초기화
   const handleSortChange = (sort) => {
@@ -87,7 +95,7 @@ const InfinityScroll = ({
     setFullData([]);
     setPage(1);
     setHasMore(true);
-  }, [cateMain, cateSub, sortBy])
+  }, [cateMain, cateSub, sortBy, searchTerm])
 
   return (
     <>
@@ -134,6 +142,11 @@ const InfinityScroll = ({
         <div className="search-no-result-wrap">
         <p className="search-no-result">불러오는 중...</p>
         </div>}
+      {/* 검색 결과가 없으면 출력하지 않음 */}
+      {(limit < 0) && 
+        <div className="search-no-result-wrap">
+        <p className="search-no-result">프로젝트를 찾지 못했습니다.</p>
+        </div>}
       <div id="observer" style={{ height: "10px" }} ref={observerRef}></div>
     </>
   );
@@ -145,6 +158,9 @@ InfinityScroll.prototypes = {
   initialSortBy: PropTypes.string,
   perPage: PropTypes.number,
   title: PropTypes.string.isRequired,
+  cateMain: PropTypes.string,
+  cateSub: PropTypes.string,
+  searchTerm: PropTypes.string,
   sortOptions: PropTypes.arrayOf(PropTypes.shape({
     value: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired

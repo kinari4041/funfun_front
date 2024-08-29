@@ -487,7 +487,7 @@ const LoginForm = () => {
                                         <div className="login-method">
                                             <div className="login-method-control">
                                                 <Link to="#" className="login-method-action ready">
-                                                    <i className="fa-brands fa-google-plus" />
+                                                <i className="fab fa-google" />
                                                 </Link>
                                             </div>
                                             <div className="login-method-control">

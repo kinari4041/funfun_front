@@ -6,4 +6,4 @@
 //     backendHost = "http://localhost:9027";
 // }
 
-export const API_BASE_URL = "http://kinari.ink:9000";
+export const API_BASE_URL = "https://back.funfun.kinari.ink";
