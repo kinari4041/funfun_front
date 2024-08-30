@@ -40,7 +40,6 @@ const InfinityScroll = ({
         }
 
         setLimit(response.length);
-        console.log(response.length);
         setFullData(prevData => [...prevData, ...response]);
       } catch (err) {
         setError(err);
@@ -62,7 +61,6 @@ const InfinityScroll = ({
       ([entry]) => {
         if (entry.isIntersecting && hasMore && !isLoading) {
           setPage(prevPage => prevPage + 1);
-          console.log("observer triggered")
           if (data.length >= limit) {
             setHasMore(false);
           }

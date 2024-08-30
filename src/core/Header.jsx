@@ -68,7 +68,7 @@ const Header = () => {
                                 <Link to="/popular"><li className={isPage("/popular") ? 'active' : ''}>인기</li></Link>
                                 <Link to="/recent"><li className={isPage("/recent") ? 'active' : ''}>최신</li></Link>
                                 <Link to="/comming_soon"><li className={isPage("/comming_soon") ? 'active' : ''}>오픈예정</li></Link>
-                                <Link to="#"><li className={isPage("/story") ? 'active' : ''}>스토리</li></Link>
+                                <Link to="/story"><li className={isPage("/story") ? 'active' : ''}>스토리</li></Link>
                             </ul>
                         </div> 
                     </div> 

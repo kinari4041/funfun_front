@@ -850,6 +850,7 @@ header {
 
 .login-method-action:hover {
     box-shadow: var(--shadow-medium);
+    cursor: pointer;
 }
 
 .logged-in {
@@ -964,6 +965,24 @@ header {
 
 .social-num-wrap fieldset:last-child {
     width: 40%;
+}
+
+.phone-num-wrap {
+    display: flex;
+    width: 80%;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.phone-num-wrap span {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--color-primary)
+}
+
+.phone-num-wrap fieldset {
+    margin: 0;
 }
 
 .register-button-wrap {
@@ -1288,15 +1307,6 @@ aside li:hover .rank-items {
     text-align: center;
 }
 
-.aside-ad {
-    margin: 40px 20px 10px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #eee;
-    height: 230px;
-}
-
 /* ─────────────────────────────────────────────────────────
                     주제별 추천 프로젝트
 ────────────────────────────────────────────────────────── */
@@ -1461,17 +1471,6 @@ aside li:hover .rank-items {
     padding: 3px 7px 3px 7px;
     font-size: 12px;
     font-weight: normal;
-}
-
-.banner {
-    height: 200px;
-    width: 1330px;
-    margin-bottom: 60px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #eee;
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -2510,7 +2509,27 @@ footer {
                     임시! 광고 안내문구
 ────────────────────────────────────────────────────────── */
 
-.aside-ad p, .banner p {
+.banner {
+    height: 200px;
+    width: 1330px;
+    margin-bottom: 60px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eee;
+}
+
+.aside-banner {
+    margin: 40px 20px 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #eee;
+    height: 230px;
+}
+
+.aside-banner p, .banner p {
     font-size: 22px;
     font-weight: bold;
     color: #ccc;
@@ -2632,6 +2651,50 @@ footer {
 /* ─────────────────────────────────────────────────────────
                     임시! 스토리 화면
 ────────────────────────────────────────────────────────── */
+
+#story {
+    margin-bottom: 50px;
+}
+
+.post-title-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.post-title {
+    font-size: 3rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, #ff6b6b, #f7d06b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    display: inline-block;
+    padding: 20px 20px;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: shine 2s infinite;
+    text-align: center;
+}
+
+@keyframes shine {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* 타이틀 텍스트 위치 조정 */
+.post-title {
+    position: relative;
+    z-index: 2;
+}
 
 .posts-container {
     display: grid;

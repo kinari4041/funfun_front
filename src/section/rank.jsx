@@ -61,10 +61,9 @@ const Aside = () => {
                         </Link>
                     </li>
                 ))}
-
             </ul>
             <Link to="#">
-                <div className="aside-ad">
+                <div className="aside-banner">
                     <p>AD AREA</p>
                 </div>
             </Link>

@@ -43,8 +43,10 @@ function Post({ profilePic, sellerName, postTime, postImage, postDescription, ta
 function Story() {
     return (
         <section id="story" className="section-area">
-            <div className="section-title">
-                <p>스토리 - 우리들의 이야기</p>
+            <div className="post-title-wrap">
+                <div className="post-title">
+                    <p>스토리 - 우리들의 이야기</p>
+                </div>
             </div>
             <div className="posts-container">
                 <Post

@@ -86,9 +86,9 @@ const Slider = ({ images, title, slideHeight, uiNeed = true }) => {
         const onTouchEnd = (e) => {
             pointEnd = e.changedTouches[0].pageX;
             if (pointStart < pointEnd) {
-                handlePrev();
-            } else if (pointStart > pointEnd) {
                 handleNext();
+            } else if (pointStart > pointEnd) {
+                handlePrev();
             }
             clearInterval(intervalRef.current);
             intervalRef.current = setInterval(handleNext, slideInterval);

@@ -46,7 +46,6 @@ const detailInfoReview = (props) => {
 
     // const data = props.data;
     // const articleId = data.articleId;
-    console.log("loaded");
 
     return (
       <>

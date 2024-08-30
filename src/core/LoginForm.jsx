@@ -83,7 +83,7 @@ const LoginForm = () => {
                       //새로고침 없이 원하는 페이지로 이동함: useNavigate()훅
                       close();
                     } else {
-                      setLoginErrors({password: "아이디 혹은 비밀번호가 틀립니다."});
+                      setLoginErrors({account: "아이디 혹은 비밀번호가 틀립니다."});
                     }
                   });
             } else {
@@ -91,7 +91,6 @@ const LoginForm = () => {
             }
         } else {
             const errors = registerFormChecker();
-            console.log(Object.keys(errors).length);
             if (Object.keys(errors).length < 7 && step === 1) {
                 setStep(prevStep => prevStep + 1);
                 setRegisterErrors({});
@@ -106,7 +105,7 @@ const LoginForm = () => {
                         userName: registerForm.name,
                         userNickName: registerForm.nickname,
                         userBirthday: registerForm.birthdate,
-                        userPhone: formatPhoneNum(registerForm.phone),
+                        userPhone: `${registerForm.phoneMiddle}-${registerForm.phoneEnd}`,
                         userGender: getGender(registerForm.socialnum),
                         userAuthLevel: 0
                     };
@@ -142,18 +141,8 @@ const LoginForm = () => {
 
     // 주민등록번호 뒷자리가 홀수면 남성, 짝수면 여성으로 지정
     const getGender = (num) => {
-        console.log(num);
         return num % 2 === 0 ? 'F' : 'M';
     }
-
-    // 입력받은 전화번호를 저장하는 데이터베이스의 형식에 맞게 재설정
-    const formatPhoneNum = (num) => {
-        if (num.startsWith('010')) {
-            const restOfNum = num.slice(3);
-            return `${restOfNum.slice(0, 4)}-${restOfNum.slice(4)}`;
-        }
-        return num;
-    };
 
     // 폼 내용 변경 감지 핸들러
     const handleChange = (e) => {
@@ -178,7 +167,7 @@ const LoginForm = () => {
         }
     };
 
-    // 창 닫을시 기존의 요소들 초기화하는 메서드
+    // 기존의 요소들 초기화하는 메서드
     const close = useCallback(() => {
         setIsLogin(true);
         setIsActivate(false);
@@ -200,7 +189,6 @@ const LoginForm = () => {
         setRegisterErrors({});
     }, []);
 
-    // 창 닫을시 기존의 요소들 초기화하는 메서드
     const reset = useCallback(() => {
         setStep(1);
         setLoginForm({ email: '', password: '' });
@@ -212,7 +200,8 @@ const LoginForm = () => {
             nickname: '',
             socialnum: '',
             birthdate: '',
-            phone: '',
+            phoneMiddle: '',
+            phoneEnd: '',
             termsAccepted: false,
             privacyAccepted: false
         });
@@ -275,7 +264,8 @@ const LoginForm = () => {
         name: '',
         nickname: '',
         birthdate: '',
-        phone: '',
+        phoneMiddle: '',
+        phoneEnd: '',
         socialnum: '',
         termsAccepted: false,
         privacyAccepted: false
@@ -339,8 +329,8 @@ const LoginForm = () => {
                 errors.birthdate = '유효하지 않은 번호입니다.'
             }
         }
-        if (field === 'phone' || !field) {
-            if (!registerForm.phone) {
+        if (field === 'phoneMiddle' || field === 'phoneEnd' || !field) {
+            if (!registerForm.phoneMiddle || !registerForm.phoneEnd) {
                 errors.phone = '전화번호를 입력하세요';
             }
         }
@@ -649,20 +639,48 @@ const LoginForm = () => {
                                                         </fieldset>
                                                     </div>
                                                     {registerErrors.birthdate && <div className="login-error-message">{registerErrors.birthdate}</div>}
-                                                    <fieldset>
-                                                        <input
-                                                            className="login-input"
-                                                            type="tel"
-                                                            name="phone"
-                                                            placeholder="휴대전화"
-                                                            value={registerForm.phone}
-                                                            onChange={handleChange}
-                                                            onKeyUp={handleKeyUp}
-                                                            onFocus={handleFocus}
-                                                            maxLength="11"
-                                                            ref={formRef}
-                                                        />
-                                                    </fieldset>
+                                                    <div className="phone-num-wrap">
+                                                        <fieldset>
+                                                            <input
+                                                                className="login-input"
+                                                                type="tel"
+                                                                name="phoneStart"
+                                                                value="010"
+                                                                maxLength="11"
+                                                                disabled="true"
+                                                            />
+                                                        </fieldset>
+                                                        <span>-</span>
+                                                        <fieldset>
+                                                            <input
+                                                                className="login-input"
+                                                                type="tel"
+                                                                name="phoneMiddle"
+                                                                placeholder="휴대전화"
+                                                                value={registerForm.phoneMiddle}
+                                                                onChange={handleChange}
+                                                                onKeyUp={handleKeyUp}
+                                                                onFocus={handleFocus}
+                                                                maxLength="4"
+                                                                ref={formRef}
+                                                            />
+                                                        </fieldset>
+                                                        <span>-</span>
+                                                        <fieldset>
+                                                            <input
+                                                                className="login-input"
+                                                                type="tel"
+                                                                name="phoneEnd"
+                                                                placeholder="휴대전화"
+                                                                value={registerForm.phoneEnd}
+                                                                onChange={handleChange}
+                                                                onKeyUp={handleKeyUp}
+                                                                onFocus={handleFocus}
+                                                                maxLength="4"
+                                                                ref={formRef}
+                                                            />
+                                                        </fieldset>
+                                                    </div>
                                                     {registerErrors.phone && <div className="login-error-message">{registerErrors.phone}</div>}
                                                 </form>
                                                 <div className="register-button-wrap">
