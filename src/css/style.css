@@ -1088,7 +1088,7 @@ section {
 
 #section1 {
     display: grid;
-    grid-template-columns: 950px auto;
+    grid-template-columns: 850px auto;
 }
 
 #section1 .section-wrap {
@@ -1225,6 +1225,16 @@ aside {
     margin-right: 15px;
 }
 
+.rank-title-wrap {
+    display: flex;
+}
+
+.rank-thumb {
+    height: auto;
+    width: 300px;
+    object-fit: cover;
+}
+
 aside ul {
     margin: 20px 20px;
     display: flex;
@@ -1243,7 +1253,7 @@ aside ul > li {
 aside ul > li .rank-items {
     position: relative;
     width: 100%;
-    height: 50px;
+    height: 130px;
     transform-style: preserve-3d;
     transition: transform 0.3s ease-out;
 }

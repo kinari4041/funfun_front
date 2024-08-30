@@ -48,7 +48,12 @@ const Aside = () => {
                             <div className="rank-items">
                                 <div className="rank-items__front">
                                     <p className="rank-number">{item.projectRank}</p>
-                                    <p className="rank-title">{item.articleTitle}</p>
+                                    <div className="rank-title-wrap">
+                                        <p className="rank-title">{item.articleTitle}</p>
+                                        <div className="rank-thumb">
+                                            <img src={`https://picsum.photos/400/400?random=${item.projectId}`} alt="섬네일 이미지" />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="rank-items__back">
                                     <p className="rank-like">
